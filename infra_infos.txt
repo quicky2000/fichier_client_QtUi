@@ -1,3 +1,4 @@
-depend:fichier_client
+depend:Qt4 fichier_client
 LDFLAGS:
+CFLAGS:
 
