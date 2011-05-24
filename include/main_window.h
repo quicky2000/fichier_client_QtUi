@@ -27,6 +27,7 @@ class main_window : public QMainWindow
      main_window(void);
 
  private slots:
+     void test();
      void open();
      void exit();
      void criteria_modification();
@@ -39,6 +40,7 @@ class main_window : public QMainWindow
 
      QAction *m_open_file_action;
      QAction *m_exit_action;
+     QAction *m_test_action;
      QMenu * m_file_menu;
      QLabel * m_status_label;
      QLineEdit * m_name_field;

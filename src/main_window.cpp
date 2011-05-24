@@ -1,10 +1,12 @@
 #include "main_window.h"
+#include "test.h"
 #include <iostream>
 using namespace std;
 
 main_window::main_window(void):
   m_open_file_action(NULL),
   m_exit_action(NULL),
+  m_test_action(NULL),
   m_file_menu(NULL),
   m_status_label(NULL),
   m_name_field(NULL),
@@ -71,6 +73,11 @@ void main_window::create_actions(void)
   m_open_file_action->setStatusTip(tr("Import a file from MySql")); 
   connect(m_open_file_action,SIGNAL(triggered()),this,SLOT(open()));
 
+  m_test_action = new QAction(tr("&Test"),this);
+  m_test_action->setShortcut(tr("Ctrl+T"));
+  m_test_action->setStatusTip(tr("Launch test actions")); 
+  connect(m_test_action,SIGNAL(triggered()),this,SLOT(test()));
+
   m_exit_action = new QAction(tr("&Quit"),this);
   m_exit_action->setShortcut(tr("Ctrl+Q"));
   m_exit_action->setStatusTip(tr("Quit the application")); 
@@ -81,6 +88,7 @@ void main_window::create_menus(void)
 {
   m_file_menu = menuBar()->addMenu(tr("&File"));
   m_file_menu->addAction(m_open_file_action);
+  m_file_menu->addAction(m_test_action);
   m_file_menu->addAction(m_exit_action);
 }
 
@@ -88,6 +96,11 @@ void main_window::create_status_bar(void)
 {
   m_status_label = new QLabel("Status bar");
   statusBar()->addWidget(m_status_label);
+}
+
+void main_window::test(void)
+{
+  test::test();
 }
 
 void main_window::open(void)
