@@ -2,22 +2,14 @@
 #define _MAIN_WINDOW_H_
 
 #include <QMainWindow>
-#include <QAction>
-#include <QMenuBar>
-#include <QMenu>
-#include <QLabel>
-#include <QStatusBar>
-#include <QMessageBox>
-#include <QCloseEvent>
-#include <QString>
-#include <QFileDialog>
-#include <QFrame>
-#include <QLineEdit>
-#include <QHBoxLayout>
 
 #include "fichier_client.h"
-#include "client_list_table.h"
-#include "achat_list_table.h"
+
+class QAction;
+class QMenu;
+class QLabel;
+
+class search_widget;
 
 class main_window : public QMainWindow
  {
@@ -36,8 +28,6 @@ class main_window : public QMainWindow
      void save_as();
      void close_db();
      void exit();
-     void criteria_modification();
-     void client_selected(int row);
  private:
      void closeEvent(QCloseEvent *event);
      void create_actions(void);
@@ -53,11 +43,7 @@ class main_window : public QMainWindow
      QAction *m_test_action;
      QMenu * m_file_menu;
      QLabel * m_status_label;
-     QLineEdit * m_name_field;
-     QLineEdit * m_first_name_field;
-     QLineEdit * m_city_field;
-     client_list_table *m_client_list_table;
-     achat_list_table *m_achat_list_table;
+     search_widget * m_search_widget;
      fichier_client m_fichier_client;
  };
 
