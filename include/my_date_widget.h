@@ -6,9 +6,9 @@
 #include <QLineEdit>
 #include <string>
 
+#ifdef TOTO
 class my_date_widget:public QWidget
 {
-  Q_OBJECT
  public:
   my_date_widget(QWidget * p_parent = NULL);
   const std::string get_text(void)const;
@@ -18,5 +18,18 @@ class my_date_widget:public QWidget
   QLineEdit *m_year;
   QLineEdit *m_date;
 };
+#endif
+
+class my_date_widget:public QLineEdit
+{
+  Q_OBJECT
+ public:
+  my_date_widget(QWidget * p_parent = NULL);
+  const std::string get_iso_date(void)const;
+  void set_iso_date(const std::string & p_iso_date);
+  bool is_complete(void)const;
+ private:
+};
+
 #endif
 //EOF
