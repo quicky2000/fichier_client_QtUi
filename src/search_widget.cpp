@@ -1,6 +1,11 @@
 #include "search_widget.h"
 #include "fichier_client.h"
+#include "client_list_table.h"
+#include "achat_list_table.h"
 
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
 #include <iostream>
 using namespace std;
 

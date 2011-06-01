@@ -1,18 +1,12 @@
 #ifndef _SEARCH_WIDGET_H_
 #define _SEARCH_WIDGET_H_
 
-#include <QLabel>
-#include <QMessageBox>
-#include <QString>
-#include <QLineEdit>
-#include <QHBoxLayout>
+#include <QWidget>
 
-#include "client_list_table.h"
-#include "achat_list_table.h"
-
+class QLineEdit;
 class fichier_client;
-
-//#include "fichier_client.h"
+class client_list_table;
+class achat_list_table;
 
 class search_widget : public QWidget
  {
