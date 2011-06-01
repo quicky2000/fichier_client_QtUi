@@ -114,7 +114,7 @@ void main_window::create_actions(void)
 void main_window::create_menus(void)
 {
   m_file_menu = menuBar()->addMenu(tr("&File"));
-  m_file_menu->addAction(m_import_file_action);
+  //  m_file_menu->addAction(m_import_file_action);
   m_file_menu->addAction(m_open_file_action);
   m_file_menu->addAction(m_save_action);
   m_file_menu->addAction(m_save_as_action);
@@ -164,6 +164,8 @@ void main_window::import(void)
       m_fichier_client.import_external_sql(l_file_name_std);
       QMessageBox::information (this,"Import Status","File successfully imported", QMessageBox::Ok,QMessageBox::Ok);
 
+      setWindowTitle(l_file_name);
+
       manage_features(true);
     }
 }
@@ -187,6 +189,7 @@ void main_window::open_db(void)
 
       m_fichier_client.open_db(l_file_name_std);
       QMessageBox::information (this,"Open Status","File successfully opened", QMessageBox::Ok,QMessageBox::Ok);
+      setWindowTitle(l_file_name);
       manage_features(true);
      }
 }
@@ -220,6 +223,7 @@ void main_window::save_as(void)
       m_fichier_client.save_as(l_file_name_std);
       QMessageBox::information (this,"Save Status","File successfully saved", QMessageBox::Ok,QMessageBox::Ok);
       m_save_action->setEnabled(true);
+      setWindowTitle(l_file_name);
     }
 }
 
@@ -227,19 +231,41 @@ void main_window::save_as(void)
 void main_window::close_db(void)
 {
   cout << "Close" << endl ;
-  m_open_file_action->setEnabled(true);
-  m_save_action->setEnabled(false);
-  m_save_as_action->setEnabled(false);
-  m_close_action->setEnabled(false);
-  manage_features(false);
-  m_fichier_client.close_db();
+  bool l_close = true;
+  if(m_fichier_client.need_save())
+    {
+      string l_question = "Database has non saved modification\nAre you sure you want to close it ?";
+      int l_result = QMessageBox::question(this, tr("Close"),
+					   tr(l_question.c_str()),
+					   QMessageBox::Yes | QMessageBox::Default,
+					   QMessageBox::No);
+      if (l_result != QMessageBox::Yes)
+	{
+	  l_close = false;
+	}
+    }
+  if(l_close)
+    {
+	  m_open_file_action->setEnabled(true);
+	  m_save_action->setEnabled(false);
+	  m_save_as_action->setEnabled(false);
+	  m_close_action->setEnabled(false);
+	  manage_features(false);
+	  m_fichier_client.close_db();
+	  setWindowTitle(tr("Fichier client"));
+    }
 }
 
 //------------------------------------------------------------------------------
 void main_window::closeEvent(QCloseEvent *event)
 {
+  string l_question("Are you sure want to quit ?");
+  if(m_fichier_client.need_save())
+    {
+      l_question += "\nDatabase has non saved modification\n";
+    }
   int l_result = QMessageBox::question(this, tr("Quit"),
-				       tr("Are you sure want to quit ?"),
+				       tr(l_question.c_str()),
 				       QMessageBox::Yes | QMessageBox::Default,
 				       QMessageBox::No);
   if (l_result == QMessageBox::Yes)
