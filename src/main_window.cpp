@@ -2,11 +2,12 @@
 #include "test.h"
 #include "my_date_widget.h"
 #include "search_widget.h"
+#include "livre_facture_widget.h"
 
 #include <QAction>
 #include <QMenu>
 #include <QLabel>
-
+#include <QMessageBox>
 #include <QStatusBar>
 #include <QFileDialog>
 #include <QCloseEvent>
@@ -26,25 +27,36 @@ main_window::main_window(void):
   m_test_action(NULL),
   m_file_menu(NULL),
   m_status_label(NULL),
-  m_search_widget(NULL)
+  m_search_widget(NULL),
+  m_livre_facture_widget(NULL)
 {
   setWindowTitle(tr("Fichier client"));
   create_actions();
   create_menus();
   create_status_bar();
 
-  QFrame * l_frame = new QFrame();
-  QVBoxLayout *l_vertical_layout = new QVBoxLayout(l_frame);
+  QTabWidget * m_tab_widget = new QTabWidget();
+
+  //  QFrame * l_frame = new QFrame();
+  //   QVBoxLayout *l_vertical_layout = new QVBoxLayout(l_frame);
 
   //Date widget
   my_date_widget * l_date_widget = new my_date_widget();
-  l_vertical_layout->addWidget(l_date_widget);
+  //  l_vertical_layout->addWidget(l_date_widget);
+
+  m_livre_facture_widget = new livre_facture_widget(m_fichier_client);
 
   // Search widget
-  m_search_widget = new search_widget(m_fichier_client,l_frame);
-  l_vertical_layout->addWidget(m_search_widget);
+  m_search_widget = new search_widget(m_fichier_client);
+  //  l_vertical_layout->addWidget(m_search_widget);
 
-  setCentralWidget(l_frame);
+
+  //  setCentralWidget(l_frame);
+  m_tab_widget->addTab(m_search_widget,tr("Search"));
+  m_tab_widget->addTab(m_livre_facture_widget,tr("Livre facture"));
+  //  m_tab_widget->addTab(l_date_widget,tr("Date"));
+
+  setCentralWidget(m_tab_widget);
 
   manage_features(false);
 
@@ -55,6 +67,7 @@ main_window::main_window(void):
 void main_window::manage_features(bool p_enable)
 {
   m_search_widget->set_enable(p_enable);
+  m_livre_facture_widget->set_enable(p_enable);
 }
 
 
@@ -143,7 +156,6 @@ void main_window::import(void)
   cout << "File to import is \"" << l_file_name_std << "\"" << endl ;
   if(l_file_name != "")
     {
-
       m_import_file_action->setEnabled(false);
       m_open_file_action->setEnabled(false);
       m_save_as_action->setEnabled(true);
@@ -161,8 +173,8 @@ void main_window::open_db(void)
 {
   cout << "Open a file" << endl ;
   QString l_file_name = QFileDialog::getOpenFileName(this,
-                                   tr("Open Database"), ".",
-                                   tr("Fichier client files (*.sqlite3)"));
+						     tr("Open Database"), ".",
+						     tr("Fichier client files (*.sqlite3)"));
   string l_file_name_std = l_file_name.toStdString();
   cout << "File to open is \"" << l_file_name_std << "\"" << endl ;
   if(l_file_name != "")

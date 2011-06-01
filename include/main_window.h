@@ -8,8 +8,10 @@
 class QAction;
 class QMenu;
 class QLabel;
+class QTabWidget;
 
 class search_widget;
+class livre_facture_widget;
 
 class main_window : public QMainWindow
  {
@@ -43,7 +45,9 @@ class main_window : public QMainWindow
      QAction *m_test_action;
      QMenu * m_file_menu;
      QLabel * m_status_label;
+     QTabWidget *m_tab_widget;
      search_widget * m_search_widget;
+     livre_facture_widget *m_livre_facture_widget;
      fichier_client m_fichier_client;
  };
 
