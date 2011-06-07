@@ -2,6 +2,7 @@
 #include "fichier_client.h"
 #include "client_list_table.h"
 #include "achat_list_table.h"
+#include "facture_list_table.h"
 
 #include <QVBoxLayout>
 #include <QLabel>
@@ -17,6 +18,7 @@ search_widget::search_widget(fichier_client & p_fichier_client,QWidget * p_paren
   m_city_field(NULL),
   m_client_list_table(NULL),
   m_achat_list_table(NULL),
+  m_facture_list_table(NULL),
   m_fichier_client(p_fichier_client)
 {
   // QFrame * l_frame = new QFrame();
@@ -55,6 +57,11 @@ search_widget::search_widget(fichier_client & p_fichier_client,QWidget * p_paren
 
   m_achat_list_table = new achat_list_table(l_frame);
   l_vertical_layout->addWidget(m_achat_list_table);
+
+  l_vertical_layout->addWidget(new QLabel("Factures for selected client :"));
+
+  m_facture_list_table = new facture_list_table(l_frame);
+  l_vertical_layout->addWidget(m_facture_list_table);
 
   //  setCentralWidget(l_frame);
 
@@ -98,6 +105,10 @@ void search_widget::client_selected(int p_row)
   vector<search_achat_item> l_list_achat;
   m_fichier_client.get_achat_by_client_id(l_client_id,l_list_achat);
   m_achat_list_table->update(l_list_achat);  
+
+  vector<search_facture_item> l_list_facture;
+  m_fichier_client.get_facture_by_client_id(l_client_id,l_list_facture);
+  m_facture_list_table->update(l_list_facture);  
 }
 
 //EOF

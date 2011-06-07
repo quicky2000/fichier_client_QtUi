@@ -7,6 +7,7 @@ class QLineEdit;
 class fichier_client;
 class client_list_table;
 class achat_list_table;
+class facture_list_table;
 
 class search_widget : public QWidget
  {
@@ -27,6 +28,7 @@ class search_widget : public QWidget
      QLineEdit * m_city_field;
      client_list_table *m_client_list_table;
      achat_list_table *m_achat_list_table;
+     facture_list_table *m_facture_list_table;
      fichier_client & m_fichier_client;
  };
 
