@@ -11,4 +11,10 @@ uint32_t simple_table_cell::get_id(void)const
 {
   return m_id;
 }
+
+void simple_table_cell::set_warning_background(void)
+{
+  this->setBackground(QBrush(QColor(255,128,0)));
+}
+
 //EOF

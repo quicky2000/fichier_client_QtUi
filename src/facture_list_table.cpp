@@ -1,5 +1,6 @@
 #include "facture_list_table.h"
 #include "simple_table_cell.h"
+#include "facture_status.h"
 #include <vector>
 #include <assert.h>
 
@@ -33,7 +34,7 @@ void facture_list_table::set_row_content(uint32_t p_row,const search_facture_ite
       simple_table_cell *l_facture_ref_cell = new simple_table_cell(l_facture_ref_q,l_facture_ref);
       if(!l_facture_ref)
 	{
-	  l_facture_ref_cell->setBackground(QBrush(QColor(255,128,0)));
+	  l_facture_ref_cell->set_warning_background();
 	}
       setItem(p_row,1,l_facture_ref_cell);
       setItem(p_row,2,new simple_table_cell(p_search_facture_item.get_date().c_str()));
@@ -43,10 +44,17 @@ void facture_list_table::set_row_content(uint32_t p_row,const search_facture_ite
       simple_table_cell * l_livre_facture_id_cell = new simple_table_cell(l_livre_facture_id_q,l_livre_facture_id);
       if(!l_livre_facture_id)
 	{
-	  l_livre_facture_id_cell->setBackground(QBrush(QColor(255,128,0)));
+	  l_livre_facture_id_cell->set_warning_background();
 	}
       setItem(p_row,3,l_livre_facture_id_cell);
-      setItem(p_row,4,new simple_table_cell(p_search_facture_item.get_facture_status().c_str()));
+
+      const std::string & l_status = p_search_facture_item.get_facture_status();
+      simple_table_cell * l_facture_status_cell = new simple_table_cell(p_search_facture_item.get_facture_status().c_str());
+      if(l_status != facture_status::get_ok_status())
+	{
+	  l_facture_status_cell->set_warning_background();
+	}
+      setItem(p_row,4,l_facture_status_cell);
 }
 
 void facture_list_table::update(std::vector<search_facture_item> p_search_facture_item_list)
