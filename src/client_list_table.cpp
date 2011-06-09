@@ -34,7 +34,7 @@ void client_list_table::set_row_content(uint32_t p_row,const search_client_item 
       setItem(p_row,4,new simple_table_cell(p_client_item.get_city().c_str()));
  }
 
-void client_list_table::update(std::vector<search_client_item> p_client_list)
+void client_list_table::update(std::vector<search_client_item> & p_client_list)
 {
   clearContents();
   setRowCount(p_client_list.size());
