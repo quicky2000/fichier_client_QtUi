@@ -37,24 +37,14 @@ main_window::main_window(void):
 
   QTabWidget * m_tab_widget = new QTabWidget();
 
-  //  QFrame * l_frame = new QFrame();
-  //   QVBoxLayout *l_vertical_layout = new QVBoxLayout(l_frame);
-
-  //Date widget
-  my_date_widget * l_date_widget = new my_date_widget();
-  //  l_vertical_layout->addWidget(l_date_widget);
-
   m_livre_facture_widget = new livre_facture_widget(m_fichier_client);
 
   // Search widget
   m_search_widget = new search_widget(m_fichier_client);
-  //  l_vertical_layout->addWidget(m_search_widget);
 
 
-  //  setCentralWidget(l_frame);
   m_tab_widget->addTab(m_search_widget,tr("Search"));
   m_tab_widget->addTab(m_livre_facture_widget,tr("Livre facture"));
-  //  m_tab_widget->addTab(l_date_widget,tr("Date"));
 
   setCentralWidget(m_tab_widget);
 
@@ -64,6 +54,7 @@ main_window::main_window(void):
   resize(800, 600);
 }
 
+//------------------------------------------------------------------------------
 void main_window::manage_features(bool p_enable)
 {
   m_search_widget->set_enable(p_enable);
