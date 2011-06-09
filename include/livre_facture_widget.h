@@ -11,6 +11,7 @@ class fichier_client;
 class livre_facture_table;
 class livre_facture;
 class my_date_widget;
+class facture_client_list_table;
 
 class livre_facture_widget : public QWidget
  {
@@ -38,11 +39,10 @@ class livre_facture_widget : public QWidget
      QPushButton * m_delete_livre_facture_button;
      QPushButton * m_modify_livre_facture_button;
      QLineEdit * m_livre_id_field;
-     //     QLineEdit * m_start_date_field;
      my_date_widget * m_start_date_field;
      my_date_widget * m_end_date_field;
      livre_facture_table *m_livre_facture_table;
-     //     achat_list_table *m_achat_list_table;
+     facture_client_list_table *m_facture_client_list_table;
      fichier_client & m_fichier_client;
  };
 

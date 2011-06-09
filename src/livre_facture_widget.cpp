@@ -1,5 +1,6 @@
 #include "livre_facture_widget.h"
 #include "livre_facture_table.h"
+#include "facture_client_list_table.h"
 #include "fichier_client.h"
 
 #include "my_date_widget.h"
@@ -24,7 +25,7 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   m_start_date_field(NULL),
   m_end_date_field(NULL),
   m_livre_facture_table(NULL),
-  //  m_achat_list_table(NULL),
+  m_facture_client_list_table(NULL),
   m_fichier_client(p_fichier_client)
 {
   QVBoxLayout *l_vertical_layout = new QVBoxLayout(this);
@@ -83,6 +84,10 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   l_button_layout->addWidget(m_create_livre_facture_button);
   l_button_layout->addWidget(m_delete_livre_facture_button);
   l_button_layout->addWidget(m_modify_livre_facture_button);
+
+  l_vertical_layout->addWidget(new QLabel(tr("Factures du livre")+" :"));
+  m_facture_client_list_table = new facture_client_list_table(this);
+  l_vertical_layout->addWidget(m_facture_client_list_table);
 
   //connect(m_client_list_table,SIGNAL(cellClicked (int, int)),this, SLOT(client_selected(int)));
 
@@ -281,9 +286,9 @@ void livre_facture_widget::livre_facture_selected(int p_row)
     m_start_date_field->set_iso_date(l_selected.getStartDate().c_str());
     m_end_date_field->set_iso_date(l_selected.getEndDate().c_str());
     
-  //  vector<search_achat_item> l_list_achat;
-  //  m_fichier_client.get_achat_by_client_id(l_client_id,l_list_achat);
-  //  m_achat_list_table->update(l_list_achat);  
+    vector<search_facture_client_item> l_list_facture;
+    m_fichier_client.get_facture_by_livre_facture_id(l_selected.get_id(),l_list_facture);
+    m_facture_client_list_table->update(l_list_facture);  
 }
 
 //EOF
