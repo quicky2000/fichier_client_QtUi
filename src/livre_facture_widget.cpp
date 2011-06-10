@@ -29,7 +29,7 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   m_fichier_client(p_fichier_client)
 {
   QVBoxLayout *l_vertical_layout = new QVBoxLayout(this);
-  QHBoxLayout *l_horizontal_layout = new QHBoxLayout(this);
+  QHBoxLayout *l_horizontal_layout = new QHBoxLayout();
   l_vertical_layout->addLayout(l_horizontal_layout);
 
   l_horizontal_layout->addWidget(new QLabel(tr("Id")+" :"));
@@ -78,7 +78,7 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   m_modify_livre_facture_button->setEnabled(false);
   connect(m_modify_livre_facture_button,SIGNAL(clicked()),this,SLOT(modify_livre_facture()));
 
-  QHBoxLayout *l_button_layout = new QHBoxLayout(this);
+  QHBoxLayout *l_button_layout = new QHBoxLayout();
   l_vertical_layout->addLayout(l_button_layout);
 
   l_button_layout->addWidget(m_create_livre_facture_button);

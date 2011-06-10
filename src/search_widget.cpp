@@ -24,7 +24,7 @@ search_widget::search_widget(fichier_client & p_fichier_client,QWidget * p_paren
   // QFrame * l_frame = new QFrame();
   QWidget * l_frame = this;
   QVBoxLayout *l_vertical_layout = new QVBoxLayout(l_frame);
-  QHBoxLayout *layout = new QHBoxLayout(l_frame);
+  QHBoxLayout *layout = new QHBoxLayout();
   l_vertical_layout->addLayout(layout);
 
   layout->addWidget(new QLabel(tr("Name")+" :"));
