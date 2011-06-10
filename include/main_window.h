@@ -12,6 +12,7 @@ class QTabWidget;
 
 class search_widget;
 class livre_facture_widget;
+class facture_status_widget;
 
 class main_window : public QMainWindow
  {
@@ -48,6 +49,7 @@ class main_window : public QMainWindow
      QTabWidget *m_tab_widget;
      search_widget * m_search_widget;
      livre_facture_widget *m_livre_facture_widget;
+     facture_status_widget *m_facture_status_widget;
      fichier_client m_fichier_client;
  };
 

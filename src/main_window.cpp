@@ -3,6 +3,7 @@
 #include "my_date_widget.h"
 #include "search_widget.h"
 #include "livre_facture_widget.h"
+#include "facture_status_widget.h"
 
 #include <QAction>
 #include <QMenu>
@@ -28,7 +29,8 @@ main_window::main_window(void):
   m_file_menu(NULL),
   m_status_label(NULL),
   m_search_widget(NULL),
-  m_livre_facture_widget(NULL)
+  m_livre_facture_widget(NULL),
+  m_facture_status_widget(NULL)
 {
   setWindowTitle(tr("Fichier client"));
   create_actions();
@@ -42,9 +44,11 @@ main_window::main_window(void):
   // Search widget
   m_search_widget = new search_widget(m_fichier_client);
 
+  m_facture_status_widget = new facture_status_widget(m_fichier_client);
 
   m_tab_widget->addTab(m_search_widget,tr("Search"));
   m_tab_widget->addTab(m_livre_facture_widget,tr("Livre facture"));
+  m_tab_widget->addTab(m_facture_status_widget,tr("Facture status"));
 
   setCentralWidget(m_tab_widget);
 
@@ -59,6 +63,7 @@ void main_window::manage_features(bool p_enable)
 {
   m_search_widget->set_enable(p_enable);
   m_livre_facture_widget->set_enable(p_enable);
+  m_facture_status_widget->set_enable(p_enable);
 }
 
 
