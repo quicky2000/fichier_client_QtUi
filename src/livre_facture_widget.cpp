@@ -263,6 +263,8 @@ void livre_facture_widget::criteria_modification(void)
 	{
 	  QMessageBox::warning(this,"Livre facture search",("No livre facture with id "+l_livre_id+"\n, You can create it by clicking on \"Create\" button").c_str(), QMessageBox::Ok,QMessageBox::Ok);
 	  m_create_livre_facture_button->setEnabled(true);
+	  m_start_date_field->setText("");
+	  m_end_date_field->setText("");
 	}
     }
   else
