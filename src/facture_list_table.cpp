@@ -26,14 +26,14 @@ facture_list_table::facture_list_table(QWidget *parent,uint32_t p_additional_col
   setSelectionMode(QAbstractItemView::SingleSelection);
   setItemPrototype(new simple_table_cell(""));
   setColumnHidden(0,true);
-  setColumnHidden(3,true);
+  setColumnHidden(1,true);
 }
 
 //------------------------------------------------------------------------------
 QStringList facture_list_table::get_header_list(void)
 {
   QStringList l_header_list;
-  l_header_list << tr("Id") << tr("Reference") << tr("Date") << tr("Livre Facture") << tr("Status");
+  l_header_list << tr("Id") << tr("Livre Facture") << tr("Numero") << tr("Date") << tr("Status");
   assert(m_nb_column == (uint32_t)l_header_list.size());
   return l_header_list;
  }
@@ -52,18 +52,6 @@ void facture_list_table::set_row_content(uint32_t p_row,const search_facture_ite
       l_id_q.setNum(p_search_facture_item.get_id());
       setItem(p_row,0,new simple_table_cell(l_id_q,p_search_facture_item.get_id()));
 
-      uint32_t l_facture_ref = p_search_facture_item.get_facture_ref();
-      QString l_facture_ref_q;
-      l_facture_ref_q.setNum(l_facture_ref);
-      simple_table_cell *l_facture_ref_cell = new simple_table_cell(l_facture_ref_q,l_facture_ref);
-      if(!l_facture_ref)
-	{
-	  l_facture_ref_cell->set_warning_background();
-	}
-      setItem(p_row,1,l_facture_ref_cell);
-
-      setItem(p_row,2,new simple_table_cell(p_search_facture_item.get_date().c_str()));
-
       uint32_t l_livre_facture_id = p_search_facture_item.get_livre_facture_id();
       QString l_livre_facture_id_q;
       l_livre_facture_id_q.setNum(l_livre_facture_id);
@@ -72,7 +60,19 @@ void facture_list_table::set_row_content(uint32_t p_row,const search_facture_ite
 	{
 	  l_livre_facture_id_cell->set_warning_background();
 	}
-      setItem(p_row,3,l_livre_facture_id_cell);
+      setItem(p_row,1,l_livre_facture_id_cell);
+
+      uint32_t l_facture_ref = p_search_facture_item.get_facture_ref();
+      QString l_facture_ref_q;
+      l_facture_ref_q.setNum(l_facture_ref);
+      simple_table_cell *l_facture_ref_cell = new simple_table_cell(l_facture_ref_q,l_facture_ref);
+      if(!l_facture_ref)
+	{
+	  l_facture_ref_cell->set_warning_background();
+	}
+      setItem(p_row,2,l_facture_ref_cell);
+
+      setItem(p_row,3,new simple_table_cell(p_search_facture_item.get_date().c_str()));
 
       const std::string & l_status = p_search_facture_item.get_facture_status();
       simple_table_cell * l_facture_status_cell = new simple_table_cell(p_search_facture_item.get_facture_status().c_str());
