@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "fichier_client.h"
+#include "fichier_client_UI_if.h"
 
 class QAction;
 class QMenu;
@@ -14,7 +15,7 @@ class search_widget;
 class livre_facture_widget;
 class facture_status_widget;
 
-class main_window : public QMainWindow
+class main_window : public QMainWindow, public fichier_client_UI_if
  {
      Q_OBJECT
 
@@ -22,7 +23,9 @@ class main_window : public QMainWindow
      main_window(void);
 
      void manage_features(bool p_enable);
-
+     // Methods inherited from fichier_client_UI_if class
+     void display_warning_message(const std::string & p_title,const std::string & p_text);
+     void display_information_message(const std::string & p_title,const std::string & p_text);
  private slots:
      void test();
      void import();

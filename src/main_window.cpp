@@ -56,6 +56,8 @@ main_window::main_window(void):
 
   setMinimumSize(160, 160);
   resize(800, 600);
+
+  m_fichier_client.set_user_interface(this);
 }
 
 //------------------------------------------------------------------------------
@@ -64,6 +66,18 @@ void main_window::manage_features(bool p_enable)
   m_search_widget->set_enable(p_enable);
   m_livre_facture_widget->set_enable(p_enable);
   m_facture_status_widget->set_enable(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::display_warning_message(const std::string & p_title,const std::string & p_text)
+{
+  QMessageBox::warning(this,p_title.c_str(),p_text.c_str(), QMessageBox::Ok,QMessageBox::Ok);
+}
+
+//------------------------------------------------------------------------------
+void main_window::display_information_message(const std::string & p_title,const std::string & p_text)
+{
+  QMessageBox::information (this,p_title.c_str(),p_text.c_str(), QMessageBox::Ok,QMessageBox::Ok);
 }
 
 
