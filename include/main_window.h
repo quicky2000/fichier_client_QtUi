@@ -26,6 +26,12 @@ class main_window : public QMainWindow, public fichier_client_UI_if
      // Methods inherited from fichier_client_UI_if class
      void display_warning_message(const std::string & p_title,const std::string & p_text);
      void display_information_message(const std::string & p_title,const std::string & p_text);
+     void set_facture_creation_for_selected_livre_enabled( bool p_enabled);
+     void set_delete_livre_facture_enabled(bool p_enabled);
+     void set_modify_livre_facture_enabled(bool p_enabled);
+     bool create_non_attributed_facture(std::vector<facture_status> & p_status_list, facture & p_facture);
+     void refresh_list_facture_of_livre_facture(void);
+
  private slots:
      void test();
      void import();

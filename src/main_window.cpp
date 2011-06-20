@@ -4,6 +4,7 @@
 #include "search_widget.h"
 #include "livre_facture_widget.h"
 #include "facture_status_widget.h"
+#include "non_attributed_facture_dialog_box.h"
 
 #include <QAction>
 #include <QMenu>
@@ -13,6 +14,7 @@
 #include <QFileDialog>
 #include <QCloseEvent>
 #include <QMenuBar>
+#include <QDialog>
 
 #include <iostream>
 using namespace std;
@@ -80,6 +82,37 @@ void main_window::display_information_message(const std::string & p_title,const 
   QMessageBox::information (this,p_title.c_str(),p_text.c_str(), QMessageBox::Ok,QMessageBox::Ok);
 }
 
+//------------------------------------------------------------------------------
+void main_window::set_facture_creation_for_selected_livre_enabled( bool p_enabled)
+{
+  m_livre_facture_widget->set_facture_creation_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_delete_livre_facture_enabled(bool p_enabled)
+{
+  m_livre_facture_widget->set_delete_livre_facture_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_modify_livre_facture_enabled(bool p_enabled)
+{
+  m_livre_facture_widget->set_modify_livre_facture_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+bool main_window::create_non_attributed_facture(std::vector<facture_status> & p_status_list, facture & p_facture)
+{
+  non_attributed_facture_dialog_box l_dialog_box(this,p_status_list,p_facture);
+  int l_status = l_dialog_box.exec();
+  return l_status == QDialog::Accepted;
+}
+
+//------------------------------------------------------------------------------
+void main_window::refresh_list_facture_of_livre_facture(void)
+{
+  m_livre_facture_widget->refresh_list_facture_of_livre_facture();
+}
 
 //------------------------------------------------------------------------------
 void main_window::create_actions(void)
