@@ -28,7 +28,13 @@ class my_date_widget:public QLineEdit
   const std::string get_iso_date(void)const;
   void set_iso_date(const std::string & p_iso_date);
   bool is_complete(void)const;
- private:
+  bool is_empty(void)const;
+  
+  signals:
+  void date_ok(void);
+
+ private slots:
+  void date_entered(void);
 };
 
 #endif
