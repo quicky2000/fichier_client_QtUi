@@ -4,6 +4,7 @@
 #include "fichier_client.h"
 
 #include "my_date_widget.h"
+#include "base_facture_widget.h"
 
 #include <QPushButton>
 #include <QHBoxLayout>
@@ -89,13 +90,20 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   l_button_layout->addWidget(m_modify_livre_facture_button);
 
   l_vertical_layout->addWidget(new QLabel(tr("Factures du livre")+" :"));
+  m_base_facture_widget = new base_facture_widget(this,m_fichier_client);
+  l_vertical_layout->addWidget(m_base_facture_widget);
+  connect(m_base_facture_widget,SIGNAL(new_date_entered()),this,SLOT(non_attributed_facture_date_entered()));
+  connect(m_base_facture_widget,SIGNAL(new_facture_ref_selected()),this,SLOT(non_attributed_facture_ref_selected()));
+  connect(m_base_facture_widget,SIGNAL(new_status_selected()),this,SLOT(non_attributed_facture_status_selected()));
+  connect(m_base_facture_widget,SIGNAL(new_livre_facture_selected()),this,SLOT(non_attributed_facture_livre_facture_selected()));
+
   m_facture_client_list_table = new facture_client_list_table(this);
   connect(m_facture_client_list_table,SIGNAL(cellClicked (int, int)),this, SLOT(facture_selected(int)));
   connect(m_facture_client_list_table,SIGNAL(itemSelectionChanged()),this, SLOT(facture_selection_changed()));
   l_vertical_layout->addWidget(m_facture_client_list_table);
 
   QHBoxLayout *l_facture_button_layout = new QHBoxLayout();
-  m_create_facture_button = new QPushButton(tr("&Create Invalid facture"),this);
+  m_create_facture_button = new QPushButton(tr("&Create Non attributed facture"),this);
   m_create_facture_button->setEnabled(false);
   connect(m_create_facture_button,SIGNAL(clicked()),this,SLOT(create_facture()));
 
@@ -132,12 +140,75 @@ void livre_facture_widget::set_modify_livre_facture_enabled(bool p_enabled)
   m_modify_livre_facture_button->setEnabled(p_enabled);
 }
 
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::set_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs)
+{
+  m_base_facture_widget->set_allowed_facture_ref(p_remaining_refs);
+}
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::set_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids)
+{
+  m_base_facture_widget->set_allowed_livre_ids(p_livre_ids);
+}
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::set_status_list(const std::vector<facture_status> & p_status_list)
+{
+  m_base_facture_widget->set_status_list(p_status_list);
+}
+
+//------------------------------------------------------------------------------
+const std::string livre_facture_widget::get_non_attributed_facture_date(void)const
+{
+  return m_base_facture_widget->get_iso_date();
+}
+
+//------------------------------------------------------------------------------
+uint32_t livre_facture_widget::get_non_attributed_facture_livre_facture_id(void)const
+{
+  return m_base_facture_widget->get_livre_facture_id();
+}
+
+//------------------------------------------------------------------------------
+uint32_t livre_facture_widget::get_non_attributed_facture_reference(void)const
+{
+  return m_base_facture_widget->get_facture_reference();
+}
+
+//------------------------------------------------------------------------------
+const facture_status * livre_facture_widget::get_non_attributed_facture_status(void)const
+{
+  return m_base_facture_widget->get_facture_status();
+}
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::clear_non_attributed_facture_date(void)
+{
+  m_base_facture_widget->clear_date();
+}
+
+//------------------------------------------------------------------------------
+bool livre_facture_widget::is_non_attributed_facture_date_complete(void)
+{
+  return m_base_facture_widget->is_date_complete();
+}
+
+//------------------------------------------------------------------------------
+bool livre_facture_widget::is_non_attributed_facture_date_empty(void)
+{
+  return m_base_facture_widget->is_date_empty();
+}
+
 //------------------------------------------------------------------------------
 void livre_facture_widget::create_facture(void)
 {
-  cout << "Create_facture button clicked" << endl ;
+  cout << "QtEvent::livre_facture_widget::Create_facture button clicked" << endl ;
   m_fichier_client.create_non_attributed_facture(get_selected_livre_facture_id());
 }
+
+
 
 //------------------------------------------------------------------------------
 void livre_facture_widget::delete_facture(void)
@@ -163,16 +234,47 @@ void livre_facture_widget::facture_selection_changed(void)
   cout << "Facture_selection changed" << endl ;
 }
 
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::non_attributed_facture_date_entered(void)
+{
+  std::cout << "QtEvent::livre_facture_widget::non_attributed_facture_date_entered" << std::endl;
+  std::string l_date = m_base_facture_widget->get_iso_date();
+  std::cout << "livre_facture_widget::non attributed facture received date \"" << l_date << "\"" << std::endl;   
+  m_fichier_client.non_attributed_facture_date_entered();
+}
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::non_attributed_facture_ref_selected(void)
+{
+  std::cout << "QtEvent::livre_facture_widget::non_attributed_facture_ref_selected" << std::endl;
+  m_fichier_client.non_attributed_facture_reference_selected();
+}
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::non_attributed_facture_status_selected(void)
+{
+  std::cout << "QtEvent::livre_facture_widget::non_attributed_facture_status_selected" << std::endl;
+  m_fichier_client.non_attributed_facture_status_selected();
+}
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::non_attributed_facture_livre_facture_selected(void)
+{
+  std::cout << "QtEvent::livre_facture_widget::non_attributed_facture_livre_facture_selected" << std::endl;
+  m_fichier_client.non_attributed_facture_livre_facture_selected();
+}
+
+
 //------------------------------------------------------------------------------
 void livre_facture_widget::livre_facture_selection_changed(void)
 {
-  cout << "livre_facture_selection_changed" << endl ;
-  m_fichier_client.livre_facture_selection_changed(m_livre_facture_table->selectedItems().isEmpty());
-  //  if(m_livre_facture_table->selectedItems().isEmpty())
-  //    {
-  //      m_delete_livre_facture_button->setEnabled(false);
-  //      m_modify_livre_facture_button->setEnabled(false);
-  //    }
+  cout << "QtEvent :: livre_facture_selection_changed" << endl ;
+  // Do nothing is selection is not empty because specific event will be launched
+  if(m_livre_facture_table->selectedItems().isEmpty())
+    {
+      m_fichier_client.no_more_livre_facture_selected();
+    }
 }
 
 
@@ -251,7 +353,7 @@ void livre_facture_widget::create_livre_facture(void)
     }
   else
     {
-      QMessageBox::warning(this,"Livre facture creation error","Cannot create livre_facture due to incomplrte date", QMessageBox::Ok,QMessageBox::Ok);
+      QMessageBox::warning(this,"Livre facture creation error","Cannot create livre_facture due to incomplete date", QMessageBox::Ok,QMessageBox::Ok);
    }
 }
 
@@ -275,15 +377,20 @@ void livre_facture_widget::set_enable(bool p_enable)
 
   m_delete_livre_facture_button->setEnabled(false);
   m_modify_livre_facture_button->setEnabled(false);
+  m_base_facture_widget->set_enabled(false);
 
   m_livre_facture_table->clearContents();
-  //  m_achat_list_table->clearContents();   
   if(p_enable)
     {
       criteria_modification();
     }
 }
 
+//------------------------------------------------------------------------------
+void livre_facture_widget::enable_non_attributed_facture_fields(bool p_enable)
+{
+  m_base_facture_widget->set_enabled(p_enable);
+}
 
 //------------------------------------------------------------------------------
 void livre_facture_widget::content_modification(void)
@@ -323,7 +430,7 @@ void livre_facture_widget::criteria_modification(void)
       uint32_t l_status = m_fichier_client.get_livre_facture(strtol(l_livre_id.c_str(),NULL,10),l_result);
       if(l_status == 1)
 	{
-	l_vector.push_back(l_result); 
+	  l_vector.push_back(l_result); 
 	}
       else
 	{
@@ -343,7 +450,7 @@ void livre_facture_widget::criteria_modification(void)
 //------------------------------------------------------------------------------
 void livre_facture_widget::livre_facture_selected(int p_row)
 {
-  cout << "Livre facture selected at row " << p_row << endl ;
+  cout << "QtEvent :: Livre_facture selected at row " << p_row << endl ;
   uint32_t l_livre_facture_id = get_selected_livre_facture_id();
   m_fichier_client.livre_facture_selected(l_livre_facture_id);
   cout << "Id of selected livre_facture " << l_livre_facture_id << endl;

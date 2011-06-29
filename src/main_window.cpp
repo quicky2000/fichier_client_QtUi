@@ -4,7 +4,6 @@
 #include "search_widget.h"
 #include "livre_facture_widget.h"
 #include "facture_status_widget.h"
-#include "non_attributed_facture_dialog_box.h"
 
 #include <QAction>
 #include <QMenu>
@@ -101,18 +100,77 @@ void main_window::set_modify_livre_facture_enabled(bool p_enabled)
 }
 
 //------------------------------------------------------------------------------
-bool main_window::create_non_attributed_facture(std::vector<facture_status> & p_status_list, facture & p_facture)
-{
-  non_attributed_facture_dialog_box l_dialog_box(this,p_status_list,p_facture);
-  int l_status = l_dialog_box.exec();
-  return l_status == QDialog::Accepted;
-}
-
-//------------------------------------------------------------------------------
 void main_window::refresh_list_facture_of_livre_facture(void)
 {
   m_livre_facture_widget->refresh_list_facture_of_livre_facture();
 }
+
+//------------------------------------------------------------------------------
+void main_window::set_non_attributed_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs)
+{
+  m_livre_facture_widget->set_allowed_facture_references(p_remaining_refs);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_non_attributed_facture_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids)
+{
+  m_livre_facture_widget->set_allowed_livre_ids(p_livre_ids);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_non_attributed_facture_status_list(const std::vector<facture_status> & p_status_list)
+{
+  m_livre_facture_widget->set_status_list(p_status_list);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_non_attributed_facture_date(void)const
+{
+  return m_livre_facture_widget->get_non_attributed_facture_date();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_non_attributed_facture_livre_facture_id(void)const
+{
+  return m_livre_facture_widget->get_non_attributed_facture_livre_facture_id();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_non_attributed_facture_reference(void)const
+{
+  return m_livre_facture_widget->get_non_attributed_facture_reference();
+}
+
+//------------------------------------------------------------------------------
+const facture_status * main_window::get_non_attributed_facture_status(void)const
+{
+  return m_livre_facture_widget->get_non_attributed_facture_status();
+}
+
+//------------------------------------------------------------------------------
+void main_window::clear_non_attributed_facture_date(void)
+{
+  m_livre_facture_widget->clear_non_attributed_facture_date();
+}
+
+//------------------------------------------------------------------------------
+void main_window::enable_non_attributed_facture_fields(bool p_enable)
+{
+  m_livre_facture_widget->enable_non_attributed_facture_fields(p_enable);
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_non_attributed_facture_date_complete(void)
+{
+  return m_livre_facture_widget->is_non_attributed_facture_date_complete();
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_non_attributed_facture_date_empty(void)
+{
+  return m_livre_facture_widget->is_non_attributed_facture_date_empty();
+}
+
 
 //------------------------------------------------------------------------------
 void main_window::create_actions(void)
@@ -212,6 +270,7 @@ void main_window::import(void)
       manage_features(true);
     }
 }
+
 
 //------------------------------------------------------------------------------
 void main_window::open_db(void)
