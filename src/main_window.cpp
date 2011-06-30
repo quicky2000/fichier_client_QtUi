@@ -69,6 +69,10 @@ void main_window::manage_features(bool p_enable)
   m_facture_status_widget->set_enable(p_enable);
 }
 
+//---------------------------------------------------
+// Methods inherited from fichier_client_UI_if class
+//---------------------------------------------------
+// Comunication with user
 //------------------------------------------------------------------------------
 void main_window::display_warning_message(const std::string & p_title,const std::string & p_text)
 {
@@ -81,12 +85,7 @@ void main_window::display_information_message(const std::string & p_title,const 
   QMessageBox::information (this,p_title.c_str(),p_text.c_str(), QMessageBox::Ok,QMessageBox::Ok);
 }
 
-//------------------------------------------------------------------------------
-void main_window::set_facture_creation_for_selected_livre_enabled( bool p_enabled)
-{
-  m_livre_facture_widget->set_facture_creation_enabled(p_enabled);
-}
-
+// Interactions with livre facture
 //------------------------------------------------------------------------------
 void main_window::set_delete_livre_facture_enabled(bool p_enabled)
 {
@@ -105,6 +104,13 @@ void main_window::refresh_list_facture_of_livre_facture(void)
   m_livre_facture_widget->refresh_list_facture_of_livre_facture();
 }
 
+//------------------------------------------------------------------------------
+void main_window::set_facture_creation_for_selected_livre_enabled( bool p_enabled)
+{
+  m_livre_facture_widget->set_facture_creation_enabled(p_enabled);
+}
+
+// Management of non attributed facture fields
 //------------------------------------------------------------------------------
 void main_window::set_non_attributed_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs)
 {
@@ -160,16 +166,17 @@ void main_window::enable_non_attributed_facture_fields(bool p_enable)
 }
 
 //------------------------------------------------------------------------------
-bool main_window::is_non_attributed_facture_date_complete(void)
+bool main_window::is_non_attributed_facture_date_complete(void)const
 {
   return m_livre_facture_widget->is_non_attributed_facture_date_complete();
 }
 
 //------------------------------------------------------------------------------
-bool main_window::is_non_attributed_facture_date_empty(void)
+bool main_window::is_non_attributed_facture_date_empty(void)const
 {
   return m_livre_facture_widget->is_non_attributed_facture_date_empty();
 }
+
 
 
 //------------------------------------------------------------------------------
@@ -178,32 +185,32 @@ void main_window::create_actions(void)
   m_import_file_action = new QAction(tr("&Import"),this);
   m_import_file_action->setShortcut(tr("Ctrl+I"));
   m_import_file_action->setStatusTip(tr("Import a file from MySql")); 
-  connect(m_import_file_action,SIGNAL(triggered()),this,SLOT(import()));
+  connect(m_import_file_action,SIGNAL(triggered()),this,SLOT(treat_import_event()));
 
   m_open_file_action = new QAction(tr("&Open"),this);
   m_open_file_action->setShortcut(tr("Ctrl+O"));
   m_open_file_action->setStatusTip(tr("Open a file")); 
-  connect(m_open_file_action,SIGNAL(triggered()),this,SLOT(open_db()));
+  connect(m_open_file_action,SIGNAL(triggered()),this,SLOT(treat_open_db_event()));
 
   m_save_action = new QAction(tr("&Save"),this);
   m_save_action->setShortcut(tr("Ctrl+S"));
   m_save_action->setStatusTip(tr("Save current file")); 
-  connect(m_save_action,SIGNAL(triggered()),this,SLOT(save()));
+  connect(m_save_action,SIGNAL(triggered()),this,SLOT(treat_save_event()));
 
   m_save_as_action = new QAction(tr("&Save As"),this);
   m_save_as_action->setShortcut(tr("Ctrl+E"));
   m_save_as_action->setStatusTip(tr("Save a file with a new name")); 
-  connect(m_save_as_action,SIGNAL(triggered()),this,SLOT(save_as()));
+  connect(m_save_as_action,SIGNAL(triggered()),this,SLOT(treat_save_as_event()));
 
   m_close_action = new QAction(tr("&Close"),this);
   m_close_action->setShortcut(tr("Ctrl+C"));
   m_close_action->setStatusTip(tr("Close current file")); 
-  connect(m_close_action,SIGNAL(triggered()),this,SLOT(close_db()));
+  connect(m_close_action,SIGNAL(triggered()),this,SLOT(treat_close_db_event()));
 
   m_test_action = new QAction(tr("&Test"),this);
   m_test_action->setShortcut(tr("Ctrl+T"));
   m_test_action->setStatusTip(tr("Launch test actions")); 
-  connect(m_test_action,SIGNAL(triggered()),this,SLOT(test()));
+  connect(m_test_action,SIGNAL(triggered()),this,SLOT(treat_test_event()));
 
   m_exit_action = new QAction(tr("&Quit"),this);
   m_exit_action->setShortcut(tr("Ctrl+Q"));
@@ -241,18 +248,18 @@ void main_window::create_status_bar(void)
 }
 
 //------------------------------------------------------------------------------
-void main_window::test(void)
+void main_window::treat_test_event(void)
 {
   test::test();
 }
 
 //------------------------------------------------------------------------------
-void main_window::import(void)
+void main_window::treat_import_event(void)
 {
-  cout << "Import a file" << endl ;
+  cout << "QtEvent::Import" << endl ;
   QString l_file_name = QFileDialog::getOpenFileName(this,
-                                   tr("Open Database"), ".",
-                                   tr("Spreadsheet files (*.sql)"));
+						     tr("Open Database"), ".",
+						     tr("SQL database files (*.sql)"));
   string l_file_name_std = l_file_name.toStdString();
   cout << "File to import is \"" << l_file_name_std << "\"" << endl ;
   if(l_file_name != "")
@@ -273,9 +280,9 @@ void main_window::import(void)
 
 
 //------------------------------------------------------------------------------
-void main_window::open_db(void)
+void main_window::treat_open_db_event(void)
 {
-  cout << "Open a file" << endl ;
+  cout << "QtEvent::Open" << endl ;
   QString l_file_name = QFileDialog::getOpenFileName(this,
 						     tr("Open Database"), ".",
 						     tr("Fichier client files (*.sqlite3)"));
@@ -293,31 +300,30 @@ void main_window::open_db(void)
       QMessageBox::information (this,"Open Status","File successfully opened", QMessageBox::Ok,QMessageBox::Ok);
       setWindowTitle(l_file_name);
       manage_features(true);
-     }
+    }
 }
 
 //------------------------------------------------------------------------------
 void main_window::exit(void)
 {
-  cout << "Exit" << endl ;
+  cout << "QtEvent::Exit" << endl ;
   close();
 }
 
 //------------------------------------------------------------------------------
-void main_window::save(void)
+void main_window::treat_save_event(void)
 {
-  cout << "Save" << endl ;
+  cout << "QtEvent::Save" << endl ;
   m_fichier_client.save();
 }
 
 //------------------------------------------------------------------------------
-void main_window::save_as(void)
+void main_window::treat_save_as_event(void)
 {
-  cout << "Save as" << endl ;
-  
+  cout << "QtEvent::Save as" << endl ;
   QString l_file_name = QFileDialog::getSaveFileName(this,
-                                   tr("Save Database"), ".",
-                                   tr("Fichier client files (*.sqlite3)"));
+						     tr("Save Database"), ".",
+						     tr("Fichier client files (*.sqlite3)"));
   string l_file_name_std = l_file_name.toStdString();
   cout << "File to save is \"" << l_file_name_std << "\"" << endl ;
   if(l_file_name != "")
@@ -330,9 +336,9 @@ void main_window::save_as(void)
 }
 
 //------------------------------------------------------------------------------
-void main_window::close_db(void)
+void main_window::treat_close_db_event(void)
 {
-  cout << "Close" << endl ;
+  cout << "QtEvent::Close" << endl ;
   bool l_close = true;
   if(m_fichier_client.need_save())
     {
@@ -348,13 +354,13 @@ void main_window::close_db(void)
     }
   if(l_close)
     {
-	  m_open_file_action->setEnabled(true);
-	  m_save_action->setEnabled(false);
-	  m_save_as_action->setEnabled(false);
-	  m_close_action->setEnabled(false);
-	  manage_features(false);
-	  m_fichier_client.close_db();
-	  setWindowTitle(tr("Fichier client"));
+      m_open_file_action->setEnabled(true);
+      m_save_action->setEnabled(false);
+      m_save_as_action->setEnabled(false);
+      m_close_action->setEnabled(false);
+      manage_features(false);
+      m_fichier_client.close_db();
+      setWindowTitle(tr("Fichier client"));
     }
 }
 

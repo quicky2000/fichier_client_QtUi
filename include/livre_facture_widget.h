@@ -35,8 +35,8 @@ class livre_facture_widget : public QWidget
    const facture_status * get_non_attributed_facture_status(void)const;
    void clear_non_attributed_facture_date(void);
    void enable_non_attributed_facture_fields(bool p_enable);
-   bool is_non_attributed_facture_date_complete(void);
-   bool is_non_attributed_facture_date_empty(void);
+   bool is_non_attributed_facture_date_complete(void)const;
+   bool is_non_attributed_facture_date_empty(void)const;
  private slots:
    //Livre facture fields events
    void criteria_modification(void);

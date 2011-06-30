@@ -36,6 +36,8 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   QHBoxLayout *l_horizontal_layout = new QHBoxLayout();
   l_vertical_layout->addLayout(l_horizontal_layout);
 
+  // Livre facture fields
+  //----------------------
   l_horizontal_layout->addWidget(new QLabel(tr("Id")+" :"));
 
   m_livre_id_field = new QLineEdit("");
@@ -47,7 +49,6 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   l_horizontal_layout->addStretch();
   l_horizontal_layout->addWidget(new QLabel(tr("Start Date")+" :"));
 
-  //  m_start_date_field = new QLineEdit("");
   m_start_date_field = new my_date_widget();
   l_horizontal_layout->addWidget(m_start_date_field);
   connect(m_start_date_field,SIGNAL(textEdited(const QString&)),this, SLOT(content_modification()));
@@ -56,11 +57,12 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   l_horizontal_layout->addStretch();
   l_horizontal_layout->addWidget(new QLabel(tr("End Date")+" :"));
 
-  //  m_end_date_field = new QLineEdit("");
   m_end_date_field = new my_date_widget();
   l_horizontal_layout->addWidget(m_end_date_field);
   connect(m_end_date_field,SIGNAL(textEdited(const QString &)),this, SLOT(content_modification()));
 
+  // Table of livre facture
+  //-------------------------
   l_vertical_layout->addWidget(new QLabel(tr("Livres de facture")+" :"));
 
   m_livre_facture_table = new livre_facture_table(this);
@@ -68,8 +70,8 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   connect(m_livre_facture_table,SIGNAL(cellClicked (int, int)),this, SLOT(livre_facture_selected(int)));
   connect(m_livre_facture_table,SIGNAL(itemSelectionChanged()),this, SLOT(livre_facture_selection_changed()));
 
-
-
+  // Livre facture Buttons 
+  //-------------------------
   m_create_livre_facture_button = new QPushButton(tr("&Create"),this);
   m_create_livre_facture_button->setEnabled(false);
   connect(m_create_livre_facture_button,SIGNAL(clicked()),this,SLOT(create_livre_facture()));
@@ -89,6 +91,8 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   l_button_layout->addWidget(m_delete_livre_facture_button);
   l_button_layout->addWidget(m_modify_livre_facture_button);
 
+  // Non attributed facture fields
+  //-------------------------------
   l_vertical_layout->addWidget(new QLabel(tr("Factures du livre")+" :"));
   m_base_facture_widget = new base_facture_widget(this,m_fichier_client);
   l_vertical_layout->addWidget(m_base_facture_widget);
@@ -97,11 +101,15 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   connect(m_base_facture_widget,SIGNAL(new_status_selected()),this,SLOT(non_attributed_facture_status_selected()));
   connect(m_base_facture_widget,SIGNAL(new_livre_facture_selected()),this,SLOT(non_attributed_facture_livre_facture_selected()));
 
+  // Table of factures
+  //----------------------
   m_facture_client_list_table = new facture_client_list_table(this);
   connect(m_facture_client_list_table,SIGNAL(cellClicked (int, int)),this, SLOT(facture_selected(int)));
   connect(m_facture_client_list_table,SIGNAL(itemSelectionChanged()),this, SLOT(facture_selection_changed()));
   l_vertical_layout->addWidget(m_facture_client_list_table);
 
+  // Facture buttons
+  //-----------------------
   QHBoxLayout *l_facture_button_layout = new QHBoxLayout();
   m_create_facture_button = new QPushButton(tr("&Create Non attributed facture"),this);
   m_create_facture_button->setEnabled(false);
@@ -190,13 +198,13 @@ void livre_facture_widget::clear_non_attributed_facture_date(void)
 }
 
 //------------------------------------------------------------------------------
-bool livre_facture_widget::is_non_attributed_facture_date_complete(void)
+bool livre_facture_widget::is_non_attributed_facture_date_complete(void)const
 {
   return m_base_facture_widget->is_date_complete();
 }
 
 //------------------------------------------------------------------------------
-bool livre_facture_widget::is_non_attributed_facture_date_empty(void)
+bool livre_facture_widget::is_non_attributed_facture_date_empty(void)const
 {
   return m_base_facture_widget->is_date_empty();
 }
