@@ -1,5 +1,6 @@
 #include "achat_list_table.h"
 #include "simple_table_cell.h"
+#include "fichier_client_QtUi_utils.h"
 #include <vector>
 #include <assert.h>
 
@@ -29,7 +30,7 @@ void achat_list_table::set_row_content(uint32_t p_row,const search_achat_item & 
       QString l_id_q;
       l_id_q.setNum(p_achat_item.get_id());
       setItem(p_row,0,new simple_table_cell(l_id_q,p_achat_item.get_id()));
-      setItem(p_row,1,new simple_table_cell(p_achat_item.get_date().c_str()));
+      setItem(p_row,1,new simple_table_cell(fichier_client_QtUi_utils::get_human_date(p_achat_item.get_date()).c_str()));
       setItem(p_row,2,new simple_table_cell(p_achat_item.get_marque().c_str()));
       setItem(p_row,3,new simple_table_cell(p_achat_item.get_type().c_str()));
       setItem(p_row,4,new simple_table_cell(p_achat_item.get_reference().c_str()));

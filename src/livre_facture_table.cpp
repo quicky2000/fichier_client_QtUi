@@ -1,5 +1,6 @@
 #include "livre_facture_table.h"
 #include "simple_table_cell.h"
+#include "fichier_client_QtUi_utils.h"
 #include <vector>
 #include <assert.h>
 
@@ -27,8 +28,8 @@ void livre_facture_table::set_row_content(uint32_t p_row,const livre_facture & p
       QString l_id_q;
       l_id_q.setNum(p_livre_facture.get_id());
       setItem(p_row,0,new simple_table_cell(l_id_q,p_livre_facture.get_id()));
-      setItem(p_row,1,new simple_table_cell(p_livre_facture.getStartDate().c_str()));
-      setItem(p_row,2,new simple_table_cell(p_livre_facture.getEndDate().c_str()));
+      setItem(p_row,1,new simple_table_cell(fichier_client_QtUi_utils::get_human_date(p_livre_facture.getStartDate()).c_str()));
+      setItem(p_row,2,new simple_table_cell(fichier_client_QtUi_utils::get_human_date(p_livre_facture.getEndDate()).c_str()));
 }
 
 void livre_facture_table::update(std::vector<livre_facture> p_livre_facture_list)

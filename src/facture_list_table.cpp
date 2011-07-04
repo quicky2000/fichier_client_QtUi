@@ -1,6 +1,7 @@
 #include "facture_list_table.h"
 #include "simple_table_cell.h"
 #include "facture_status.h"
+#include "fichier_client_QtUi_utils.h"
 #include <vector>
 #include <assert.h>
 
@@ -72,7 +73,7 @@ void facture_list_table::set_row_content(uint32_t p_row,const search_facture_ite
 	}
       setItem(p_row,2,l_facture_ref_cell);
 
-      setItem(p_row,3,new simple_table_cell(p_search_facture_item.get_date().c_str()));
+      setItem(p_row,3,new simple_table_cell(fichier_client_QtUi_utils::get_human_date(p_search_facture_item.get_date()).c_str()));
 
       const std::string & l_status = p_search_facture_item.get_facture_status();
       simple_table_cell * l_facture_status_cell = new simple_table_cell(p_search_facture_item.get_facture_status().c_str());
