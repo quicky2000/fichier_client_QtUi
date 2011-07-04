@@ -26,12 +26,19 @@ const std::string my_date_widget::get_iso_date(void)const
 
 void my_date_widget::set_iso_date(const std::string & p_iso_date)
 {
-  assert(p_iso_date.length()==10);
-  cout << "Iso date : \"" << p_iso_date << endl ;
-  cout << "Day " << p_iso_date.substr(8,2) << endl ;
-  cout << "Month " << p_iso_date.substr(5,2) << endl ;
-  cout << "Year " << p_iso_date.substr(0,4) << endl ;
-  setText((p_iso_date.substr(8,2)+"/"+p_iso_date.substr(5,2)+"/"+p_iso_date.substr(0,4)).c_str());
+  assert(p_iso_date.length()==10 || p_iso_date.length()==0);
+  if(p_iso_date.length())
+    {
+      cout << "Iso date : \"" << p_iso_date << endl ;
+      cout << "Day " << p_iso_date.substr(8,2) << endl ;
+      cout << "Month " << p_iso_date.substr(5,2) << endl ;
+      cout << "Year " << p_iso_date.substr(0,4) << endl ;
+      setText((p_iso_date.substr(8,2)+"/"+p_iso_date.substr(5,2)+"/"+p_iso_date.substr(0,4)).c_str());
+    }
+  else
+    {
+      setText("");
+    }
 }
 
 void my_date_widget::date_entered(void)

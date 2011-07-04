@@ -85,8 +85,85 @@ void main_window::display_information_message(const std::string & p_title,const 
   QMessageBox::information (this,p_title.c_str(),p_text.c_str(), QMessageBox::Ok,QMessageBox::Ok);
 }
 
-// Interactions with livre facture
+// Interactions with livre facture information
 //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+void main_window::clear_livre_facture_information(void)
+{
+  m_livre_facture_widget->clear_livre_facture_information();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_livre_facture_start_date(const std::string & p_date)
+{
+  m_livre_facture_widget->set_livre_facture_start_date(p_date);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_livre_facture_end_date(const std::string & p_date)
+{
+  m_livre_facture_widget->set_livre_facture_end_date(p_date);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_livre_facture_id(const std::string & p_id)
+{
+  m_livre_facture_widget->set_livre_facture_id(p_id);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_livre_facture_start_date(void)const
+{
+  return m_livre_facture_widget->get_livre_facture_start_date();
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_livre_facture_start_date_complete(void)const
+{
+  return m_livre_facture_widget->is_livre_facture_start_date_complete();
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_livre_facture_end_date(void)const
+{
+  return m_livre_facture_widget->get_livre_facture_end_date();
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_livre_facture_end_date_complete(void)const
+{
+  return m_livre_facture_widget->is_livre_facture_end_date_complete();
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_livre_facture_id(void)const
+{
+  return m_livre_facture_widget->get_livre_facture_id();
+}
+
+// Interactions with livre facture list
+//--------------------------------------
+
+//------------------------------------------------------------------------------
+bool main_window::is_livre_facture_selection_empty(void)const
+{
+  return m_livre_facture_widget->is_livre_facture_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_selected_livre_facture_id(void)const
+{
+  return m_livre_facture_widget->get_selected_livre_facture_id();
+}
+
+//------------------------------------------------------------------------------
+void main_window::refresh_livre_facture_list(std::vector<livre_facture> & p_list)
+{
+  m_livre_facture_widget->refresh_livre_facture_list(p_list);
+}
+
+// Interactions with livre facture actions
+//-----------------------------------------
 void main_window::set_delete_livre_facture_enabled(bool p_enabled)
 {
   m_livre_facture_widget->set_delete_livre_facture_enabled(p_enabled);
@@ -99,19 +176,13 @@ void main_window::set_modify_livre_facture_enabled(bool p_enabled)
 }
 
 //------------------------------------------------------------------------------
-void main_window::refresh_list_facture_of_livre_facture(void)
+void main_window::set_create_livre_facture_enabled(bool p_enabled)
 {
-  m_livre_facture_widget->refresh_list_facture_of_livre_facture();
+  m_livre_facture_widget->set_create_livre_facture_enabled(p_enabled);
 }
 
-//------------------------------------------------------------------------------
-void main_window::set_facture_creation_for_selected_livre_enabled( bool p_enabled)
-{
-  m_livre_facture_widget->set_facture_creation_enabled(p_enabled);
-}
-
-// Management of non attributed facture fields
-//------------------------------------------------------------------------------
+// Interactions with non attributed facture information
+//-------------------------------------------------------
 void main_window::set_non_attributed_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs)
 {
   m_livre_facture_widget->set_allowed_facture_references(p_remaining_refs);
@@ -177,74 +248,20 @@ bool main_window::is_non_attributed_facture_date_empty(void)const
   return m_livre_facture_widget->is_non_attributed_facture_date_empty();
 }
 
-
-
+// Interactions with non attributed facture list
+//-----------------------------------------------
 //------------------------------------------------------------------------------
-void main_window::create_actions(void)
+void main_window::refresh_list_facture_of_livre_facture(std::vector<search_facture_client_item> & p_list)
 {
-  m_import_file_action = new QAction(tr("&Import"),this);
-  m_import_file_action->setShortcut(tr("Ctrl+I"));
-  m_import_file_action->setStatusTip(tr("Import a file from MySql")); 
-  connect(m_import_file_action,SIGNAL(triggered()),this,SLOT(treat_import_event()));
-
-  m_open_file_action = new QAction(tr("&Open"),this);
-  m_open_file_action->setShortcut(tr("Ctrl+O"));
-  m_open_file_action->setStatusTip(tr("Open a file")); 
-  connect(m_open_file_action,SIGNAL(triggered()),this,SLOT(treat_open_db_event()));
-
-  m_save_action = new QAction(tr("&Save"),this);
-  m_save_action->setShortcut(tr("Ctrl+S"));
-  m_save_action->setStatusTip(tr("Save current file")); 
-  connect(m_save_action,SIGNAL(triggered()),this,SLOT(treat_save_event()));
-
-  m_save_as_action = new QAction(tr("&Save As"),this);
-  m_save_as_action->setShortcut(tr("Ctrl+E"));
-  m_save_as_action->setStatusTip(tr("Save a file with a new name")); 
-  connect(m_save_as_action,SIGNAL(triggered()),this,SLOT(treat_save_as_event()));
-
-  m_close_action = new QAction(tr("&Close"),this);
-  m_close_action->setShortcut(tr("Ctrl+C"));
-  m_close_action->setStatusTip(tr("Close current file")); 
-  connect(m_close_action,SIGNAL(triggered()),this,SLOT(treat_close_db_event()));
-
-  m_test_action = new QAction(tr("&Test"),this);
-  m_test_action->setShortcut(tr("Ctrl+T"));
-  m_test_action->setStatusTip(tr("Launch test actions")); 
-  connect(m_test_action,SIGNAL(triggered()),this,SLOT(treat_test_event()));
-
-  m_exit_action = new QAction(tr("&Quit"),this);
-  m_exit_action->setShortcut(tr("Ctrl+Q"));
-  m_exit_action->setStatusTip(tr("Quit the application")); 
-  connect(m_exit_action,SIGNAL(triggered()),this,SLOT(exit()));
+  m_livre_facture_widget->refresh_list_facture_of_livre_facture(p_list);
 }
 
+// Interactions with non attributed facture buttons
+//---------------------------------------------------
 //------------------------------------------------------------------------------
-void main_window::create_menus(void)
+void main_window::set_facture_creation_for_selected_livre_enabled( bool p_enabled)
 {
-  m_file_menu = menuBar()->addMenu(tr("&File"));
-  //  m_file_menu->addAction(m_import_file_action);
-  m_file_menu->addAction(m_open_file_action);
-  m_file_menu->addAction(m_save_action);
-  m_file_menu->addAction(m_save_as_action);
-  //  m_file_menu->addAction(m_test_action);
-  m_file_menu->addAction(m_close_action);
-  m_file_menu->addAction(m_exit_action);
-
-  // Manage action activation
-  m_import_file_action->setEnabled(true);
-  m_open_file_action->setEnabled(true);
-  m_save_action->setEnabled(false);
-  m_save_as_action->setEnabled(false);
-  m_test_action->setEnabled(false);
-  m_close_action->setEnabled(false);
-  m_exit_action->setEnabled(true);
-}
-
-//------------------------------------------------------------------------------
-void main_window::create_status_bar(void)
-{
-  m_status_label = new QLabel("Status bar");
-  statusBar()->addWidget(m_status_label);
+  m_livre_facture_widget->set_facture_creation_enabled(p_enabled);
 }
 
 //------------------------------------------------------------------------------
@@ -385,4 +402,73 @@ void main_window::closeEvent(QCloseEvent *event)
       event->ignore();
     }
 }
+
+//------------------------------------------------------------------------------
+void main_window::create_actions(void)
+{
+  m_import_file_action = new QAction(tr("&Import"),this);
+  m_import_file_action->setShortcut(tr("Ctrl+I"));
+  m_import_file_action->setStatusTip(tr("Import a file from MySql")); 
+  connect(m_import_file_action,SIGNAL(triggered()),this,SLOT(treat_import_event()));
+
+  m_open_file_action = new QAction(tr("&Open"),this);
+  m_open_file_action->setShortcut(tr("Ctrl+O"));
+  m_open_file_action->setStatusTip(tr("Open a file")); 
+  connect(m_open_file_action,SIGNAL(triggered()),this,SLOT(treat_open_db_event()));
+
+  m_save_action = new QAction(tr("&Save"),this);
+  m_save_action->setShortcut(tr("Ctrl+S"));
+  m_save_action->setStatusTip(tr("Save current file")); 
+  connect(m_save_action,SIGNAL(triggered()),this,SLOT(treat_save_event()));
+
+  m_save_as_action = new QAction(tr("&Save As"),this);
+  m_save_as_action->setShortcut(tr("Ctrl+E"));
+  m_save_as_action->setStatusTip(tr("Save a file with a new name")); 
+  connect(m_save_as_action,SIGNAL(triggered()),this,SLOT(treat_save_as_event()));
+
+  m_close_action = new QAction(tr("&Close"),this);
+  m_close_action->setShortcut(tr("Ctrl+C"));
+  m_close_action->setStatusTip(tr("Close current file")); 
+  connect(m_close_action,SIGNAL(triggered()),this,SLOT(treat_close_db_event()));
+
+  m_test_action = new QAction(tr("&Test"),this);
+  m_test_action->setShortcut(tr("Ctrl+T"));
+  m_test_action->setStatusTip(tr("Launch test actions")); 
+  connect(m_test_action,SIGNAL(triggered()),this,SLOT(treat_test_event()));
+
+  m_exit_action = new QAction(tr("&Quit"),this);
+  m_exit_action->setShortcut(tr("Ctrl+Q"));
+  m_exit_action->setStatusTip(tr("Quit the application")); 
+  connect(m_exit_action,SIGNAL(triggered()),this,SLOT(exit()));
+}
+
+//------------------------------------------------------------------------------
+void main_window::create_menus(void)
+{
+  m_file_menu = menuBar()->addMenu(tr("&File"));
+  //  m_file_menu->addAction(m_import_file_action);
+  m_file_menu->addAction(m_open_file_action);
+  m_file_menu->addAction(m_save_action);
+  m_file_menu->addAction(m_save_as_action);
+  //  m_file_menu->addAction(m_test_action);
+  m_file_menu->addAction(m_close_action);
+  m_file_menu->addAction(m_exit_action);
+
+  // Manage action activation
+  m_import_file_action->setEnabled(true);
+  m_open_file_action->setEnabled(true);
+  m_save_action->setEnabled(false);
+  m_save_as_action->setEnabled(false);
+  m_test_action->setEnabled(false);
+  m_close_action->setEnabled(false);
+  m_exit_action->setEnabled(true);
+}
+
+//------------------------------------------------------------------------------
+void main_window::create_status_bar(void)
+{
+  m_status_label = new QLabel("Status bar");
+  statusBar()->addWidget(m_status_label);
+}
+
 //EOF

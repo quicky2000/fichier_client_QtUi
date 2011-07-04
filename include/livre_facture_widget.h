@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <stdint.h>
 #include "facture_status.h"
+#include "search_facture_client_item.h"
 
 class QPushButton;
 class QLineEdit;
@@ -22,10 +23,29 @@ class livre_facture_widget : public QWidget
  public:
    livre_facture_widget(fichier_client & p_fichier_client,QWidget * p_parent = NULL);
    void set_enable(bool p_enable);
-   void set_facture_creation_enabled(bool p_enabled);
+
+   // Interactions with livre facture fields
+   void clear_livre_facture_information(void);
+   void set_livre_facture_start_date(const std::string & p_date);
+   void set_livre_facture_end_date(const std::string & p_date);
+   void set_livre_facture_id(const std::string & p_id);
+   const std::string get_livre_facture_start_date(void)const;
+   bool is_livre_facture_start_date_complete(void)const;
+   const std::string get_livre_facture_end_date(void)const;
+   bool is_livre_facture_end_date_complete(void)const;
+   const std::string get_livre_facture_id(void)const;
+
+   // Interactions with livre facture list
+   bool is_livre_facture_selection_empty(void)const;
+   uint32_t get_selected_livre_facture_id(void)const;
+   void refresh_livre_facture_list(std::vector<livre_facture> & p_list);
+
+   // Interactions with livre facture buttons
    void set_delete_livre_facture_enabled(bool p_enabled);
    void set_modify_livre_facture_enabled(bool p_enabled);
-   void refresh_list_facture_of_livre_facture(void);
+   void set_create_livre_facture_enabled(bool p_enabled);
+
+   // Interactions with non attributed facture fields
    void set_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs);
    void set_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids);
    void set_status_list(const std::vector<facture_status> & p_status_list);
@@ -37,34 +57,37 @@ class livre_facture_widget : public QWidget
    void enable_non_attributed_facture_fields(bool p_enable);
    bool is_non_attributed_facture_date_complete(void)const;
    bool is_non_attributed_facture_date_empty(void)const;
+
+   // Interactions with non attributed facture list
+   void refresh_list_facture_of_livre_facture(std::vector<search_facture_client_item> & p_list);
+
+   // Interaction with non attributed facture buttons
+   void set_facture_creation_enabled(bool p_enabled);
+
  private slots:
    //Livre facture fields events
-   void criteria_modification(void);
-   void content_modification(void);
+   void treat_livre_facture_id_modif_event(void);
+   void treat_livre_facture_content_modif_event(void);
    // Livre facture button events
-   void create_livre_facture(void);
-   void delete_livre_facture(void);
-   void modify_livre_facture(void);
+   void treat_create_livre_facture_event(void);
+   void treat_delete_livre_facture_event(void);
+   void treat_modify_livre_facture_event(void);
    // Livre facture table events
-   void livre_facture_selected(int row);
-   void livre_facture_selection_changed(void);
+   void treat_livre_facture_selected_event(int row);
+   void treat_livre_facture_selection_changed_event(void);
    // Non attributed facture button events
-   void create_facture(void);
-   void delete_facture(void);
-   void modify_facture(void);
+   void treat_create_facture_event(void);
+   void treat_delete_facture_event(void);
+   void treat_modify_facture_event(void);
    // Non attributed facture table events
-   void facture_selected(int row);
-   void facture_selection_changed(void);
+   void treat_facture_selected_event(int row);
+   void treat_facture_selection_changed_event(void);
    // Non attributed facture fields events
-   void non_attributed_facture_date_entered(void);
-   void non_attributed_facture_ref_selected(void);
-   void non_attributed_facture_status_selected(void);
-   void non_attributed_facture_livre_facture_selected(void);
+   void treat_non_attributed_facture_date_entered_event(void);
+   void treat_non_attributed_facture_ref_selected_event(void);
+   void treat_non_attributed_facture_status_selected_event(void);
+   void treat_non_attributed_facture_livre_facture_selected_event(void);
  private:
-     void clear_text_fields(void);
-     uint32_t get_selected_livre_facture_id(void);
-     void get_selected_livre_facture(livre_facture & p_selected);
-
      QPushButton * m_create_livre_facture_button;
      QPushButton * m_delete_livre_facture_button;
      QPushButton * m_modify_livre_facture_button;

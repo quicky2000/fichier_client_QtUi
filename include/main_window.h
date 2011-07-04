@@ -30,13 +30,28 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void display_warning_message(const std::string & p_title,const std::string & p_text);
   void display_information_message(const std::string & p_title,const std::string & p_text);
 
-  // Interactions with livre facture
+  // Interactions with livre facture information
+  void clear_livre_facture_information(void);
+  void set_livre_facture_start_date(const std::string & p_date);
+  void set_livre_facture_end_date(const std::string & p_date);
+  void set_livre_facture_id(const std::string & p_id);
+  const std::string get_livre_facture_start_date(void)const;
+  bool is_livre_facture_start_date_complete(void)const;
+  const std::string get_livre_facture_end_date(void)const;
+  bool is_livre_facture_end_date_complete(void)const;
+  const std::string get_livre_facture_id(void)const;
+
+  // Interactions with livre facture list
+  bool is_livre_facture_selection_empty(void)const;
+  uint32_t get_selected_livre_facture_id(void)const;
+  void refresh_livre_facture_list(std::vector<livre_facture> & p_list);
+
+  // Interactions with livre facture actions
   void set_delete_livre_facture_enabled(bool p_enabled);
   void set_modify_livre_facture_enabled(bool p_enabled);
-  void refresh_list_facture_of_livre_facture(void);
-  void set_facture_creation_for_selected_livre_enabled( bool p_enabled);
+  void set_create_livre_facture_enabled(bool p_enabled);
 
-  // Management of non attributed facture fields
+  // Interactions with non attribtued facture information
   void set_non_attributed_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs);
   void set_non_attributed_facture_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids);
   void set_non_attributed_facture_status_list(const std::vector<facture_status> & p_status_list);
@@ -48,6 +63,12 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void enable_non_attributed_facture_fields(bool p_enable);
   bool is_non_attributed_facture_date_complete(void)const;
   bool is_non_attributed_facture_date_empty(void)const;
+  
+  // Interactions with non attributed facture list
+  void refresh_list_facture_of_livre_facture(std::vector<search_facture_client_item> & p_list);
+
+  // Interactions with non attributed facture buttons
+  void set_facture_creation_for_selected_livre_enabled( bool p_enabled);
 
   private slots:
   void treat_test_event();
