@@ -4,7 +4,7 @@
 #include "fichier_client.h"
 
 #include "my_date_widget.h"
-#include "base_facture_widget.h"
+#include "non_attributed_facture_widget.h"
 
 #include <QPushButton>
 #include <QHBoxLayout>
@@ -95,12 +95,13 @@ livre_facture_widget::livre_facture_widget(fichier_client & p_fichier_client,QWi
   // Non attributed facture fields
   //-------------------------------
   l_vertical_layout->addWidget(new QLabel(tr("Factures du livre")+" :"));
-  m_base_facture_widget = new base_facture_widget(this,m_fichier_client);
-  l_vertical_layout->addWidget(m_base_facture_widget);
-  connect(m_base_facture_widget,SIGNAL(new_date_entered()),this,SLOT(treat_non_attributed_facture_date_entered_event()));
-  connect(m_base_facture_widget,SIGNAL(new_facture_ref_selected()),this,SLOT(treat_non_attributed_facture_ref_selected_event()));
-  connect(m_base_facture_widget,SIGNAL(new_status_selected()),this,SLOT(treat_non_attributed_facture_status_selected_event()));
-  connect(m_base_facture_widget,SIGNAL(new_livre_facture_selected()),this,SLOT(treat_non_attributed_facture_livre_facture_selected_event()));
+  m_non_attributed_facture_widget = new non_attributed_facture_widget(this);
+  l_vertical_layout->addWidget(m_non_attributed_facture_widget);
+  connect(m_non_attributed_facture_widget,SIGNAL(new_date_entered()),this,SLOT(treat_non_attributed_facture_date_entered_event()));
+  connect(m_non_attributed_facture_widget,SIGNAL(new_facture_ref_selected()),this,SLOT(treat_non_attributed_facture_ref_selected_event()));
+  connect(m_non_attributed_facture_widget,SIGNAL(new_status_selected()),this,SLOT(treat_non_attributed_facture_status_selected_event()));
+  connect(m_non_attributed_facture_widget,SIGNAL(new_livre_facture_selected()),this,SLOT(treat_non_attributed_facture_livre_facture_selected_event()));
+  connect(m_non_attributed_facture_widget,SIGNAL(reason_selected()),this,SLOT(treat_non_attributed_facture_reason_selected_event()));
 
   // Table of factures
   //----------------------
@@ -234,67 +235,79 @@ void livre_facture_widget::set_create_livre_facture_enabled(bool p_enabled)
 //------------------------------------------------------------------------------
 void livre_facture_widget::set_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs)
 {
-  m_base_facture_widget->set_allowed_facture_ref(p_remaining_refs);
+  m_non_attributed_facture_widget->set_allowed_facture_ref(p_remaining_refs);
 }
 
 //------------------------------------------------------------------------------
 void livre_facture_widget::set_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids)
 {
-  m_base_facture_widget->set_allowed_livre_ids(p_livre_ids);
+  m_non_attributed_facture_widget->set_allowed_livre_ids(p_livre_ids);
 }
 
 //------------------------------------------------------------------------------
 void livre_facture_widget::set_status_list(const std::vector<facture_status> & p_status_list)
 {
-  m_base_facture_widget->set_status_list(p_status_list);
+  m_non_attributed_facture_widget->set_status_list(p_status_list);
+}
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::set_reason_list(const std::vector<facture_reason> & p_reason_list)
+{
+  m_non_attributed_facture_widget->set_reason_list(p_reason_list);
 }
 
 //------------------------------------------------------------------------------
 const std::string livre_facture_widget::get_non_attributed_facture_date(void)const
 {
-  return m_base_facture_widget->get_iso_date();
+  return m_non_attributed_facture_widget->get_iso_date();
 }
 
 //------------------------------------------------------------------------------
 uint32_t livre_facture_widget::get_non_attributed_facture_livre_facture_id(void)const
 {
-  return m_base_facture_widget->get_livre_facture_id();
+  return m_non_attributed_facture_widget->get_livre_facture_id();
 }
 
 //------------------------------------------------------------------------------
 uint32_t livre_facture_widget::get_non_attributed_facture_reference(void)const
 {
-  return m_base_facture_widget->get_facture_reference();
+  return m_non_attributed_facture_widget->get_facture_reference();
 }
 
 //------------------------------------------------------------------------------
 const facture_status * livre_facture_widget::get_non_attributed_facture_status(void)const
 {
-  return m_base_facture_widget->get_facture_status();
+  return m_non_attributed_facture_widget->get_facture_status();
+}
+
+//------------------------------------------------------------------------------
+const facture_reason * livre_facture_widget::get_non_attributed_facture_reason(void)const
+{
+  return m_non_attributed_facture_widget->get_facture_reason();
 }
 
 //------------------------------------------------------------------------------
 void livre_facture_widget::clear_non_attributed_facture_date(void)
 {
-  m_base_facture_widget->clear_date();
+  m_non_attributed_facture_widget->clear_date();
 }
 
 //------------------------------------------------------------------------------
 void livre_facture_widget::enable_non_attributed_facture_fields(bool p_enable)
 {
-  m_base_facture_widget->set_enabled(p_enable);
+  m_non_attributed_facture_widget->set_enabled(p_enable);
 }
 
 //------------------------------------------------------------------------------
 bool livre_facture_widget::is_non_attributed_facture_date_complete(void)const
 {
-  return m_base_facture_widget->is_date_complete();
+  return m_non_attributed_facture_widget->is_date_complete();
 }
 
 //------------------------------------------------------------------------------
 bool livre_facture_widget::is_non_attributed_facture_date_empty(void)const
 {
-  return m_base_facture_widget->is_date_empty();
+  return m_non_attributed_facture_widget->is_date_empty();
 }
 
 // Interactions with non attributed facture list
@@ -322,7 +335,7 @@ void livre_facture_widget::set_facture_creation_enabled(bool p_enabled)
 void livre_facture_widget::treat_create_facture_event(void)
 {
   cout << "QtEvent::livre_facture_widget::Create_facture button clicked" << endl ;
-  m_fichier_client.create_non_attributed_facture(get_selected_livre_facture_id());
+  m_fichier_client.treat_create_non_attributed_facture_event();
 }
 
 
@@ -371,6 +384,13 @@ void livre_facture_widget::treat_non_attributed_facture_status_selected_event(vo
 {
   std::cout << "QtEvent::livre_facture_widget::non_attributed_facture_status_selected" << std::endl;
   m_fichier_client.non_attributed_facture_status_selected();
+}
+
+//------------------------------------------------------------------------------
+void livre_facture_widget::treat_non_attributed_facture_reason_selected_event(void)
+{
+  std::cout << "QtEvent::livre_facture_widget::non_attributed_facture_reason_selected" << std::endl;
+  m_fichier_client.non_attributed_facture_reason_selected();
 }
 
 //------------------------------------------------------------------------------
@@ -446,7 +466,7 @@ void livre_facture_widget::set_enable(bool p_enable)
 
   m_delete_livre_facture_button->setEnabled(false);
   m_modify_livre_facture_button->setEnabled(false);
-  m_base_facture_widget->set_enabled(false);
+  m_non_attributed_facture_widget->set_enabled(false);
 
   m_livre_facture_table->clearContents();
   if(p_enable)

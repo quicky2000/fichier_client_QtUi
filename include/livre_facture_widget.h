@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <stdint.h>
 #include "facture_status.h"
+#include "facture_reason.h"
 #include "search_facture_client_item.h"
 
 class QPushButton;
@@ -13,7 +14,7 @@ class fichier_client;
 class livre_facture_table;
 class livre_facture;
 class my_date_widget;
-class base_facture_widget;
+class non_attributed_facture_widget;
 class facture_client_list_table;
 
 class livre_facture_widget : public QWidget
@@ -49,10 +50,12 @@ class livre_facture_widget : public QWidget
    void set_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs);
    void set_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids);
    void set_status_list(const std::vector<facture_status> & p_status_list);
+   void set_reason_list(const std::vector<facture_reason> & p_reason_list);
    const std::string get_non_attributed_facture_date(void)const;
    uint32_t get_non_attributed_facture_livre_facture_id(void)const;
    uint32_t get_non_attributed_facture_reference(void)const;
    const facture_status * get_non_attributed_facture_status(void)const;
+   const facture_reason * get_non_attributed_facture_reason(void)const;
    void clear_non_attributed_facture_date(void);
    void enable_non_attributed_facture_fields(bool p_enable);
    bool is_non_attributed_facture_date_complete(void)const;
@@ -86,6 +89,7 @@ class livre_facture_widget : public QWidget
    void treat_non_attributed_facture_date_entered_event(void);
    void treat_non_attributed_facture_ref_selected_event(void);
    void treat_non_attributed_facture_status_selected_event(void);
+   void treat_non_attributed_facture_reason_selected_event(void);
    void treat_non_attributed_facture_livre_facture_selected_event(void);
  private:
      QPushButton * m_create_livre_facture_button;
@@ -99,7 +103,7 @@ class livre_facture_widget : public QWidget
      QPushButton * m_create_facture_button;
      QPushButton * m_delete_facture_button;
      QPushButton * m_modify_facture_button;
-     base_facture_widget * m_base_facture_widget;
+     non_attributed_facture_widget * m_non_attributed_facture_widget;
      facture_client_list_table *m_facture_client_list_table;
      fichier_client & m_fichier_client;
  };

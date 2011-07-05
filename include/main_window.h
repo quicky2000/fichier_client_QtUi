@@ -14,6 +14,7 @@ class QTabWidget;
 class search_widget;
 class livre_facture_widget;
 class facture_status_widget;
+class facture_reason_widget;
 
 class main_window : public QMainWindow, public fichier_client_UI_if
 {
@@ -55,10 +56,12 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_non_attributed_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs);
   void set_non_attributed_facture_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids);
   void set_non_attributed_facture_status_list(const std::vector<facture_status> & p_status_list);
+  void set_non_attributed_facture_reason_list(const std::vector<facture_reason> & p_reason_list);
   const std::string get_non_attributed_facture_date(void)const;
   uint32_t get_non_attributed_facture_livre_facture_id(void)const;
   uint32_t get_non_attributed_facture_reference(void)const;
   const facture_status * get_non_attributed_facture_status(void)const;
+  const facture_reason * get_non_attributed_facture_reason(void)const;
   void clear_non_attributed_facture_date(void);
   void enable_non_attributed_facture_fields(bool p_enable);
   bool is_non_attributed_facture_date_complete(void)const;
@@ -87,6 +90,23 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_modify_facture_status_enabled(bool p_enable);
   void set_modify_facture_status_action_name(const std::string & p_name);
 
+  // Interactions with facture reason information
+  void clear_facture_reason_information(void);
+  void set_facture_reason_name(const std::string & p_name);  
+  const std::string get_facture_reason_name(void)const;
+
+  // Interactions with facture reason list
+  bool is_facture_reason_selection_empty(void)const;
+  uint32_t get_selected_facture_reason_id(void)const;
+  void refresh_facture_reason_list(std::vector<facture_reason> & p_list);
+  void set_facture_reason_list_enabled(bool p_enable);
+
+  // Interactions with facture reason actions
+  void set_create_facture_reason_enabled(bool p_enable);
+  void set_delete_facture_reason_enabled(bool p_enable);
+  void set_modify_facture_reason_enabled(bool p_enable);
+  void set_modify_facture_reason_action_name(const std::string & p_name);
+
   private slots:
   void treat_test_event();
   void treat_import_event();
@@ -114,6 +134,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   search_widget * m_search_widget;
   livre_facture_widget *m_livre_facture_widget;
   facture_status_widget *m_facture_status_widget;
+  facture_reason_widget *m_facture_reason_widget;
   fichier_client m_fichier_client;
 };
 

@@ -12,7 +12,7 @@ facture_client_list_table::facture_client_list_table(QWidget *parent):
 QStringList facture_client_list_table::get_header_list(void)
 {
   QStringList l_header_list;
-  l_header_list << tr("Client_Id") << tr("Name") << tr("First Name") << tr("Address") << tr("City");
+  l_header_list << tr("Client_Id") << tr("Reason") << tr("Name") << tr("First Name") << tr("Address") << tr("City");
   return l_header_list;
 }
 
@@ -25,10 +25,11 @@ void facture_client_list_table::set_row_content(uint32_t p_row,const search_fact
   l_id_q.setNum(l_id);
   setItem(p_row,get_nb_column(),new simple_table_cell(l_id_q,l_id));
   
-  setItem(p_row,1 + get_nb_column(),new simple_table_cell(p_item.get_name().c_str()));
-  setItem(p_row,2 + get_nb_column(),new simple_table_cell(p_item.get_first_name().c_str()));
-  setItem(p_row,3 + get_nb_column(),new simple_table_cell(p_item.get_address().c_str()));
-  setItem(p_row,4 + get_nb_column(),new simple_table_cell(p_item.get_city().c_str()));
+  setItem(p_row,1 + get_nb_column(),new simple_table_cell(p_item.get_reason().c_str()));
+  setItem(p_row,2 + get_nb_column(),new simple_table_cell(p_item.get_name().c_str()));
+  setItem(p_row,3 + get_nb_column(),new simple_table_cell(p_item.get_first_name().c_str()));
+  setItem(p_row,4 + get_nb_column(),new simple_table_cell(p_item.get_address().c_str()));
+  setItem(p_row,5 + get_nb_column(),new simple_table_cell(p_item.get_city().c_str()));
   
 }
 

@@ -4,6 +4,7 @@
 #include "search_widget.h"
 #include "livre_facture_widget.h"
 #include "facture_status_widget.h"
+#include "facture_reason_widget.h"
 
 #include <QAction>
 #include <QMenu>
@@ -31,7 +32,8 @@ main_window::main_window(void):
   m_status_label(NULL),
   m_search_widget(NULL),
   m_livre_facture_widget(NULL),
-  m_facture_status_widget(NULL)
+  m_facture_status_widget(NULL),
+  m_facture_reason_widget(NULL)
 {
   setWindowTitle(tr("Fichier client"));
   create_actions();
@@ -47,9 +49,12 @@ main_window::main_window(void):
 
   m_facture_status_widget = new facture_status_widget(m_fichier_client);
 
+  m_facture_reason_widget = new facture_reason_widget(m_fichier_client);
+
   m_tab_widget->addTab(m_search_widget,tr("Search"));
   m_tab_widget->addTab(m_livre_facture_widget,tr("Livre facture"));
   m_tab_widget->addTab(m_facture_status_widget,tr("Facture status"));
+  m_tab_widget->addTab(m_facture_reason_widget,tr("Facture reason"));
 
   setCentralWidget(m_tab_widget);
 
@@ -67,6 +72,7 @@ void main_window::manage_features(bool p_enable)
   m_search_widget->set_enable(p_enable);
   m_livre_facture_widget->set_enable(p_enable);
   m_facture_status_widget->set_enable(p_enable);
+  m_facture_reason_widget->set_enable(p_enable);
 }
 
 //---------------------------------------------------
@@ -201,6 +207,12 @@ void main_window::set_non_attributed_facture_status_list(const std::vector<factu
 }
 
 //------------------------------------------------------------------------------
+void main_window::set_non_attributed_facture_reason_list(const std::vector<facture_reason> & p_reason_list)
+{
+  m_livre_facture_widget->set_reason_list(p_reason_list);
+}
+
+//------------------------------------------------------------------------------
 const std::string main_window::get_non_attributed_facture_date(void)const
 {
   return m_livre_facture_widget->get_non_attributed_facture_date();
@@ -222,6 +234,12 @@ uint32_t main_window::get_non_attributed_facture_reference(void)const
 const facture_status * main_window::get_non_attributed_facture_status(void)const
 {
   return m_livre_facture_widget->get_non_attributed_facture_status();
+}
+
+//------------------------------------------------------------------------------
+const facture_reason * main_window::get_non_attributed_facture_reason(void)const
+{
+  return m_livre_facture_widget->get_non_attributed_facture_reason();
 }
 
 //------------------------------------------------------------------------------
@@ -333,6 +351,77 @@ void main_window::set_modify_facture_status_enabled(bool p_enable)
 void main_window::set_modify_facture_status_action_name(const std::string & p_name)
 {
   m_facture_status_widget->set_modify_facture_status_action_name(p_name);
+}
+
+// Interactions with facture reason information
+//---------------------------------------------
+void main_window::clear_facture_reason_information(void)
+{
+  m_facture_reason_widget->clear_facture_reason_information();
+}
+
+//---------------------------------------------
+void main_window::set_facture_reason_name(const std::string & p_name)
+{
+  m_facture_reason_widget->set_facture_reason_name(p_name);
+}
+ 
+//---------------------------------------------
+const std::string main_window::get_facture_reason_name(void)const
+{
+  return m_facture_reason_widget->get_facture_reason_name();
+}
+
+// Interactions with facture reason list
+//--------------------------------------
+//------------------------------------------------------------------------------
+bool main_window::is_facture_reason_selection_empty(void)const
+{
+  return m_facture_reason_widget->is_facture_reason_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_selected_facture_reason_id(void)const
+{
+  return m_facture_reason_widget->get_selected_facture_reason_id();
+}
+
+//------------------------------------------------------------------------------
+void main_window::refresh_facture_reason_list(std::vector<facture_reason> & p_list)
+{
+  m_facture_reason_widget->refresh_facture_reason_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void  main_window::set_facture_reason_list_enabled(bool p_enable)
+{
+  m_facture_reason_widget->set_facture_reason_list_enabled(p_enable);
+}
+
+// Interactions with facture reason actions
+//------------------------------------------
+//------------------------------------------------------------------------------
+void main_window::set_create_facture_reason_enabled(bool p_enable)
+{
+  m_facture_reason_widget->set_create_facture_reason_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_delete_facture_reason_enabled(bool p_enable)
+{
+  m_facture_reason_widget->set_delete_facture_reason_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_modify_facture_reason_enabled(bool p_enable)
+{
+  m_facture_reason_widget->set_modify_facture_reason_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_modify_facture_reason_action_name(const std::string & p_name)
+{
+  m_facture_reason_widget->set_modify_facture_reason_action_name(p_name);
 }
 
 
