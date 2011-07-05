@@ -264,6 +264,79 @@ void main_window::set_facture_creation_for_selected_livre_enabled( bool p_enable
   m_livre_facture_widget->set_facture_creation_enabled(p_enabled);
 }
 
+// Interactions with facture status information
+//---------------------------------------------
+void main_window::clear_facture_status_information(void)
+{
+  m_facture_status_widget->clear_facture_status_information();
+}
+
+//---------------------------------------------
+void main_window::set_facture_status_name(const std::string & p_name)
+{
+  m_facture_status_widget->set_facture_status_name(p_name);
+}
+ 
+//---------------------------------------------
+const std::string main_window::get_facture_status_name(void)const
+{
+  return m_facture_status_widget->get_facture_status_name();
+}
+
+// Interactions with facture status list
+//--------------------------------------
+//------------------------------------------------------------------------------
+bool main_window::is_facture_status_selection_empty(void)const
+{
+  return m_facture_status_widget->is_facture_status_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_selected_facture_status_id(void)const
+{
+  return m_facture_status_widget->get_selected_facture_status_id();
+}
+
+//------------------------------------------------------------------------------
+void main_window::refresh_facture_status_list(std::vector<facture_status> & p_list)
+{
+  m_facture_status_widget->refresh_facture_status_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void  main_window::set_facture_status_list_enabled(bool p_enable)
+{
+  m_facture_status_widget->set_facture_status_list_enabled(p_enable);
+}
+
+// Interactions with facture status actions
+//------------------------------------------
+//------------------------------------------------------------------------------
+void main_window::set_create_facture_status_enabled(bool p_enable)
+{
+  m_facture_status_widget->set_create_facture_status_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_delete_facture_status_enabled(bool p_enable)
+{
+  m_facture_status_widget->set_delete_facture_status_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_modify_facture_status_enabled(bool p_enable)
+{
+  m_facture_status_widget->set_modify_facture_status_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_modify_facture_status_action_name(const std::string & p_name)
+{
+  m_facture_status_widget->set_modify_facture_status_action_name(p_name);
+}
+
+
+
 //------------------------------------------------------------------------------
 void main_window::treat_test_event(void)
 {

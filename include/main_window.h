@@ -70,6 +70,23 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   // Interactions with non attributed facture buttons
   void set_facture_creation_for_selected_livre_enabled( bool p_enabled);
 
+  // Interactions with facture status information
+  void clear_facture_status_information(void);
+  void set_facture_status_name(const std::string & p_name);  
+  const std::string get_facture_status_name(void)const;
+
+  // Interactions with facture status list
+  bool is_facture_status_selection_empty(void)const;
+  uint32_t get_selected_facture_status_id(void)const;
+  void refresh_facture_status_list(std::vector<facture_status> & p_list);
+  void set_facture_status_list_enabled(bool p_enable);
+
+  // Interactions with facture status actions
+  void set_create_facture_status_enabled(bool p_enable);
+  void set_delete_facture_status_enabled(bool p_enable);
+  void set_modify_facture_status_enabled(bool p_enable);
+  void set_modify_facture_status_action_name(const std::string & p_name);
+
   private slots:
   void treat_test_event();
   void treat_import_event();
