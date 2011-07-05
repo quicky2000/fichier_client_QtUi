@@ -8,17 +8,15 @@
 #include <vector>
 
 class QWidget;
-class my_date_widget;
 class QComboBox;
-class fichier_client;
+class QHBoxLayout;
+class my_date_widget;
 
 class base_facture_widget: public QWidget
 {
   Q_OBJECT
     public:
-  base_facture_widget(QWidget * p_parent,
-		      fichier_client & p_fichier_client
-		      );
+  base_facture_widget(QWidget * p_parent);
 
   void set_enabled(bool p_enabled);
   void set_allowed_facture_ref(const std::vector<uint32_t> & p_list);
@@ -45,15 +43,18 @@ class base_facture_widget: public QWidget
   void new_facture_ref_selected(void);
   void new_livre_facture_selected(void);
   void new_status_selected(void);
+  
+ protected:
+  QHBoxLayout * get_layout(void);
+  void set_combo_box_content(QComboBox * p_combo_box,std::vector<uint32_t> & p_current, const std::vector<uint32_t> & p_list);
+  void clear_combo_box_content(QComboBox * p_combo_box);
+
  private:
   uint32_t get_livre_facture_id(int p_index)const;
   uint32_t get_facture_reference(int p_index)const;
   const facture_status * get_facture_status(int p_index)const;
 
-  void set_combo_box_content(QComboBox * p_combo_box,std::vector<uint32_t> & p_current, const std::vector<uint32_t> & p_list);
-  void clear_combo_box_content(QComboBox * p_combo_box);
-
-  fichier_client & m_fichier_client;
+  QHBoxLayout * m_layout;
   my_date_widget * m_date_field;
   QComboBox * m_livre_facture_id_field;
   QComboBox * m_facture_reference_field;

@@ -1,6 +1,5 @@
 #include "base_facture_widget.h"
 
-#include "fichier_client.h"
 #include "my_date_widget.h"
 #include "facture.h"
 #include <QHBoxLayout>
@@ -11,45 +10,43 @@
 #include <iostream>
 
 //------------------------------------------------------------------------------
-base_facture_widget::base_facture_widget(QWidget * p_parent,
-					   fichier_client & p_fichier_client
-					   ):
+base_facture_widget::base_facture_widget(QWidget * p_parent):
   QWidget(p_parent),
-  m_fichier_client(p_fichier_client),
+  m_layout(NULL),
   m_date_field(NULL),
   m_livre_facture_id_field(NULL),
   m_facture_reference_field(NULL),
   m_status_field(NULL)
 {
-  QHBoxLayout *l_horizontal_layout = new QHBoxLayout(this);
+  m_layout = new QHBoxLayout(this);
 
   // Date
-  l_horizontal_layout->addWidget(new QLabel(tr("Date")+" :"));
+  m_layout->addWidget(new QLabel(tr("Date")+" :"));
   m_date_field = new my_date_widget();
-  l_horizontal_layout->addWidget(m_date_field);
+  m_layout->addWidget(m_date_field);
   connect(m_date_field,SIGNAL(date_ok()),this,SLOT(date_entered()));
    
   // Livre facture
-  l_horizontal_layout->addWidget(new QLabel(tr("Livre Facture")+" :"));
+  m_layout->addWidget(new QLabel(tr("Livre Facture")+" :"));
   m_livre_facture_id_field = new QComboBox(this);
   m_livre_facture_id_field->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-  l_horizontal_layout->addWidget(m_livre_facture_id_field);
+  m_layout->addWidget(m_livre_facture_id_field);
   //  connect(m_livre_facture_id_field,SIGNAL(currentIndexChanged (int)),this,SLOT(livre_facture_selected(int)));
   connect(m_livre_facture_id_field,SIGNAL(activated (int)),this,SLOT(livre_facture_selected(int)));
    
   // Facture reference
-  l_horizontal_layout->addWidget(new QLabel(tr("Facture reference")+" :"));
+  m_layout->addWidget(new QLabel(tr("Facture reference")+" :"));
   m_facture_reference_field = new QComboBox(this);
   m_facture_reference_field->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-  l_horizontal_layout->addWidget(m_facture_reference_field);
+  m_layout->addWidget(m_facture_reference_field);
   connect(m_facture_reference_field,SIGNAL(activated (int)),this,SLOT(facture_ref_selected(int))); 
 
   // Facture status
-  l_horizontal_layout->addWidget(new QLabel(tr("Status")+" :"));
+  m_layout->addWidget(new QLabel(tr("Status")+" :"));
   m_status_field = new QComboBox(this);
   m_status_field->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   connect(m_status_field, SIGNAL(activated (int)),this,SLOT(status_selected(int)));
-  l_horizontal_layout->addWidget(m_status_field);
+  m_layout->addWidget(m_status_field);
 }
 
 //------------------------------------------------------------------------------
@@ -59,6 +56,12 @@ void base_facture_widget::set_enabled(bool p_enabled)
   m_livre_facture_id_field->setEnabled(p_enabled);
   m_facture_reference_field->setEnabled(p_enabled);
   m_status_field->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+QHBoxLayout * base_facture_widget::get_layout(void)
+{
+  return m_layout;
 }
 
 //------------------------------------------------------------------------------
