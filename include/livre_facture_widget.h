@@ -47,10 +47,14 @@ class livre_facture_widget : public QWidget
    void set_create_livre_facture_enabled(bool p_enabled);
 
    // Interactions with non attributed facture fields
+   void set_non_attributed_facture_date(const std::string & p_date);
    void set_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs);
+   void set_facture_reference(uint32_t p_ref);
    void set_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids);
    void set_status_list(const std::vector<facture_status> & p_status_list);
+   void set_status(uint32_t p_id);
    void set_reason_list(const std::vector<facture_reason> & p_reason_list);
+   void set_reason(uint32_t p_id);
    const std::string get_non_attributed_facture_date(void)const;
    uint32_t get_non_attributed_facture_livre_facture_id(void)const;
    uint32_t get_non_attributed_facture_reference(void)const;
@@ -63,9 +67,13 @@ class livre_facture_widget : public QWidget
 
    // Interactions with non attributed facture list
    void refresh_list_facture_of_livre_facture(std::vector<search_facture_client_item> & p_list);
+   bool is_list_facture_selection_empty(void)const;
+   uint32_t get_list_facture_selected_id(void)const;
 
    // Interaction with non attributed facture buttons
    void set_facture_creation_enabled(bool p_enabled);
+   void set_facture_deletion_enabled(bool p_enabled);
+   void set_facture_modification_enabled(bool p_enabled);
 
  private slots:
    //Livre facture fields events

@@ -53,10 +53,14 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_create_livre_facture_enabled(bool p_enabled);
 
   // Interactions with non attribtued facture information
+  void set_non_attributed_facture_date(const std::string & p_date);
   void set_non_attributed_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs);
+  void set_non_attributed_facture_reference(uint32_t p_ref);
   void set_non_attributed_facture_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids);
   void set_non_attributed_facture_status_list(const std::vector<facture_status> & p_status_list);
+  void set_non_attributed_facture_status(uint32_t p_id);
   void set_non_attributed_facture_reason_list(const std::vector<facture_reason> & p_reason_list);
+  void set_non_attributed_facture_reason(uint32_t p_id);
   const std::string get_non_attributed_facture_date(void)const;
   uint32_t get_non_attributed_facture_livre_facture_id(void)const;
   uint32_t get_non_attributed_facture_reference(void)const;
@@ -69,9 +73,13 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   
   // Interactions with non attributed facture list
   void refresh_list_facture_of_livre_facture(std::vector<search_facture_client_item> & p_list);
+  bool is_list_facture_of_livre_facture_selection_empty(void)const;
+  uint32_t get_list_facture_of_livre_facture_selected_id(void)const;
 
   // Interactions with non attributed facture buttons
   void set_facture_creation_for_selected_livre_enabled( bool p_enabled);
+  void set_facture_deletion_for_selected_livre_enabled( bool p_enabled);
+  void set_facture_modification_for_selected_livre_enabled( bool p_enabled);
 
   // Interactions with facture status information
   void clear_facture_status_information(void);

@@ -67,5 +67,23 @@ void non_attributed_facture_widget::set_reason_list(const std::vector<facture_re
     }
 }
 
+//------------------------------------------------------------------------------
+void non_attributed_facture_widget::set_reason(uint32_t p_id)
+{
+  if(m_reasons.size()>1)
+    {
+      std::vector<facture_reason>::const_iterator l_iter = m_reasons.begin();
+      std::vector<facture_reason>::const_iterator l_iter_end = m_reasons.end();
+      uint32_t l_index = 1;
+      while(l_iter != l_iter_end && l_iter->get_id() != p_id)
+	{
+	  ++l_iter;
+	  ++l_index;
+	}  
+      assert(l_iter->get_id() == p_id);
+      m_reason_field->setCurrentIndex(l_index);
+    }
+}
+
 
 //EOF

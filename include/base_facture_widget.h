@@ -18,10 +18,13 @@ class base_facture_widget: public QWidget
     public:
   base_facture_widget(QWidget * p_parent);
 
+  void set_date(const std::string &p_date);
   void set_enabled(bool p_enabled);
   void set_allowed_facture_ref(const std::vector<uint32_t> & p_list);
+  void set_reference(uint32_t p_ref);
   void set_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids);
   void set_status_list(const std::vector<facture_status> & p_status_list);
+  void set_status(uint32_t p_id);
 
   bool is_date_complete(void)const;
   bool is_date_empty(void)const;

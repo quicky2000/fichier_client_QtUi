@@ -61,7 +61,7 @@ main_window::main_window(void):
   manage_features(false);
 
   setMinimumSize(160, 160);
-  resize(800, 600);
+  resize(1000, 600);
 
   m_fichier_client.set_user_interface(this);
 }
@@ -189,9 +189,22 @@ void main_window::set_create_livre_facture_enabled(bool p_enabled)
 
 // Interactions with non attributed facture information
 //-------------------------------------------------------
+//------------------------------------------------------------------------------
+void main_window::set_non_attributed_facture_date(const std::string & p_date)
+{
+  m_livre_facture_widget->set_non_attributed_facture_date(p_date);
+}
+
+//------------------------------------------------------------------------------
 void main_window::set_non_attributed_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs)
 {
   m_livre_facture_widget->set_allowed_facture_references(p_remaining_refs);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_non_attributed_facture_reference(uint32_t p_ref)
+{
+   m_livre_facture_widget->set_facture_reference(p_ref);
 }
 
 //------------------------------------------------------------------------------
@@ -207,9 +220,21 @@ void main_window::set_non_attributed_facture_status_list(const std::vector<factu
 }
 
 //------------------------------------------------------------------------------
+void main_window::set_non_attributed_facture_status(uint32_t p_id)
+{
+  m_livre_facture_widget->set_status(p_id);
+}
+
+//------------------------------------------------------------------------------
 void main_window::set_non_attributed_facture_reason_list(const std::vector<facture_reason> & p_reason_list)
 {
   m_livre_facture_widget->set_reason_list(p_reason_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_non_attributed_facture_reason(uint32_t p_id)
+{
+  m_livre_facture_widget->set_reason(p_id);
 }
 
 //------------------------------------------------------------------------------
@@ -274,12 +299,37 @@ void main_window::refresh_list_facture_of_livre_facture(std::vector<search_factu
   m_livre_facture_widget->refresh_list_facture_of_livre_facture(p_list);
 }
 
+//------------------------------------------------------------------------------
+bool main_window::is_list_facture_of_livre_facture_selection_empty(void)const
+{
+  return m_livre_facture_widget->is_list_facture_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_list_facture_of_livre_facture_selected_id(void)const
+{
+  return m_livre_facture_widget->get_list_facture_selected_id();
+}
+
+
 // Interactions with non attributed facture buttons
 //---------------------------------------------------
 //------------------------------------------------------------------------------
 void main_window::set_facture_creation_for_selected_livre_enabled( bool p_enabled)
 {
   m_livre_facture_widget->set_facture_creation_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_facture_deletion_for_selected_livre_enabled( bool p_enabled)
+{
+  m_livre_facture_widget->set_facture_deletion_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_facture_modification_for_selected_livre_enabled( bool p_enabled)
+{
+  m_livre_facture_widget->set_facture_modification_enabled(p_enabled);
 }
 
 // Interactions with facture status information

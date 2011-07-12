@@ -16,7 +16,7 @@ public base_facture_widget
 
   const facture_reason * get_facture_reason(void)const;
   void set_reason_list(const std::vector<facture_reason> & p_reason_list);
-
+  void set_reason(uint32_t p_id);
  signals:
   void reason_selected(void);
 

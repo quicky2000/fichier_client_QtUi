@@ -50,6 +50,12 @@ base_facture_widget::base_facture_widget(QWidget * p_parent):
 }
 
 //------------------------------------------------------------------------------
+void base_facture_widget::set_date(const std::string &p_date)
+{
+  m_date_field->set_iso_date(p_date);
+}
+
+//------------------------------------------------------------------------------
 void base_facture_widget::set_enabled(bool p_enabled)
 {
   m_date_field->setEnabled(p_enabled);;
@@ -263,6 +269,43 @@ void base_facture_widget::set_status_list(const std::vector<facture_status> & p_
     {
       m_status_field->setCurrentIndex(0);
     }
+}
+
+//------------------------------------------------------------------------------
+void base_facture_widget::set_status(uint32_t p_id)
+{
+  if(m_status.size()>1)
+    {
+      std::vector<facture_status>::const_iterator l_iter = m_status.begin();
+      std::vector<facture_status>::const_iterator l_iter_end = m_status.end();
+      uint32_t l_index = 1;
+      while(l_iter != l_iter_end && l_iter->get_id() != p_id)
+	{
+	  ++l_iter;
+	  ++l_index;
+	}  
+      assert(l_iter->get_id() == p_id);
+      m_status_field->setCurrentIndex(l_index);
+    }
+}
+
+//------------------------------------------------------------------------------
+void base_facture_widget::set_reference(uint32_t p_ref)
+{
+  if(m_facture_references.size()>1)
+    {
+      std::vector<uint32_t>::const_iterator l_iter = m_facture_references.begin();
+      std::vector<uint32_t>::const_iterator l_iter_end = m_facture_references.end();
+      uint32_t l_index = 1;
+      while(l_iter != l_iter_end && *l_iter != p_ref)
+	{
+	  ++l_iter;
+	  ++l_index;
+	}  
+      assert(*l_iter == p_ref);
+      m_facture_reference_field->setCurrentIndex(l_index);
+    }
+  
 }
 
 //EOF
