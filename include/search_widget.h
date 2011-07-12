@@ -25,6 +25,7 @@ class search_widget : public QWidget
  private:
      QLineEdit * m_name_field;
      QLineEdit * m_first_name_field;
+     QLineEdit * m_address_field;
      QLineEdit * m_city_field;
      client_list_table *m_client_list_table;
      achat_list_table *m_achat_list_table;
