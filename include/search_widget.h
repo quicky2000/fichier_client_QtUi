@@ -39,6 +39,7 @@ class search_widget : public QWidget
  private slots:
      void treat_criteria_modification_event(void);
      void treat_customer_selected_event(int row);
+     void treat_no_more_customer_selected_event(void);
      void treat_add_customer_event(void);
      void treat_modify_customer_event(void);
      void treat_delete_customer_event(void);

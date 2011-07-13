@@ -99,9 +99,9 @@ void search_widget::set_enable(bool p_enable)
   m_city_field->setEnabled(p_enable);
   m_address_field->setEnabled(p_enable);
 
-  m_add_customer_button->setEnabled(p_enable);
-  m_modify_customer_button->setEnabled(p_enable);
-  m_delete_customer_button->setEnabled(p_enable);
+  m_add_customer_button->setEnabled(false);
+  m_modify_customer_button->setEnabled(false);
+  m_delete_customer_button->setEnabled(false);
 
   m_name_field->setText("");
   m_first_name_field->setText("");
@@ -191,6 +191,16 @@ void search_widget::treat_customer_selected_event(int p_row)
 {
   std::cout << "QtEvent:: search sutomer customer selected at row" << p_row << std::endl ;
   m_fichier_client.treat_search_customer_customer_selected_event();
+}
+
+//------------------------------------------------------------------------------
+void search_widget::treat_no_more_customer_selected_event(void)
+{
+  std::cout << "QtEvent:: search customer customer selection changed" << std::endl ;
+  if(m_client_list_table->selectedItems().isEmpty())
+    {
+      m_fichier_client.treat_search_customer_no_more_customer_selected_event();
+    }
 }
 
 //------------------------------------------------------------------------------
