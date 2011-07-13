@@ -50,7 +50,6 @@ class base_facture_widget: public QWidget
  protected:
   QHBoxLayout * get_layout(void);
   void set_combo_box_content(QComboBox * p_combo_box,std::vector<uint32_t> & p_current, const std::vector<uint32_t> & p_list);
-  void clear_combo_box_content(QComboBox * p_combo_box);
 
  private:
   uint32_t get_livre_facture_id(int p_index)const;

@@ -1,5 +1,5 @@
 #include "base_facture_widget.h"
-
+#include "fichier_client_QtUi_utils.h"
 #include "my_date_widget.h"
 #include "facture.h"
 #include <QHBoxLayout>
@@ -201,19 +201,9 @@ const facture_status * base_facture_widget::get_facture_status(void)const
 }
 
 //------------------------------------------------------------------------------
-void base_facture_widget::clear_combo_box_content(QComboBox * p_combo_box)
-{
-  assert(p_combo_box);
-  while(p_combo_box->count())
-    {
-      p_combo_box->removeItem(0);
-    }
-}
-
-//------------------------------------------------------------------------------
 void base_facture_widget::set_combo_box_content(QComboBox * p_combo_box,std::vector<uint32_t> & p_current,const std::vector<uint32_t> & p_list)
 {
-  clear_combo_box_content(p_combo_box);
+  fichier_client_QtUi_utils::clear_combo_box_content(p_combo_box);
   p_current.clear();
   if(p_list.size() > 1)
     {
@@ -251,7 +241,7 @@ void base_facture_widget::set_allowed_livre_ids(const std::vector<uint32_t> & p_
 //------------------------------------------------------------------------------
 void base_facture_widget::set_status_list(const std::vector<facture_status> & p_status_list)
 {
-  clear_combo_box_content(m_status_field);
+  fichier_client_QtUi_utils::clear_combo_box_content(m_status_field);
   m_status.clear();
   if(p_status_list.size() > 1)
     {

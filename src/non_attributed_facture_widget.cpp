@@ -1,4 +1,5 @@
 #include "non_attributed_facture_widget.h"
+#include "fichier_client_QtUi_utils.h"
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QComboBox>
@@ -47,7 +48,7 @@ const facture_reason * non_attributed_facture_widget::get_facture_reason(void)co
 //------------------------------------------------------------------------------
 void non_attributed_facture_widget::set_reason_list(const std::vector<facture_reason> & p_reason_list)
 {
-  clear_combo_box_content(m_reason_field);
+  fichier_client_QtUi_utils::clear_combo_box_content(m_reason_field);
   m_reasons.clear();
   if(p_reason_list.size() > 1)
     {
