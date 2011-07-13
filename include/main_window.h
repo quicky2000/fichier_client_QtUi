@@ -12,6 +12,7 @@ class QLabel;
 class QTabWidget;
 
 class search_widget;
+class customer_data_widget;
 class livre_facture_widget;
 class facture_status_widget;
 class facture_reason_widget;
@@ -30,6 +31,30 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   // Comunication with user
   void display_warning_message(const std::string & p_title,const std::string & p_text);
   void display_information_message(const std::string & p_title,const std::string & p_text);
+
+  // Interactions with customer search information
+  const std::string get_search_customer_name(void)const;
+  const std::string get_search_customer_first_name(void)const;
+  const std::string get_search_customer_address(void)const;
+  const std::string get_search_customer_city(void)const;
+  uint32_t get_selected_customer(void)const;
+  void update_search_customer_list(const std::vector<search_client_item> & p_list);
+  void update_search_customer_list_achat(const std::vector<search_achat_item> & p_list);
+  void update_search_customer_list_facture(const std::vector<search_facture_item> & p_list);
+
+  void set_customer_search_add_customer_enabled(bool p_enabled);
+  void set_customer_search_modify_customer_enabled(bool p_enabled);
+  void set_customer_search_delete_customer_enabled(bool p_enabled);
+
+  // Interactions with Customer identity information
+  void set_customer_name(const std::string & p_name);
+  const std::string get_customer_name(void)const;
+  void set_customer_first_name(const std::string & p_first_name);
+  const std::string get_customer_first_name(void)const;
+  void set_customer_phone(const std::string & p_phone);
+  const std::string get_customer_phone(void)const;
+  void set_customer_address(const std::string & p_address);
+  const std::string get_customer_address(void)const;
 
   // Interactions with livre facture information
   void clear_livre_facture_information(void);
@@ -140,6 +165,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   QLabel * m_status_label;
   QTabWidget *m_tab_widget;
   search_widget * m_search_widget;
+  customer_data_widget * m_customer_data_widget;
   livre_facture_widget *m_livre_facture_widget;
   facture_status_widget *m_facture_status_widget;
   facture_reason_widget *m_facture_reason_widget;

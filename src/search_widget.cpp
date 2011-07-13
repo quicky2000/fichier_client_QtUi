@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
 #include <iostream>
 
 //------------------------------------------------------------------------------
@@ -17,6 +18,9 @@ search_widget::search_widget(fichier_client & p_fichier_client,QWidget * p_paren
   m_address_field(NULL),
   m_city_field(NULL),
   m_client_list_table(NULL),
+  m_add_customer_button(NULL),
+  m_modify_customer_button(NULL),
+  m_delete_customer_button(NULL),
   m_achat_list_table(NULL),
   m_facture_list_table(NULL),
   m_fichier_client(p_fichier_client)
@@ -30,13 +34,13 @@ search_widget::search_widget(fichier_client & p_fichier_client,QWidget * p_paren
 
   m_name_field = new QLineEdit("");
   layout->addWidget(m_name_field);
-  connect(m_name_field,SIGNAL(textEdited(const QString&)),this, SLOT(criteria_modification()));
+  connect(m_name_field,SIGNAL(textEdited(const QString&)),this, SLOT(treat_criteria_modification_event()));
 
   layout->addWidget(new QLabel(tr("First Name")+" :"));
 
   m_first_name_field = new QLineEdit("");
   layout->addWidget(m_first_name_field);
-  connect(m_first_name_field,SIGNAL(textEdited(const QString&)),this, SLOT(criteria_modification()));
+  connect(m_first_name_field,SIGNAL(textEdited(const QString&)),this, SLOT(treat_criteria_modification_event()));
 
 
   layout->addStretch();
@@ -44,19 +48,36 @@ search_widget::search_widget(fichier_client & p_fichier_client,QWidget * p_paren
 
   m_address_field = new QLineEdit("");
   layout->addWidget(m_address_field);
-  connect(m_address_field,SIGNAL(textEdited(const QString &)),this, SLOT(criteria_modification()));
+  connect(m_address_field,SIGNAL(textEdited(const QString &)),this, SLOT(treat_criteria_modification_event()));
 
   layout->addWidget(new QLabel(tr("City")+" :"));
 
   m_city_field = new QLineEdit("");
   layout->addWidget(m_city_field);
-  connect(m_city_field,SIGNAL(textEdited(const QString &)),this, SLOT(criteria_modification()));
+  connect(m_city_field,SIGNAL(textEdited(const QString &)),this, SLOT(treat_criteria_modification_event()));
 
   l_vertical_layout->addWidget(new QLabel("Client search results :"));
 
   m_client_list_table = new client_list_table(l_frame);
   l_vertical_layout->addWidget(m_client_list_table);
-  connect(m_client_list_table,SIGNAL(cellClicked (int, int)),this, SLOT(client_selected(int)));
+  connect(m_client_list_table,SIGNAL(cellClicked (int, int)),this, SLOT(treat_customer_selected_event(int)));
+
+  QHBoxLayout * l_button_layout = new QHBoxLayout();
+
+  m_add_customer_button = new QPushButton(tr("Ajouter"));
+  connect(m_add_customer_button,SIGNAL(clicked()),this,SLOT(treat_add_customer_event()));
+
+  m_modify_customer_button = new QPushButton(tr("Modifier"));
+  connect(m_modify_customer_button,SIGNAL(clicked()),this,SLOT(treat_modify_customer_event()));
+
+  m_delete_customer_button = new QPushButton(tr("Supprimer"));
+  connect(m_delete_customer_button,SIGNAL(clicked()),this,SLOT(treat_delete_customer_event()));
+
+  l_button_layout->addWidget(m_add_customer_button);
+  l_button_layout->addWidget(m_modify_customer_button);
+  l_button_layout->addWidget(m_delete_customer_button);
+
+  l_vertical_layout->addLayout(l_button_layout);
 
   l_vertical_layout->addWidget(new QLabel("Achats for selected client :"));
 
@@ -76,43 +97,121 @@ void search_widget::set_enable(bool p_enable)
   m_name_field->setEnabled(p_enable);
   m_first_name_field->setEnabled(p_enable);
   m_city_field->setEnabled(p_enable);
+  m_address_field->setEnabled(p_enable);
+
+  m_add_customer_button->setEnabled(p_enable);
+  m_modify_customer_button->setEnabled(p_enable);
+  m_delete_customer_button->setEnabled(p_enable);
 
   m_name_field->setText("");
   m_first_name_field->setText("");
+  m_address_field->setText("");
   m_city_field->setText("");   
 
   m_client_list_table->clearContents();
   m_achat_list_table->clearContents();      
 }
 
-
+// Interactions with customer search criteria information
 //------------------------------------------------------------------------------
-void search_widget::criteria_modification(void)
+const std::string search_widget::get_customer_name(void)const
 {
-  std::cout << "Criteria modification" << std::endl ;
-  std::string l_name = m_name_field->text().toStdString();
-  std::string l_first_name = m_first_name_field->text().toStdString();
-  std::string l_address = m_address_field->text().toStdString();
-  std::string l_city = m_city_field->text().toStdString();
-  std::cout << "Name = \"" << l_name << "\"\tFirst name = \"" << l_first_name << "\"\tCity = \"" << l_city << "\"" << std::endl ;
-  std::vector<search_client_item> l_result ;
-  m_fichier_client.search_client(l_name,l_first_name,l_address,l_city,l_result);
-  m_client_list_table->update(l_result);
+  return m_name_field->text().toStdString();
 }
 
 //------------------------------------------------------------------------------
-void search_widget::client_selected(int p_row)
+const std::string search_widget::get_customer_first_name(void)const
 {
-  std::cout << "Row selected " << p_row << std::endl ;
-  uint32_t l_client_id = m_client_list_table->get_selected_client_id(p_row);
-  std::cout << "Id of selected client " << l_client_id << std::endl;
-  std::vector<search_achat_item> l_list_achat;
-  m_fichier_client.get_achat_by_client_id(l_client_id,l_list_achat);
-  m_achat_list_table->update(l_list_achat);  
+  return m_first_name_field->text().toStdString();
+}
 
-  std::vector<search_facture_item> l_list_facture;
-  m_fichier_client.get_facture_by_client_id(l_client_id,l_list_facture);
-  m_facture_list_table->update(l_list_facture);  
+//------------------------------------------------------------------------------
+const std::string search_widget::get_customer_address(void)const
+{
+  return m_address_field->text().toStdString();
+}
+
+//------------------------------------------------------------------------------
+const std::string search_widget::get_customer_city(void)const
+{
+  return m_city_field->text().toStdString();
+}
+
+//------------------------------------------------------------------------------
+uint32_t search_widget::get_selected_customer(void)const
+{
+  return m_client_list_table->get_selected_client_id(m_client_list_table->currentRow());
+}
+
+//------------------------------------------------------------------------------
+void search_widget::update_customer_list(const std::vector<search_client_item> & p_list)
+{
+  m_client_list_table->update(p_list);
+}
+
+//------------------------------------------------------------------------------
+void search_widget::update_customer_list_achat(const std::vector<search_achat_item> & p_list)
+{
+  m_achat_list_table->update(p_list);
+}
+
+//------------------------------------------------------------------------------
+void search_widget::update_customer_list_facture(const std::vector<search_facture_item> & p_list)
+{
+  m_facture_list_table->update(p_list);
+}
+
+//------------------------------------------------------------------------------
+void search_widget::set_add_customer_enabled(bool p_enabled)
+{
+  m_add_customer_button->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void search_widget::set_modify_customer_enabled(bool p_enabled)
+{
+  m_modify_customer_button->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void search_widget::set_delete_customer_enabled(bool p_enabled)
+{
+ m_delete_customer_button->setEnabled(p_enabled); 
+}
+
+//------------------------------------------------------------------------------
+void search_widget::treat_criteria_modification_event(void)
+{
+  std::cout << "QtEvent::search customer Criteria modification" << std::endl ;
+  m_fichier_client.treat_search_customer_criteria_modification_event();
+}
+
+//------------------------------------------------------------------------------
+void search_widget::treat_customer_selected_event(int p_row)
+{
+  std::cout << "QtEvent:: search sutomer customer selected at row" << p_row << std::endl ;
+  m_fichier_client.treat_search_customer_customer_selected_event();
+}
+
+//------------------------------------------------------------------------------
+void search_widget::treat_add_customer_event(void)
+{
+  std::cout << "QtEvent::Button add customer clicked" << std::endl ;
+  m_fichier_client.treat_search_customer_add_customer_event();
+}
+
+//------------------------------------------------------------------------------
+void search_widget::treat_modify_customer_event(void)
+{
+  std::cout << "QtEvent::Button modify customer clicked" << std::endl ;
+  m_fichier_client.treat_search_customer_modify_customer_event();
+}
+
+//------------------------------------------------------------------------------
+void search_widget::treat_delete_customer_event(void)
+{
+  std::cout << "QtEvent::Button delete customer clicked" << std::endl ;
+  m_fichier_client.treat_search_customer_delete_customer_event();
 }
 
 //EOF

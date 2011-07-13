@@ -2,6 +2,7 @@
 #include "test.h"
 #include "my_date_widget.h"
 #include "search_widget.h"
+#include "customer_data_widget.h"
 #include "livre_facture_widget.h"
 #include "facture_status_widget.h"
 #include "facture_reason_widget.h"
@@ -31,6 +32,7 @@ main_window::main_window(void):
   m_file_menu(NULL),
   m_status_label(NULL),
   m_search_widget(NULL),
+  m_customer_data_widget(NULL),
   m_livre_facture_widget(NULL),
   m_facture_status_widget(NULL),
   m_facture_reason_widget(NULL)
@@ -47,11 +49,14 @@ main_window::main_window(void):
   // Search widget
   m_search_widget = new search_widget(m_fichier_client);
 
+  m_customer_data_widget = new customer_data_widget(m_fichier_client);
+
   m_facture_status_widget = new facture_status_widget(m_fichier_client);
 
   m_facture_reason_widget = new facture_reason_widget(m_fichier_client);
 
   m_tab_widget->addTab(m_search_widget,tr("Search"));
+  m_tab_widget->addTab(m_customer_data_widget,tr("Donnees Client"));
   m_tab_widget->addTab(m_livre_facture_widget,tr("Livre facture"));
   m_tab_widget->addTab(m_facture_status_widget,tr("Facture status"));
   m_tab_widget->addTab(m_facture_reason_widget,tr("Facture reason"));
@@ -91,8 +96,123 @@ void main_window::display_information_message(const std::string & p_title,const 
   QMessageBox::information (this,p_title.c_str(),p_text.c_str(), QMessageBox::Ok,QMessageBox::Ok);
 }
 
-// Interactions with livre facture information
+// Interactions with customer search information
 //------------------------------------------------------------------------------
+const std::string main_window::get_search_customer_name(void)const
+{
+  return m_search_widget->get_customer_name();
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_search_customer_first_name(void)const
+{
+  return m_search_widget->get_customer_first_name();
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_search_customer_address(void)const
+{
+  return m_search_widget->get_customer_address();
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_search_customer_city(void)const
+{
+  return m_search_widget->get_customer_city();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_selected_customer(void)const
+{
+  return m_search_widget->get_selected_customer();
+}
+
+//------------------------------------------------------------------------------
+void main_window::update_search_customer_list(const std::vector<search_client_item> & p_list)
+{
+  m_search_widget->update_customer_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::update_search_customer_list_achat(const std::vector<search_achat_item> & p_list)
+{
+  m_search_widget->update_customer_list_achat(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::update_search_customer_list_facture(const std::vector<search_facture_item> & p_list)
+{
+  m_search_widget->update_customer_list_facture(p_list);
+}
+//------------------------------------------------------------------------------
+void main_window::set_customer_search_add_customer_enabled(bool p_enabled)
+{
+  m_search_widget->set_add_customer_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_search_modify_customer_enabled(bool p_enabled)
+{
+  m_search_widget->set_modify_customer_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_search_delete_customer_enabled(bool p_enabled)
+{
+  m_search_widget->set_delete_customer_enabled(p_enabled);
+}
+
+
+// Interactions with Customer identity information
+//------------------------------------------------------------------------------
+void main_window::set_customer_name(const std::string & p_name)
+{
+  m_customer_data_widget->set_name(p_name);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_name(void)const
+{
+  return m_customer_data_widget->get_name();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_first_name(const std::string & p_first_name)
+{
+  m_customer_data_widget->set_first_name(p_first_name);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_first_name(void)const
+{
+  return m_customer_data_widget->get_first_name();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_phone(const std::string & p_phone)
+{
+  m_customer_data_widget->set_phone(p_phone);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_phone(void)const
+{
+  return m_customer_data_widget->get_phone();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_address(const std::string & p_address)
+{
+  m_customer_data_widget->set_address(p_address);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_address(void)const
+{
+  return m_customer_data_widget->get_address();
+}
+
+// Interactions with livre facture information
 //------------------------------------------------------------------------------
 void main_window::clear_livre_facture_information(void)
 {
