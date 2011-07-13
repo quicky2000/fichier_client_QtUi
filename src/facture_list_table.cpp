@@ -85,7 +85,7 @@ void facture_list_table::set_row_content(uint32_t p_row,const search_facture_ite
 }
 
 //------------------------------------------------------------------------------
-void facture_list_table::update(std::vector<search_facture_item> & p_search_facture_item_list)
+void facture_list_table::update(const std::vector<search_facture_item> & p_search_facture_item_list)
 {
   clearContents();
   setRowCount(p_search_facture_item_list.size());

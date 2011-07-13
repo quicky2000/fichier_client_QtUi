@@ -42,7 +42,7 @@ void achat_list_table::set_row_content(uint32_t p_row,const search_achat_item & 
       setItem(p_row,8,new simple_table_cell(l_livre_facture_id));
  }
 
-void achat_list_table::update(std::vector<search_achat_item> & p_achat_list)
+void achat_list_table::update(const std::vector<search_achat_item> & p_achat_list)
 {
   clearContents();
   setRowCount(p_achat_list.size());
