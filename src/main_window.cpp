@@ -42,7 +42,7 @@ main_window::main_window(void):
   create_menus();
   create_status_bar();
 
-  QTabWidget * m_tab_widget = new QTabWidget();
+  m_tab_widget = new QTabWidget();
 
   m_livre_facture_widget = new livre_facture_widget(m_fichier_client);
 
@@ -97,6 +97,12 @@ void main_window::display_information_message(const std::string & p_title,const 
 }
 
 // Interactions with customer search information
+//------------------------------------------------------------------------------
+void main_window::set_focus_on_customer_search(void)
+{
+  m_tab_widget->setCurrentWidget(m_search_widget);
+}
+
 //------------------------------------------------------------------------------
 const std::string main_window::get_search_customer_name(void)const
 {
@@ -165,6 +171,12 @@ void main_window::set_customer_search_delete_customer_enabled(bool p_enabled)
 
 // Interactions with Customer identity information
 //------------------------------------------------------------------------------
+void main_window::set_focus_on_customer_data(void)
+{
+  m_tab_widget->setCurrentWidget(m_customer_data_widget);
+}
+
+//------------------------------------------------------------------------------
 void main_window::set_customer_name(const std::string & p_name)
 {
   m_customer_data_widget->set_name(p_name);
@@ -201,6 +213,18 @@ const std::string main_window::get_customer_phone(void)const
 }
 
 //------------------------------------------------------------------------------
+bool main_window::is_customer_phone_empty(void)const
+{
+  return m_customer_data_widget->is_phone_empty();
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_customer_phone_complete(void)const
+{
+  return m_customer_data_widget->is_phone_complete();
+}
+
+//------------------------------------------------------------------------------
 void main_window::set_customer_address(const std::string & p_address)
 {
   m_customer_data_widget->set_address(p_address);
@@ -211,6 +235,117 @@ const std::string main_window::get_customer_address(void)const
 {
   return m_customer_data_widget->get_address();
 }
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_postal_code(const std::string & p_postal_code)
+{
+  m_customer_data_widget->set_postal_code(p_postal_code);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_postal_code(void)const
+{
+  return m_customer_data_widget->get_postal_code();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_city_list(const std::vector<ville> & p_list)
+{
+  m_customer_data_widget->set_city_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+const ville * main_window::get_customer_city(void)const
+{
+  return m_customer_data_widget->get_city();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_data_identity_fields_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_identity_fields_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_data_create_customer_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_create_customer_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_data_modify_customer_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_modify_customer_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_data_delete_customer_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_delete_customer_enabled(p_enabled);
+}
+
+// Interactions with customer bill information
+//------------------------------------------------------------------------------
+void main_window::set_customer_bill_fields_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_bill_fields_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_bill_list_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_bill_list_enabled(p_enabled);  
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_bill_creation_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_bill_creation_enabled(p_enabled);  
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_bill_modification_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_bill_modification_enabled(p_enabled);  
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_bill_deletion_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_bill_deletion_enabled(p_enabled);  
+}
+
+// Interactions with customer purchase information
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_fields_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_purchase_fields_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_list_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_purchase_list_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_creation_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_purchase_creation_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_modification_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_purchase_modification_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_deletion_enabled(bool p_enabled)
+{
+  m_customer_data_widget->set_purchase_deletion_enabled(p_enabled);
+}
+
 
 // Interactions with livre facture information
 //------------------------------------------------------------------------------

@@ -33,6 +33,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void display_information_message(const std::string & p_title,const std::string & p_text);
 
   // Interactions with customer search information
+  void set_focus_on_customer_search(void);
   const std::string get_search_customer_name(void)const;
   const std::string get_search_customer_first_name(void)const;
   const std::string get_search_customer_address(void)const;
@@ -47,14 +48,39 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_customer_search_delete_customer_enabled(bool p_enabled);
 
   // Interactions with Customer identity information
+  void set_focus_on_customer_data(void);
   void set_customer_name(const std::string & p_name);
   const std::string get_customer_name(void)const;
   void set_customer_first_name(const std::string & p_first_name);
   const std::string get_customer_first_name(void)const;
   void set_customer_phone(const std::string & p_phone);
   const std::string get_customer_phone(void)const;
+  bool is_customer_phone_empty(void)const;
+  bool is_customer_phone_complete(void)const;
   void set_customer_address(const std::string & p_address);
   const std::string get_customer_address(void)const;
+  void set_customer_postal_code(const std::string & p_postal_code);
+  const std::string get_customer_postal_code(void)const;
+  void set_customer_city_list(const std::vector<ville> & p_list);
+  const ville * get_customer_city(void)const;
+  void set_customer_data_identity_fields_enabled(bool p_enabled);
+  void set_customer_data_create_customer_enabled(bool p_enabled);
+  void set_customer_data_modify_customer_enabled(bool p_enabled);
+  void set_customer_data_delete_customer_enabled(bool p_enabled);
+
+  // Interactions with customer bill information
+  void set_customer_bill_fields_enabled(bool p_enabled);
+  void set_customer_bill_list_enabled(bool p_enabled);
+  void set_customer_bill_creation_enabled(bool p_enabled);
+  void set_customer_bill_modification_enabled(bool p_enabled);
+  void set_customer_bill_deletion_enabled(bool p_enabled);
+
+  // Interactions with customer purchase information
+  void set_customer_purchase_fields_enabled(bool p_enabled);
+  void set_customer_purchase_list_enabled(bool p_enabled);
+  void set_customer_purchase_creation_enabled(bool p_enabled);
+  void set_customer_purchase_modification_enabled(bool p_enabled);
+  void set_customer_purchase_deletion_enabled(bool p_enabled);
 
   // Interactions with livre facture information
   void clear_livre_facture_information(void);
@@ -77,7 +103,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_modify_livre_facture_enabled(bool p_enabled);
   void set_create_livre_facture_enabled(bool p_enabled);
 
-  // Interactions with non attribtued facture information
+  // Interactions with non attributed facture information
   void set_non_attributed_facture_date(const std::string & p_date);
   void set_non_attributed_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs);
   void set_non_attributed_facture_reference(uint32_t p_ref);
