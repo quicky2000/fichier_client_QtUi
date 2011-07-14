@@ -70,6 +70,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
 
   // Interactions with customer bill information
   void set_customer_bill_fields_enabled(bool p_enabled);
+  void update_customer_data_bill_list(const std::vector<search_facture_item> & p_list);
   void set_customer_bill_list_enabled(bool p_enabled);
   void set_customer_bill_creation_enabled(bool p_enabled);
   void set_customer_bill_modification_enabled(bool p_enabled);
@@ -77,6 +78,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
 
   // Interactions with customer purchase information
   void set_customer_purchase_fields_enabled(bool p_enabled);
+  void update_customer_data_purchase_list(const std::vector<search_achat_item> & p_list);
   void set_customer_purchase_list_enabled(bool p_enabled);
   void set_customer_purchase_creation_enabled(bool p_enabled);
   void set_customer_purchase_modification_enabled(bool p_enabled);

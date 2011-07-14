@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include "ville.h"
+#include "search_facture_item.h"
+#include "search_achat_item.h"
 
 class fichier_client;
 
@@ -42,6 +44,7 @@ class customer_data_widget: public QWidget
 
    // Interactions with customer bill information
    void set_bill_fields_enabled(bool p_enabled);
+   void update_bill_list(const std::vector<search_facture_item> & p_list);
    void set_bill_list_enabled(bool p_enabled);
    void set_bill_creation_enabled(bool p_enabled);
    void set_bill_modification_enabled(bool p_enabled);
@@ -49,6 +52,7 @@ class customer_data_widget: public QWidget
    
    // Interactions with customer purchase information
    void set_purchase_fields_enabled(bool p_enabled);
+   void update_purchase_list(const std::vector<search_achat_item> & p_list);
    void set_purchase_list_enabled(bool p_enabled);
    void set_purchase_creation_enabled(bool p_enabled);
    void set_purchase_modification_enabled(bool p_enabled);

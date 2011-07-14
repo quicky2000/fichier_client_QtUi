@@ -66,7 +66,7 @@ main_window::main_window(void):
   manage_features(false);
 
   setMinimumSize(160, 160);
-  resize(1000, 600);
+  resize(1024, 768);
 
   m_fichier_client.set_user_interface(this);
 }
@@ -292,6 +292,12 @@ void main_window::set_customer_bill_fields_enabled(bool p_enabled)
 }
 
 //------------------------------------------------------------------------------
+void main_window::update_customer_data_bill_list(const std::vector<search_facture_item> & p_list)
+{
+  m_customer_data_widget->update_bill_list(p_list);
+}
+
+//------------------------------------------------------------------------------
 void main_window::set_customer_bill_list_enabled(bool p_enabled)
 {
   m_customer_data_widget->set_bill_list_enabled(p_enabled);  
@@ -320,6 +326,12 @@ void main_window::set_customer_bill_deletion_enabled(bool p_enabled)
 void main_window::set_customer_purchase_fields_enabled(bool p_enabled)
 {
   m_customer_data_widget->set_purchase_fields_enabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::update_customer_data_purchase_list(const std::vector<search_achat_item> & p_list)
+{
+  m_customer_data_widget->update_purchase_list(p_list);
 }
 
 //------------------------------------------------------------------------------

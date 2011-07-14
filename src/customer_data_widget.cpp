@@ -242,7 +242,13 @@ const std::string customer_data_widget::get_first_name(void)const
 //------------------------------------------------------------------------------
 void customer_data_widget::set_phone(const std::string & p_phone)
 {
-  m_phone_field->setText(p_phone.c_str());
+  assert(p_phone.size()==10 || p_phone.size()==0);
+  std::string l_new_phone ;
+  if(p_phone.size())
+    {
+      l_new_phone = p_phone.substr(0,2) + "-" + p_phone.substr(2,2) + "-" + p_phone.substr(4,2) + "-" + p_phone.substr(6,2) + "-" + p_phone.substr(8,2);
+    }
+  m_phone_field->setText(l_new_phone.c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -354,6 +360,12 @@ void customer_data_widget::set_bill_fields_enabled(bool p_enabled)
 }
 
 //------------------------------------------------------------------------------
+void customer_data_widget::update_bill_list(const std::vector<search_facture_item> & p_list)
+{
+  m_bill_list_table->update(p_list);
+}
+
+//------------------------------------------------------------------------------
 void customer_data_widget::set_bill_list_enabled(bool p_enabled)
 {
   m_bill_list_table->setEnabled(p_enabled);
@@ -387,6 +399,12 @@ void customer_data_widget::set_purchase_fields_enabled(bool p_enabled)
   m_euro_price_field->setEnabled(p_enabled);
   m_franc_price_field->setEnabled(p_enabled);
   m_warranty_field->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::update_purchase_list(const std::vector<search_achat_item> & p_list)
+{
+  m_purchase_list_table->update(p_list);
 }
 
 //------------------------------------------------------------------------------
