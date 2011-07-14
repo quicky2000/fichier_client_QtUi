@@ -27,7 +27,7 @@ template<class T> void fichier_client_QtUi_utils::set_combo_box_named_list(QComb
   typename std::vector<T>::const_iterator l_iter_end = p_list.end();
   while(l_iter != l_iter_end)
     {
-      p_combo_box->addItem(l_iter->getName().c_str());
+      p_combo_box->addItem(l_iter->get_name().c_str());
       p_current.push_back(*l_iter);
       ++l_iter;
     }

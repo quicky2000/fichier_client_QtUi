@@ -251,7 +251,7 @@ void base_facture_widget::set_status_list(const std::vector<facture_status> & p_
   std::vector<facture_status>::const_iterator l_iter_end = p_status_list.end();
   while(l_iter != l_iter_end)
     {
-      m_status_field->addItem(l_iter->getName().c_str());
+      m_status_field->addItem(l_iter->get_name().c_str());
       m_status.push_back(*l_iter);
       ++l_iter;
     }

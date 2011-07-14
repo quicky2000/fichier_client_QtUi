@@ -31,7 +31,7 @@ void facture_reason_list_table::set_row_content(uint32_t p_row,const facture_rea
       QString l_id_q;
       l_id_q.setNum(p_facture_reason_item.get_id());
       setItem(p_row,0,new simple_table_cell(l_id_q,p_facture_reason_item.get_id()));
-      setItem(p_row,1,new simple_table_cell(p_facture_reason_item.getName().c_str()));
+      setItem(p_row,1,new simple_table_cell(p_facture_reason_item.get_name().c_str()));
  }
 
 //------------------------------------------------------------------------------

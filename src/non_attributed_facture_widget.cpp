@@ -58,7 +58,7 @@ void non_attributed_facture_widget::set_reason_list(const std::vector<facture_re
   std::vector<facture_reason>::const_iterator l_iter_end = p_reason_list.end();
   while(l_iter != l_iter_end)
     {
-      m_reason_field->addItem(l_iter->getName().c_str());
+      m_reason_field->addItem(l_iter->get_name().c_str());
       m_reasons.push_back(*l_iter);
       ++l_iter;
     }
