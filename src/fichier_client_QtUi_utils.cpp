@@ -32,4 +32,24 @@ void fichier_client_QtUi_utils::clear_combo_box_content(QComboBox * p_combo_box)
     }
 }
 
+//------------------------------------------------------------------------------
+void fichier_client_QtUi_utils::select_combo_box_content(uint32_t p_value,QComboBox * p_combo_box,const std::vector<uint32_t> & p_content)
+{
+  assert(p_combo_box);
+    if(p_content.size()>1)
+    {
+      std::vector<uint32_t>::const_iterator l_iter = p_content.begin();
+      std::vector<uint32_t>::const_iterator l_iter_end = p_content.end();
+      uint32_t l_index = 1;
+      while(l_iter != l_iter_end && *l_iter != p_value)
+	{
+	  ++l_iter;
+	  ++l_index;
+	}  
+      assert(*l_iter == p_value);
+      p_combo_box->setCurrentIndex(l_index);
+    }
+
+}
+
 //EOF 
