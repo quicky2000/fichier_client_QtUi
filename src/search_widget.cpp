@@ -61,6 +61,7 @@ search_widget::search_widget(fichier_client & p_fichier_client,QWidget * p_paren
   m_client_list_table = new client_list_table(l_frame);
   l_vertical_layout->addWidget(m_client_list_table);
   connect(m_client_list_table,SIGNAL(cellClicked (int, int)),this, SLOT(treat_customer_selected_event(int)));
+  connect(m_client_list_table,SIGNAL(itemSelectionChanged()),this, SLOT(treat_customer_selection_changed_event()));
 
   QHBoxLayout * l_button_layout = new QHBoxLayout();
 
@@ -194,7 +195,7 @@ void search_widget::treat_customer_selected_event(int p_row)
 }
 
 //------------------------------------------------------------------------------
-void search_widget::treat_no_more_customer_selected_event(void)
+void search_widget::treat_customer_selection_changed_event(void)
 {
   std::cout << "QtEvent:: search customer customer selection changed" << std::endl ;
   if(m_client_list_table->selectedItems().isEmpty())
