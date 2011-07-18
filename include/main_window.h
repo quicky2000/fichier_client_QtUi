@@ -70,11 +70,31 @@ class main_window : public QMainWindow, public fichier_client_UI_if
 
   // Interactions with customer bill information
   void set_customer_bill_fields_enabled(bool p_enabled);
+  void set_customer_facture_date(const std::string & p_date);
+  void set_customer_facture_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids);
+  void set_customer_facture_livre_id(uint32_t p_id);
+  void set_customer_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs);
+  void set_customer_facture_reference(uint32_t p_ref);
+  void set_customer_facture_status_list(const std::vector<facture_status> & p_status_list);
+  void set_customer_facture_status(uint32_t p_id);
+  bool is_customer_bill_date_complete(void)const;
+  bool is_customer_bill_date_empty(void)const;
+  const std::string get_customer_bill_date(void)const;
+  uint32_t get_customer_bill_book_id(void)const;
+  uint32_t get_customer_bill_reference(void)const;
+  const facture_status * get_customer_bill_status(void)const;
+
+  // Interactions with customer bill list
+  bool is_customer_data_bill_selection_empty(void)const;
+  uint32_t get_customer_data_selected_bill_id(void)const;
   void update_customer_data_bill_list(const std::vector<search_facture_item> & p_list);
   void set_customer_bill_list_enabled(bool p_enabled);
+
+  // Interactions with customer bill actions
   void set_customer_bill_creation_enabled(bool p_enabled);
   void set_customer_bill_modification_enabled(bool p_enabled);
   void set_customer_bill_deletion_enabled(bool p_enabled);
+
 
   // Interactions with customer purchase information
   void set_customer_purchase_fields_enabled(bool p_enabled);

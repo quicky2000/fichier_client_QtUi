@@ -135,17 +135,28 @@ customer_data_widget::customer_data_widget(fichier_client & p_fichier_client,QWi
   QVBoxLayout *l_customer_bills_vertical_layout = new QVBoxLayout();
 
   m_bill_widget = new base_facture_widget(this);
+  connect(m_bill_widget,SIGNAL(new_date_entered()),this, SLOT(treat_date_modification_event()));
+  connect(m_bill_widget,SIGNAL(new_facture_ref_selected()),this, SLOT(treat_bill_ref_selected_event()));
+  connect(m_bill_widget,SIGNAL(new_livre_facture_selected()),this, SLOT(treat_bill_book_selected_event()));
+  connect(m_bill_widget,SIGNAL(new_status_selected()),this, SLOT(treat_status_selected_event()));
   l_customer_bills_vertical_layout->addWidget(m_bill_widget);
 
   m_bill_list_table = new facture_list_table(this);
+  connect(m_bill_list_table,SIGNAL(cellClicked (int, int)),this, SLOT(treat_bill_selected_event()));
+  connect(m_bill_list_table,SIGNAL(itemSelectionChanged()),this, SLOT(treat_bill_selection_changed_event()));
   l_customer_bills_vertical_layout->addWidget(m_bill_list_table);
 
   QHBoxLayout *l_customer_bills_button_layout = new QHBoxLayout();
   m_create_bill_button = new QPushButton(tr("Creer"));
+  connect(m_create_bill_button,SIGNAL(clicked()),this,SLOT(treat_create_bill_event()));
   l_customer_bills_button_layout->addWidget(m_create_bill_button);
+
   m_modify_bill_button = new QPushButton(tr("Modifier"));
+  connect(m_modify_bill_button,SIGNAL(clicked()),this,SLOT(treat_modify_bill_event()));
   l_customer_bills_button_layout->addWidget(m_modify_bill_button);
+
   m_delete_bill_button = new QPushButton(tr("Supprimer"));
+  connect(m_delete_bill_button,SIGNAL(clicked()),this,SLOT(treat_delete_bill_event()));
   l_customer_bills_button_layout->addWidget(m_delete_bill_button);
 
   l_customer_bills_vertical_layout->addLayout(l_customer_bills_button_layout);
@@ -334,6 +345,7 @@ void customer_data_widget::set_identity_fields_enabled(bool p_enabled)
   m_city_field->setEnabled(p_enabled);
 }
 
+// Interactions with customer identity actions
 //------------------------------------------------------------------------------
 void customer_data_widget::set_create_customer_enabled(bool p_enabled)
 {
@@ -360,6 +372,97 @@ void customer_data_widget::set_bill_fields_enabled(bool p_enabled)
 }
 
 //------------------------------------------------------------------------------
+void customer_data_widget::set_facture_date(const std::string & p_date)
+{
+  m_bill_widget->set_date(p_date);
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::set_facture_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids)
+{
+  m_bill_widget->set_allowed_livre_ids(p_livre_ids);
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::set_facture_livre_id(uint32_t p_id)
+{
+  m_bill_widget->set_livre_id(p_id);
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::set_facture_allowed_references(const std::vector<uint32_t> & p_remaining_refs)
+{
+  m_bill_widget->set_allowed_facture_ref(p_remaining_refs);
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::set_facture_reference(uint32_t p_ref)
+{
+  m_bill_widget->set_reference(p_ref);
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::set_facture_status_list(const std::vector<facture_status> & p_status_list)
+{
+  m_bill_widget->set_status_list(p_status_list);
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::set_facture_status(uint32_t p_id)
+{
+  m_bill_widget->set_status(p_id); 
+}
+
+//------------------------------------------------------------------------------
+bool customer_data_widget::is_bill_date_complete(void)const
+{
+  return m_bill_widget->is_date_complete();
+}
+
+//------------------------------------------------------------------------------
+bool customer_data_widget::is_bill_date_empty(void)const
+{
+  return m_bill_widget->is_date_empty();
+}
+
+//------------------------------------------------------------------------------
+const std::string customer_data_widget::get_bill_date(void)const
+{
+  return m_bill_widget->get_iso_date();
+}
+
+//------------------------------------------------------------------------------
+uint32_t customer_data_widget::get_bill_book_id(void)const
+{
+  return m_bill_widget->get_livre_facture_id();
+}
+
+//------------------------------------------------------------------------------
+uint32_t customer_data_widget::get_bill_reference(void)const
+{
+  return m_bill_widget->get_facture_reference();
+}
+
+//------------------------------------------------------------------------------
+const facture_status * customer_data_widget::get_bill_status(void)const
+{
+  return m_bill_widget->get_facture_status();
+}
+
+// Interactions with customer bill list
+//------------------------------------------------------------------------------
+bool customer_data_widget::is_bill_selection_empty(void)const
+{
+  return m_bill_list_table->selectedItems().isEmpty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t customer_data_widget::get_selected_bill_id(void)const
+{
+  return m_bill_list_table->get_selected_facture_item_id(m_bill_list_table->currentRow());
+}
+
+//------------------------------------------------------------------------------
 void customer_data_widget::update_bill_list(const std::vector<search_facture_item> & p_list)
 {
   m_bill_list_table->update(p_list);
@@ -371,6 +474,7 @@ void customer_data_widget::set_bill_list_enabled(bool p_enabled)
   m_bill_list_table->setEnabled(p_enabled);
 }
 
+// Interactions with customer bill action
 //------------------------------------------------------------------------------
 void customer_data_widget::set_bill_creation_enabled(bool p_enabled)
 {
@@ -453,6 +557,7 @@ void customer_data_widget::treat_identity_content_modification_event(void)
   m_fichier_client.treat_identity_content_modification_event();
 }
 
+// Customer identity actions event handlers
 //------------------------------------------------------------------------------
 void customer_data_widget::treat_create_customer_event(void)
 {
@@ -474,5 +579,73 @@ void customer_data_widget::treat_delete_customer_event(void)
   m_fichier_client.treat_customer_data_delete_customer_event();
 }
 
+// Customer bill information event handlers
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_date_modification_event(void)
+{
+  std::cout << "QtEvent::customer_data bill data modification event" << std::endl;
+  m_fichier_client.treat_customer_data_bill_date_modification_event();
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_bill_ref_selected_event(void)
+{
+  std::cout << "QtEvent::customer_data bill ref selection event" << std::endl;
+  m_fichier_client.treat_customer_data_bill_ref_selection_event();
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_bill_book_selected_event(void)
+{
+  std::cout << "QtEvent::customer_data bill book selection event" << std::endl;
+  m_fichier_client.treat_customer_data_bill_book_selection_event();
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_status_selected_event(void)
+{
+  std::cout << "QtEvent::customer_data bill status selection event" << std::endl;
+  m_fichier_client.treat_customer_data_bill_status_selection_event();
+}
+
+// Customer bill list event handlers
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_bill_selected_event(void)
+{
+  std::cout << "QtEvent::customer_data bill selected event" << std::endl ;
+  m_fichier_client.treat_customer_data_bill_selected_event();
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_bill_selection_changed_event(void)
+{
+  std::cout << "QtEvent::customer_data bill selection changed event" << std::endl ;
+  if(m_bill_list_table->selectedItems().isEmpty())
+    {
+      m_fichier_client.treat_customer_data_no_more_bill_selected_event();
+    }
+}
+
+// Customer bill action event handlers
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_create_bill_event(void)
+{
+  std::cout << "QtEvent::customer_data bill create button clicked event" << std::endl ;
+  m_fichier_client.treat_customer_data_bill_creation_event();
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_modify_bill_event(void)
+{
+  std::cout << "QtEvent::customer_data bill modify button clicked event" << std::endl ;
+  m_fichier_client.treat_customer_data_bill_modification_event();
+}
+
+//------------------------------------------------------------------------------
+void customer_data_widget::treat_delete_bill_event(void)
+{
+  std::cout << "QtEvent::customer_data bill delete button clicked event" << std::endl ;
+  m_fichier_client.treat_customer_data_bill_deletion_event();
+}
 
 //EOF

@@ -292,6 +292,98 @@ void main_window::set_customer_bill_fields_enabled(bool p_enabled)
 }
 
 //------------------------------------------------------------------------------
+void main_window::set_customer_facture_date(const std::string & p_date)
+{
+  m_customer_data_widget->set_facture_date(p_date);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_facture_allowed_livre_ids(const std::vector<uint32_t> & p_livre_ids)
+{
+  m_customer_data_widget->set_facture_allowed_livre_ids(p_livre_ids);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_facture_livre_id(uint32_t p_id)
+{
+  m_customer_data_widget->set_facture_livre_id(p_id);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_allowed_facture_references(const std::vector<uint32_t> & p_remaining_refs)
+{
+  m_customer_data_widget->set_facture_allowed_references(p_remaining_refs);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_facture_reference(uint32_t p_ref)
+{
+  m_customer_data_widget->set_facture_reference(p_ref);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_facture_status_list(const std::vector<facture_status> & p_status_list)
+{
+  m_customer_data_widget->set_facture_status_list(p_status_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_facture_status(uint32_t p_id)
+{
+  m_customer_data_widget->set_facture_status(p_id);
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_customer_bill_date_complete(void)const
+{
+  return m_customer_data_widget->is_bill_date_complete();
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_customer_bill_date_empty(void)const
+{
+  return m_customer_data_widget->is_bill_date_empty();
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_bill_date(void)const
+{
+  return m_customer_data_widget->get_bill_date();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_customer_bill_book_id(void)const
+{
+  return m_customer_data_widget->get_bill_book_id();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_customer_bill_reference(void)const
+{
+  return m_customer_data_widget->get_bill_reference();
+}
+
+//------------------------------------------------------------------------------
+const facture_status * main_window::get_customer_bill_status(void)const
+{
+  return m_customer_data_widget->get_bill_status();
+}
+
+
+// Interactions with customer bill list
+//------------------------------------------------------------------------------
+bool main_window::is_customer_data_bill_selection_empty(void)const
+{
+  return m_customer_data_widget->is_bill_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_customer_data_selected_bill_id(void)const
+{
+  return m_customer_data_widget->get_selected_bill_id();
+}
+
+//------------------------------------------------------------------------------
 void main_window::update_customer_data_bill_list(const std::vector<search_facture_item> & p_list)
 {
   m_customer_data_widget->update_bill_list(p_list);
@@ -303,6 +395,7 @@ void main_window::set_customer_bill_list_enabled(bool p_enabled)
   m_customer_data_widget->set_bill_list_enabled(p_enabled);  
 }
 
+// Interactions with customer bill action
 //------------------------------------------------------------------------------
 void main_window::set_customer_bill_creation_enabled(bool p_enabled)
 {
