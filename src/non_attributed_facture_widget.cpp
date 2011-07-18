@@ -48,42 +48,13 @@ const facture_reason * non_attributed_facture_widget::get_facture_reason(void)co
 //------------------------------------------------------------------------------
 void non_attributed_facture_widget::set_reason_list(const std::vector<facture_reason> & p_reason_list)
 {
-  fichier_client_QtUi_utils::clear_combo_box_content(m_reason_field);
-  m_reasons.clear();
-  if(p_reason_list.size() > 1)
-    {
-      m_reason_field->addItem("");
-    }
-  std::vector<facture_reason>::const_iterator l_iter = p_reason_list.begin();
-  std::vector<facture_reason>::const_iterator l_iter_end = p_reason_list.end();
-  while(l_iter != l_iter_end)
-    {
-      m_reason_field->addItem(l_iter->get_name().c_str());
-      m_reasons.push_back(*l_iter);
-      ++l_iter;
-    }
-  if(m_reason_field->count())
-    {
-      m_reason_field->setCurrentIndex(0);
-    }
+  fichier_client_QtUi_utils::set_combo_box_named_list(m_reason_field,m_reasons,p_reason_list);
 }
 
 //------------------------------------------------------------------------------
 void non_attributed_facture_widget::set_reason(uint32_t p_id)
 {
-  if(m_reasons.size()>1)
-    {
-      std::vector<facture_reason>::const_iterator l_iter = m_reasons.begin();
-      std::vector<facture_reason>::const_iterator l_iter_end = m_reasons.end();
-      uint32_t l_index = 1;
-      while(l_iter != l_iter_end && l_iter->get_id() != p_id)
-	{
-	  ++l_iter;
-	  ++l_index;
-	}  
-      assert(l_iter->get_id() == p_id);
-      m_reason_field->setCurrentIndex(l_index);
-    }
+  fichier_client_QtUi_utils::select_combo_box_named_content(p_id,m_reason_field,m_reasons);
 }
 
 

@@ -239,63 +239,27 @@ void base_facture_widget::set_allowed_livre_ids(const std::vector<uint32_t> & p_
 }
 
 //------------------------------------------------------------------------------
+void base_facture_widget::set_livre_id(uint32_t p_id)
+{
+  fichier_client_QtUi_utils::select_combo_box_content(p_id,m_livre_facture_id_field,m_livre_facture_ids);
+}
+
+//------------------------------------------------------------------------------
 void base_facture_widget::set_status_list(const std::vector<facture_status> & p_status_list)
 {
-  fichier_client_QtUi_utils::clear_combo_box_content(m_status_field);
-  m_status.clear();
-  if(p_status_list.size() > 1)
-    {
-      m_status_field->addItem("");
-    }
-  std::vector<facture_status>::const_iterator l_iter = p_status_list.begin();
-  std::vector<facture_status>::const_iterator l_iter_end = p_status_list.end();
-  while(l_iter != l_iter_end)
-    {
-      m_status_field->addItem(l_iter->get_name().c_str());
-      m_status.push_back(*l_iter);
-      ++l_iter;
-    }
-  if(m_status_field->count())
-    {
-      m_status_field->setCurrentIndex(0);
-    }
+  fichier_client_QtUi_utils::set_combo_box_named_list(m_status_field,m_status,p_status_list);
 }
 
 //------------------------------------------------------------------------------
 void base_facture_widget::set_status(uint32_t p_id)
 {
-  if(m_status.size()>1)
-    {
-      std::vector<facture_status>::const_iterator l_iter = m_status.begin();
-      std::vector<facture_status>::const_iterator l_iter_end = m_status.end();
-      uint32_t l_index = 1;
-      while(l_iter != l_iter_end && l_iter->get_id() != p_id)
-	{
-	  ++l_iter;
-	  ++l_index;
-	}  
-      assert(l_iter->get_id() == p_id);
-      m_status_field->setCurrentIndex(l_index);
-    }
+  fichier_client_QtUi_utils::select_combo_box_named_content(p_id,m_status_field,m_status);
 }
 
 //------------------------------------------------------------------------------
 void base_facture_widget::set_reference(uint32_t p_ref)
 {
-  if(m_facture_references.size()>1)
-    {
-      std::vector<uint32_t>::const_iterator l_iter = m_facture_references.begin();
-      std::vector<uint32_t>::const_iterator l_iter_end = m_facture_references.end();
-      uint32_t l_index = 1;
-      while(l_iter != l_iter_end && *l_iter != p_ref)
-	{
-	  ++l_iter;
-	  ++l_index;
-	}  
-      assert(*l_iter == p_ref);
-      m_facture_reference_field->setCurrentIndex(l_index);
-    }
-  
+  fichier_client_QtUi_utils::select_combo_box_content(p_ref,m_facture_reference_field,m_facture_references);
 }
 
 //EOF
