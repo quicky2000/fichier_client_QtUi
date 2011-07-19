@@ -45,16 +45,23 @@ template<class T> void fichier_client_QtUi_utils::select_combo_box_named_content
 {
   if(p_content.size()>1)
     {
-      typename std::vector<T>::const_iterator l_iter = p_content.begin();
-      typename std::vector<T>::const_iterator l_iter_end = p_content.end();
-      uint32_t l_index = 1;
-      while(l_iter != l_iter_end && l_iter->get_id() != p_id)
+      if(p_id)
 	{
-	  ++l_iter;
-	  ++l_index;
-	}  
-      assert(l_iter->get_id() == p_id);
-      p_combo_box->setCurrentIndex(l_index);
+	  typename std::vector<T>::const_iterator l_iter = p_content.begin();
+	  typename std::vector<T>::const_iterator l_iter_end = p_content.end();
+	  uint32_t l_index = 1;
+	  while(l_iter != l_iter_end && l_iter->get_id() != p_id)
+	    {
+	      ++l_iter;
+	      ++l_index;
+	    }  
+	  assert(l_iter->get_id() == p_id);
+	  p_combo_box->setCurrentIndex(l_index);
+	}
+      else
+	{
+	  p_combo_box->setCurrentIndex(0);
+	}
     }
 }
 
