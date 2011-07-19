@@ -422,6 +422,103 @@ void main_window::set_customer_purchase_fields_enabled(bool p_enabled)
 }
 
 //------------------------------------------------------------------------------
+void main_window::set_customer_purchase_brand_list(const std::vector<marque> & p_list)
+{
+  m_customer_data_widget->set_purchase_brand_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_brand(uint32_t p_id)
+{
+  m_customer_data_widget->set_purchase_brand(p_id);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_type_list(const std::vector<type_achat> & p_list)
+{
+  m_customer_data_widget->set_purchase_type_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_type(uint32_t p_id)
+{
+  m_customer_data_widget->set_purchase_type(p_id);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_reference(const std::string & p_ref)
+{
+  m_customer_data_widget->set_purchase_reference(p_ref);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_euro_price(const std::string & p_euro_price)
+{
+  m_customer_data_widget->set_purchase_euro_price(p_euro_price);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_franc_price(const std::string & p_franc_price)
+{
+  m_customer_data_widget->set_purchase_franc_price(p_franc_price);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_customer_purchase_warranty(bool p_warranty)
+{
+  m_customer_data_widget->set_purchase_warranty(p_warranty);
+}
+
+//------------------------------------------------------------------------------
+const marque * main_window::get_customer_purchase_brand(void)const
+{
+  return m_customer_data_widget->get_purchase_brand();
+}
+
+//------------------------------------------------------------------------------
+const type_achat * main_window::get_customer_purchase_type(void)const
+{
+  return m_customer_data_widget->get_purchase_type();
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_purchase_reference(void)const
+{
+  return m_customer_data_widget->get_purchase_reference();
+}
+ 
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_purchase_euro_price(void)const
+{
+  return m_customer_data_widget->get_purchase_euro_price();
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_customer_purchase_franc_price(void)const
+{
+  return m_customer_data_widget->get_purchase_franc_price();
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_customer_purchase_warranty_selected(void)const
+{
+  return m_customer_data_widget->is_purchase_warranty_selected();
+}
+
+// Interactions with customer purchase list
+//------------------------------------------------------------------------------
+bool main_window::is_customer_data_purchase_selection_empty(void)const
+{
+  return m_customer_data_widget->is_purchase_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_customer_data_selected_purchase_id(void)const
+{
+  return m_customer_data_widget->get_selected_purchase_id();
+}
+
+//------------------------------------------------------------------------------
 void main_window::update_customer_data_purchase_list(const std::vector<search_achat_item> & p_list)
 {
   m_customer_data_widget->update_purchase_list(p_list);
@@ -433,6 +530,7 @@ void main_window::set_customer_purchase_list_enabled(bool p_enabled)
   m_customer_data_widget->set_purchase_list_enabled(p_enabled);
 }
 
+// Interactions with customer purchase actions
 //------------------------------------------------------------------------------
 void main_window::set_customer_purchase_creation_enabled(bool p_enabled)
 {

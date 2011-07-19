@@ -6,6 +6,8 @@
 #include "search_facture_item.h"
 #include "search_achat_item.h"
 #include "facture_status.h"
+#include "type_achat.h"
+#include "marque.h"
 class fichier_client;
 
 class QLineEdit;
@@ -73,8 +75,24 @@ class customer_data_widget: public QWidget
    
   // Interactions with customer purchase information
   void set_purchase_fields_enabled(bool p_enabled);
+  void set_purchase_brand_list(const std::vector<marque> & p_list);
+  void set_purchase_brand(uint32_t p_id);
+  void set_purchase_type_list(const std::vector<type_achat> & p_list);
+  void set_purchase_type(uint32_t p_id);
+  void set_purchase_reference(const std::string & p_ref);
+  void set_purchase_euro_price(const std::string & p_euro_price);
+  void set_purchase_franc_price(const std::string & p_franc_price);
+  void set_purchase_warranty(bool p_warranty);
+  const marque * get_purchase_brand(void)const;
+  const type_achat * get_purchase_type(void)const;
+  const std::string get_purchase_reference(void)const;
+  const std::string get_purchase_euro_price(void)const;
+  const std::string get_purchase_franc_price(void)const;
+  bool is_purchase_warranty_selected(void)const;
 
   // Interactions with customer purchase list  
+  bool is_purchase_selection_empty(void)const;
+  uint32_t get_selected_purchase_id(void)const;
   void update_purchase_list(const std::vector<search_achat_item> & p_list);
   void set_purchase_list_enabled(bool p_enabled);
 
@@ -108,7 +126,24 @@ class customer_data_widget: public QWidget
   void treat_create_bill_event(void);
   void treat_modify_bill_event(void);
   void treat_delete_bill_event(void);
-   
+
+  // Customer purchase information event handlers
+  void treat_brand_selection_event(void);
+  void treat_type_selection_event(void);
+  void treat_reference_modification_event(void);
+  void treat_euro_price_modification_event(void);
+  void treat_franc_price_modification_event(void);
+  void treat_warranty_modification_event(void);
+
+  // Customer purchase list event handlers
+  void treat_purchase_selected_event(void);
+  void treat_purchase_selection_changed_event(void);
+
+  // Customer purchase actions event handlers
+  void treat_create_purchase_event(void);
+  void treat_modify_purchase_event(void);
+  void treat_delete_purchase_event(void);
+
  private:
   // Customer identity information
   QLineEdit * m_name_field;
@@ -145,6 +180,9 @@ class customer_data_widget: public QWidget
 
 
   std::vector<ville> m_cities;
+  std::vector<marque> m_brands;
+  std::vector<type_achat> m_purchase_types;
   fichier_client & m_fichier_client;
 };
 #endif
+

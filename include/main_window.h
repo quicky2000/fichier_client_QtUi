@@ -95,11 +95,30 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_customer_bill_modification_enabled(bool p_enabled);
   void set_customer_bill_deletion_enabled(bool p_enabled);
 
-
   // Interactions with customer purchase information
   void set_customer_purchase_fields_enabled(bool p_enabled);
+  void set_customer_purchase_brand_list(const std::vector<marque> & p_list);
+  void set_customer_purchase_brand(uint32_t p_id);
+  void set_customer_purchase_type_list(const std::vector<type_achat> & p_list);
+  void set_customer_purchase_type(uint32_t p_id);
+  void set_customer_purchase_reference(const std::string & p_ref);
+  void set_customer_purchase_euro_price(const std::string & p_euro_price);
+  void set_customer_purchase_franc_price(const std::string & p_franc_price);
+  void set_customer_purchase_warranty(bool p_warranty);
+  const marque * get_customer_purchase_brand(void)const;
+  const type_achat * get_customer_purchase_type(void)const;
+  const std::string get_customer_purchase_reference(void)const; 
+  const std::string get_customer_purchase_euro_price(void)const; 
+  const std::string get_customer_purchase_franc_price(void)const; 
+  bool is_customer_purchase_warranty_selected(void)const;
+
+  // Interactions with customer purchase list
+  bool is_customer_data_purchase_selection_empty(void)const;
+  uint32_t get_customer_data_selected_purchase_id(void)const;  
   void update_customer_data_purchase_list(const std::vector<search_achat_item> & p_list);
   void set_customer_purchase_list_enabled(bool p_enabled);
+
+  // Interactions with customer purchase actions
   void set_customer_purchase_creation_enabled(bool p_enabled);
   void set_customer_purchase_modification_enabled(bool p_enabled);
   void set_customer_purchase_deletion_enabled(bool p_enabled);
