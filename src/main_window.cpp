@@ -6,6 +6,7 @@
 #include "livre_facture_widget.h"
 #include "facture_status_widget.h"
 #include "facture_reason_widget.h"
+#include "purchase_configuration_widget.h"
 
 #include <QAction>
 #include <QMenu>
@@ -35,7 +36,8 @@ main_window::main_window(void):
   m_customer_data_widget(NULL),
   m_livre_facture_widget(NULL),
   m_facture_status_widget(NULL),
-  m_facture_reason_widget(NULL)
+  m_facture_reason_widget(NULL),
+  m_purchase_configuration_widget(NULL)
 {
   setWindowTitle(tr("Fichier client"));
   create_actions();
@@ -55,11 +57,14 @@ main_window::main_window(void):
 
   m_facture_reason_widget = new facture_reason_widget(m_fichier_client);
 
+  m_purchase_configuration_widget = new purchase_configuration_widget(m_fichier_client);
+
   m_tab_widget->addTab(m_search_widget,tr("Search"));
   m_tab_widget->addTab(m_customer_data_widget,tr("Donnees Client"));
   m_tab_widget->addTab(m_livre_facture_widget,tr("Livre facture"));
   m_tab_widget->addTab(m_facture_status_widget,tr("Facture status"));
   m_tab_widget->addTab(m_facture_reason_widget,tr("Facture reason"));
+  m_tab_widget->addTab(m_purchase_configuration_widget,tr("Achat configuration"));
 
   setCentralWidget(m_tab_widget);
 
@@ -78,6 +83,7 @@ void main_window::manage_features(bool p_enable)
   m_livre_facture_widget->set_enable(p_enable);
   m_facture_status_widget->set_enable(p_enable);
   m_facture_reason_widget->set_enable(p_enable);
+  m_purchase_configuration_widget->set_enable(p_enable);
 }
 
 //---------------------------------------------------
@@ -932,7 +938,147 @@ void main_window::set_modify_facture_reason_action_name(const std::string & p_na
   m_facture_reason_widget->set_modify_facture_reason_action_name(p_name);
 }
 
+// Interactions with brand information
+//------------------------------------------------------------------------------
+void main_window::clear_purchase_configuration_brand_information(void)
+{
+  m_purchase_configuration_widget->clear_brand_information();
+}
 
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_brand_name(const std::string & p_name)
+{
+  m_purchase_configuration_widget->set_brand_name(p_name);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_purchase_configuration_brand_name(void)const
+{
+  return m_purchase_configuration_widget->get_brand_name();
+}
+
+
+// Interactions with brand list
+//------------------------------------------------------------------------------
+bool main_window::is_purchase_configuration_brand_selection_empty(void)const
+{
+  return m_purchase_configuration_widget->is_brand_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_purchase_configuration_selected_brand_id(void)const
+{
+  return m_purchase_configuration_widget->get_selected_brand_id();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_brand_list(std::vector<marque> & p_list)
+{
+  m_purchase_configuration_widget->set_brand_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_brand_list_enabled(bool p_enable)
+{
+  m_purchase_configuration_widget->set_brand_list_enabled(p_enable);
+}
+
+
+// Interactions with brand actions
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_create_brand_enabled(bool p_enable)
+{
+  m_purchase_configuration_widget->set_create_brand_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_delete_brand_enabled(bool p_enable)
+{
+  m_purchase_configuration_widget->set_delete_brand_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_modify_brand_enabled(bool p_enable)
+{
+  m_purchase_configuration_widget->set_modify_brand_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_modify_brand_action_name(const std::string & p_name)
+{
+  m_purchase_configuration_widget->set_modify_brand_action_name(p_name);
+}
+
+// Interactions with type information
+//------------------------------------------------------------------------------
+void main_window::clear_purchase_configuration_type_information(void)
+{
+  m_purchase_configuration_widget->clear_type_information();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_type_name(const std::string & p_name)
+{
+  m_purchase_configuration_widget->set_type_name(p_name);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_purchase_configuration_type_name(void)const
+{
+  return m_purchase_configuration_widget->get_type_name();
+}
+
+
+// Interactions with type list
+//------------------------------------------------------------------------------
+bool main_window::is_purchase_configuration_type_selection_empty(void)const
+{
+  return m_purchase_configuration_widget->is_type_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_purchase_configuration_selected_type_id(void)const
+{
+  return m_purchase_configuration_widget->get_selected_type_id();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_type_list(std::vector<type_achat> & p_list)
+{
+  m_purchase_configuration_widget->set_type_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_type_list_enabled(bool p_enable)
+{
+  m_purchase_configuration_widget->set_type_list_enabled(p_enable);
+}
+
+
+// Interactions with type actions
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_create_type_enabled(bool p_enable)
+{
+  m_purchase_configuration_widget->set_create_type_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_delete_type_enabled(bool p_enable)
+{
+  m_purchase_configuration_widget->set_delete_type_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_modify_type_enabled(bool p_enable)
+{
+  m_purchase_configuration_widget->set_modify_type_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_modify_type_action_name(const std::string & p_name)
+{
+  m_purchase_configuration_widget->set_modify_type_action_name(p_name);
+}
 
 //------------------------------------------------------------------------------
 void main_window::treat_test_event(void)

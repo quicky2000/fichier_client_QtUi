@@ -16,6 +16,7 @@ class customer_data_widget;
 class livre_facture_widget;
 class facture_status_widget;
 class facture_reason_widget;
+class purchase_configuration_widget;
 
 class main_window : public QMainWindow, public fichier_client_UI_if
 {
@@ -207,6 +208,40 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_modify_facture_reason_enabled(bool p_enable);
   void set_modify_facture_reason_action_name(const std::string & p_name);
 
+  // Interactions with brand information
+  void clear_purchase_configuration_brand_information(void);
+  void set_purchase_configuration_brand_name(const std::string & p_name);  
+  const std::string get_purchase_configuration_brand_name(void)const;
+
+  // Interactions with brand list
+  bool is_purchase_configuration_brand_selection_empty(void)const;
+  uint32_t get_purchase_configuration_selected_brand_id(void)const;
+  void set_purchase_configuration_brand_list(std::vector<marque> & p_list);
+  void set_purchase_configuration_brand_list_enabled(bool p_enable);
+
+  // Interactions with brand actions
+  void set_purchase_configuration_create_brand_enabled(bool p_enable);
+  void set_purchase_configuration_delete_brand_enabled(bool p_enable);
+  void set_purchase_configuration_modify_brand_enabled(bool p_enable);
+  void set_purchase_configuration_modify_brand_action_name(const std::string & p_name);
+
+  // Interactions with type information
+  void clear_purchase_configuration_type_information(void);
+  void set_purchase_configuration_type_name(const std::string & p_name);  
+  const std::string get_purchase_configuration_type_name(void)const;
+
+  // Interactions with type list
+  bool is_purchase_configuration_type_selection_empty(void)const;
+  uint32_t get_purchase_configuration_selected_type_id(void)const;
+  void set_purchase_configuration_type_list(std::vector<type_achat> & p_list);
+  void set_purchase_configuration_type_list_enabled(bool p_enable);
+
+  // Interactions with type actions
+  void set_purchase_configuration_create_type_enabled(bool p_enable);
+  void set_purchase_configuration_delete_type_enabled(bool p_enable);
+  void set_purchase_configuration_modify_type_enabled(bool p_enable);
+  void set_purchase_configuration_modify_type_action_name(const std::string & p_name);
+
   private slots:
   void treat_test_event();
   void treat_import_event();
@@ -236,6 +271,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   livre_facture_widget *m_livre_facture_widget;
   facture_status_widget *m_facture_status_widget;
   facture_reason_widget *m_facture_reason_widget;
+  purchase_configuration_widget * m_purchase_configuration_widget;
   fichier_client m_fichier_client;
 };
 
