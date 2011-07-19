@@ -50,8 +50,6 @@ class facture_status_widget : public QWidget
    void treat_delete_facture_status_event(void);
    void treat_modify_facture_status_event(void);
  private:
-
-   bool m_modif_pending;
    QPushButton * m_create_facture_status_button;
    QPushButton * m_delete_facture_status_button;
    QPushButton * m_modify_facture_status_button;

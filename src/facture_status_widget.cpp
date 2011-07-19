@@ -16,7 +16,6 @@ using namespace std;
 //------------------------------------------------------------------------------
 facture_status_widget::facture_status_widget(fichier_client & p_fichier_client,QWidget * p_parent):
   QWidget(p_parent),
-  m_modif_pending(false),
   m_create_facture_status_button(NULL),
   m_delete_facture_status_button(NULL),
   m_modify_facture_status_button(NULL),
