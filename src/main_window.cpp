@@ -7,6 +7,7 @@
 #include "facture_status_widget.h"
 #include "facture_reason_widget.h"
 #include "purchase_configuration_widget.h"
+#include "city_widget.h"
 
 #include <QAction>
 #include <QMenu>
@@ -37,7 +38,8 @@ main_window::main_window(void):
   m_livre_facture_widget(NULL),
   m_facture_status_widget(NULL),
   m_facture_reason_widget(NULL),
-  m_purchase_configuration_widget(NULL)
+  m_purchase_configuration_widget(NULL),
+  m_city_widget(NULL)
 {
   setWindowTitle(tr("Fichier client"));
   create_actions();
@@ -59,12 +61,15 @@ main_window::main_window(void):
 
   m_purchase_configuration_widget = new purchase_configuration_widget(m_fichier_client);
 
+  m_city_widget = new city_widget(m_fichier_client);
+
   m_tab_widget->addTab(m_search_widget,tr("Search"));
   m_tab_widget->addTab(m_customer_data_widget,tr("Donnees Client"));
   m_tab_widget->addTab(m_livre_facture_widget,tr("Livre facture"));
   m_tab_widget->addTab(m_facture_status_widget,tr("Facture status"));
   m_tab_widget->addTab(m_facture_reason_widget,tr("Facture reason"));
   m_tab_widget->addTab(m_purchase_configuration_widget,tr("Achat configuration"));
+  m_tab_widget->addTab(m_city_widget,tr("Ville configuration"));
 
   setCentralWidget(m_tab_widget);
 
@@ -84,6 +89,7 @@ void main_window::manage_features(bool p_enable)
   m_facture_status_widget->set_enable(p_enable);
   m_facture_reason_widget->set_enable(p_enable);
   m_purchase_configuration_widget->set_enable(p_enable);
+  m_city_widget->set_enable(p_enable);
 }
 
 //---------------------------------------------------
@@ -1078,6 +1084,93 @@ void main_window::set_purchase_configuration_modify_type_enabled(bool p_enable)
 void main_window::set_purchase_configuration_modify_type_action_name(const std::string & p_name)
 {
   m_purchase_configuration_widget->set_modify_type_action_name(p_name);
+}
+
+  // Interactions with city information
+//------------------------------------------------------------------------------
+void main_window::clear_city_information(void)
+{
+  m_city_widget->clear_city_information();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_city_name(const std::string & p_name)
+{
+  m_city_widget->set_name(p_name);
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_city_name(void)const
+{
+  return m_city_widget->get_name();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_city_postal_code(const std::string & p_postal_code)
+{
+  m_city_widget->set_postal_code(p_postal_code);
+}
+  
+//------------------------------------------------------------------------------
+const std::string main_window::get_city_postal_code(void)const
+{
+  return m_city_widget->get_postal_code();
+}
+
+//------------------------------------------------------------------------------
+bool main_window::is_city_postal_code_complete(void)const
+{
+  return m_city_widget->is_postal_code_complete();
+}
+
+// Interactions with city list
+//------------------------------------------------------------------------------
+bool main_window::is_city_selection_empty(void)const
+{
+  return m_city_widget->is_city_selection_empty();
+}
+
+//------------------------------------------------------------------------------
+uint32_t main_window::get_selected_city_id(void)const
+{
+  return m_city_widget->get_selected_city_id();
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_city_list(std::vector<ville> & p_list)
+{
+  m_city_widget->set_city_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_city_list_enabled(bool p_enable)
+{
+  m_city_widget->set_city_list_enabled(p_enable);
+}
+
+// Interactions with city actions
+//------------------------------------------------------------------------------
+void main_window::set_create_city_enabled(bool p_enable)
+{
+  m_city_widget->set_create_city_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_delete_city_enabled(bool p_enable)
+{
+  m_city_widget->set_delete_city_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_modify_city_enabled(bool p_enable)
+{
+  m_city_widget->set_modify_city_enabled(p_enable);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_modify_city_action_name(const std::string & p_name)
+{
+  m_city_widget->set_modify_action_name(p_name);
 }
 
 //------------------------------------------------------------------------------

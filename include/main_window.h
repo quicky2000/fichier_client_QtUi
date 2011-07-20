@@ -17,6 +17,7 @@ class livre_facture_widget;
 class facture_status_widget;
 class facture_reason_widget;
 class purchase_configuration_widget;
+class city_widget;
 
 class main_window : public QMainWindow, public fichier_client_UI_if
 {
@@ -242,6 +243,27 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_purchase_configuration_modify_type_enabled(bool p_enable);
   void set_purchase_configuration_modify_type_action_name(const std::string & p_name);
 
+  // Interactions with city information
+  void clear_city_information(void);
+  void set_city_name(const std::string & p_name);  
+  const std::string get_city_name(void)const;
+  void set_city_postal_code(const std::string & p_postal_code);  
+  const std::string get_city_postal_code(void)const;
+  bool is_city_postal_code_complete(void)const;
+
+  // Interactions with city list
+  bool is_city_selection_empty(void)const;
+  uint32_t get_selected_city_id(void)const;
+  void set_city_list(std::vector<ville> & p_list);
+  void set_city_list_enabled(bool p_enable);
+
+  // Interactions with city actions
+  void set_create_city_enabled(bool p_enable);
+  void set_delete_city_enabled(bool p_enable);
+  void set_modify_city_enabled(bool p_enable);
+  void set_modify_city_action_name(const std::string & p_name);
+
+
   private slots:
   void treat_test_event();
   void treat_import_event();
@@ -272,6 +294,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   facture_status_widget *m_facture_status_widget;
   facture_reason_widget *m_facture_reason_widget;
   purchase_configuration_widget * m_purchase_configuration_widget;
+  city_widget * m_city_widget;
   fichier_client m_fichier_client;
 };
 

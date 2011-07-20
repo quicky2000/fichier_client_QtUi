@@ -671,7 +671,7 @@ void customer_data_widget::set_purchase_deletion_enabled(bool p_enabled)
 void customer_data_widget::treat_postal_code_modification_event(void)
 {
   std::cout << "QtEvent::postal code modification event" << std::endl ;
-  m_fichier_client.treat_postal_code_modification_event();
+  m_fichier_client.treat_customer_postal_code_modification_event();
   
 }
 
@@ -679,7 +679,7 @@ void customer_data_widget::treat_postal_code_modification_event(void)
 void customer_data_widget::treat_city_selection_event(void)
 {
   std::cout << "QtEvent::city selection event" << std::endl ;
-  m_fichier_client.treat_city_selection_event();
+  m_fichier_client.treat_customer_city_selection_event();
 }
 
 //------------------------------------------------------------------------------
