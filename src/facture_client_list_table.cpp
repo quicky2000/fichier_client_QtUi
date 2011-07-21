@@ -3,7 +3,7 @@
 
 //------------------------------------------------------------------------------
 facture_client_list_table::facture_client_list_table(QWidget *parent):
-  facture_list_table(parent,5,get_header_list())
+  facture_list_table(parent,6,get_header_list())
 {
   setColumnHidden(get_nb_column(),true);
 }
