@@ -18,6 +18,7 @@ class facture_status_widget;
 class facture_reason_widget;
 class purchase_configuration_widget;
 class city_widget;
+class coherency_report_widget;
 
 class main_window : public QMainWindow, public fichier_client_UI_if
 {
@@ -33,6 +34,8 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   // Comunication with user
   void display_warning_message(const std::string & p_title,const std::string & p_text);
   void display_information_message(const std::string & p_title,const std::string & p_text);
+  void display_status_message(const std::string & p_text);
+  const std::string get_readable_date(const std::string & p_date)const;
 
   // Interactions with customer search information
   void set_focus_on_customer_search(void);
@@ -263,6 +266,14 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_modify_city_enabled(bool p_enable);
   void set_modify_city_action_name(const std::string & p_name);
 
+  // Interactions with coherency actions
+  void set_coherency_report_launch_check_enabled(bool p_enable);
+
+  // Interactions with coherency information
+  void set_coherency_report_error_number(uint32_t p_nb);
+  void set_coherency_report_error_list(std::vector<coherency_report_item> p_list);
+  void set_coherency_report_warning_number(uint32_t p_nb);
+  void set_coherency_report_warning_list(std::vector<coherency_report_item> p_list);
 
   private slots:
   void treat_test_event();
@@ -295,6 +306,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   facture_reason_widget *m_facture_reason_widget;
   purchase_configuration_widget * m_purchase_configuration_widget;
   city_widget * m_city_widget;
+  coherency_report_widget * m_coherency_report_widget;
   fichier_client m_fichier_client;
 };
 

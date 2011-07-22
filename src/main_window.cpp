@@ -8,7 +8,8 @@
 #include "facture_reason_widget.h"
 #include "purchase_configuration_widget.h"
 #include "city_widget.h"
-
+#include "coherency_report_widget.h"
+#include "fichier_client_QtUi_utils.h"
 #include <QAction>
 #include <QMenu>
 #include <QLabel>
@@ -39,7 +40,8 @@ main_window::main_window(void):
   m_facture_status_widget(NULL),
   m_facture_reason_widget(NULL),
   m_purchase_configuration_widget(NULL),
-  m_city_widget(NULL)
+  m_city_widget(NULL),
+  m_coherency_report_widget(NULL)
 {
   setWindowTitle(tr("Fichier client"));
   create_actions();
@@ -63,6 +65,8 @@ main_window::main_window(void):
 
   m_city_widget = new city_widget(m_fichier_client);
 
+  m_coherency_report_widget = new coherency_report_widget(m_fichier_client);
+
   m_tab_widget->addTab(m_search_widget,tr("Search"));
   m_tab_widget->addTab(m_customer_data_widget,tr("Donnees Client"));
   m_tab_widget->addTab(m_livre_facture_widget,tr("Livre facture"));
@@ -70,6 +74,7 @@ main_window::main_window(void):
   m_tab_widget->addTab(m_facture_reason_widget,tr("Facture reason"));
   m_tab_widget->addTab(m_purchase_configuration_widget,tr("Achat configuration"));
   m_tab_widget->addTab(m_city_widget,tr("Ville configuration"));
+  m_tab_widget->addTab(m_coherency_report_widget,tr("Vérification"));
 
   setCentralWidget(m_tab_widget);
 
@@ -90,6 +95,7 @@ void main_window::manage_features(bool p_enable)
   m_facture_reason_widget->set_enable(p_enable);
   m_purchase_configuration_widget->set_enable(p_enable);
   m_city_widget->set_enable(p_enable);
+  m_coherency_report_widget->set_enable(p_enable);
 }
 
 //---------------------------------------------------
@@ -107,6 +113,19 @@ void main_window::display_information_message(const std::string & p_title,const 
 {
   QMessageBox::information (this,p_title.c_str(),p_text.c_str(), QMessageBox::Ok,QMessageBox::Ok);
 }
+
+//------------------------------------------------------------------------------
+void main_window::display_status_message(const std::string & p_text)
+{
+  m_status_label->setText(p_text.c_str());
+}
+
+//------------------------------------------------------------------------------
+const std::string main_window::get_readable_date(const std::string & p_date)const
+{
+  return fichier_client_QtUi_utils::get_iso_date(p_date);
+}
+
 
 // Interactions with customer search information
 //------------------------------------------------------------------------------
@@ -1171,6 +1190,38 @@ void main_window::set_modify_city_enabled(bool p_enable)
 void main_window::set_modify_city_action_name(const std::string & p_name)
 {
   m_city_widget->set_modify_action_name(p_name);
+}
+
+// Interactions with coherency actions
+//------------------------------------------------------------------------------
+void main_window::set_coherency_report_launch_check_enabled(bool p_enable)
+{
+  m_coherency_report_widget->set_launch_check_enabled(p_enable);
+}
+
+// Interactions with coherency information
+//------------------------------------------------------------------------------
+void main_window::set_coherency_report_error_number(uint32_t p_nb)
+{
+  m_coherency_report_widget->set_error_number(p_nb);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_coherency_report_error_list(std::vector<coherency_report_item> p_list)
+{
+  m_coherency_report_widget->set_error_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_coherency_report_warning_number(uint32_t p_nb)
+{
+  m_coherency_report_widget->set_warning_number(p_nb);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_coherency_report_warning_list(std::vector<coherency_report_item> p_list)
+{
+  m_coherency_report_widget->set_warning_list(p_list);
 }
 
 //------------------------------------------------------------------------------
