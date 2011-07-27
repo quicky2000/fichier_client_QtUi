@@ -36,7 +36,8 @@ void fichier_client_QtUi_utils::clear_combo_box_content(QComboBox * p_combo_box)
 void fichier_client_QtUi_utils::select_combo_box_content(uint32_t p_value,QComboBox * p_combo_box,const std::vector<uint32_t> & p_content)
 {
   assert(p_combo_box);
-    if(p_content.size()>1)
+  assert(p_content.size());
+  if(p_content.size()>1)
     {
       std::vector<uint32_t>::const_iterator l_iter = p_content.begin();
       std::vector<uint32_t>::const_iterator l_iter_end = p_content.end();
@@ -49,7 +50,10 @@ void fichier_client_QtUi_utils::select_combo_box_content(uint32_t p_value,QCombo
       assert(*l_iter == p_value);
       p_combo_box->setCurrentIndex(l_index);
     }
-
+  else if(p_content.size() == 1)
+    {
+      assert(p_content[0] == p_value);
+    }
 }
 
 //EOF 
