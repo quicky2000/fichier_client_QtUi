@@ -27,7 +27,6 @@ class main_window : public QMainWindow, public fichier_client_UI_if
     public:
   main_window(void);
 
-  void manage_features(bool p_enable);
   //---------------------------------------------------
   // Methods inherited from fichier_client_UI_if class
   //---------------------------------------------------
@@ -36,8 +35,19 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void display_information_message(const std::string & p_title,const std::string & p_text);
   void display_status_message(const std::string & p_text);
   const std::string get_readable_date(const std::string & p_date)const;
+  void set_application_title(const std::string & p_name);
+  bool ask_yes_no_qestion(const std::string & p_title, const std::string & p_question);
+
+  // Interactions with main actions
+  void set_import_file_action_enabled(bool p_enabled);
+  void set_open_file_action_enabled(bool p_enabled);
+  void set_save_file_action_enabled(bool p_enabled);
+  void set_save_as_file_action_enabled(bool p_enabled);
+  void set_close_file_action_enabled(bool p_enabled);
+  void set_exit_file_action_enabled(bool p_enabled);
 
   // Interactions with customer search information
+  void set_customer_search_enabled(bool p_enabled);
   void set_focus_on_customer_search(void);
   const std::string get_search_customer_name(void)const;
   const std::string get_search_customer_first_name(void)const;
@@ -129,6 +139,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_customer_purchase_deletion_enabled(bool p_enabled);
 
   // Interactions with livre facture information
+  void set_livre_facture_information_enabled(bool p_enabled);
   void clear_livre_facture_information(void);
   void set_livre_facture_start_date(const std::string & p_date);
   void set_livre_facture_end_date(const std::string & p_date);
@@ -179,6 +190,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_facture_modification_for_selected_livre_enabled( bool p_enabled);
 
   // Interactions with facture status information
+  void set_facture_status_information_enabled(bool p_enabled);
   void clear_facture_status_information(void);
   void set_facture_status_name(const std::string & p_name);  
   const std::string get_facture_status_name(void)const;
@@ -196,6 +208,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_modify_facture_status_action_name(const std::string & p_name);
 
   // Interactions with facture reason information
+  void set_facture_reason_information_enabled(bool p_enabled);
   void clear_facture_reason_information(void);
   void set_facture_reason_name(const std::string & p_name);  
   const std::string get_facture_reason_name(void)const;
@@ -213,6 +226,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_modify_facture_reason_action_name(const std::string & p_name);
 
   // Interactions with brand information
+  void set_purchase_configuration_enabled(bool p_enabled);
   void clear_purchase_configuration_brand_information(void);
   void set_purchase_configuration_brand_name(const std::string & p_name);  
   const std::string get_purchase_configuration_brand_name(void)const;
@@ -247,6 +261,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_purchase_configuration_modify_type_action_name(const std::string & p_name);
 
   // Interactions with city information
+  void set_city_information_enabled(bool p_enabled);
   void clear_city_information(void);
   void set_city_name(const std::string & p_name);  
   const std::string get_city_name(void)const;
@@ -267,6 +282,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_modify_city_action_name(const std::string & p_name);
 
   // Interactions with coherency actions
+  void set_coherency_information_enabled(bool p_enabled);
   void set_coherency_report_launch_check_enabled(bool p_enable);
 
   // Interactions with coherency information

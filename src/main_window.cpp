@@ -78,24 +78,10 @@ main_window::main_window(void):
 
   setCentralWidget(m_tab_widget);
 
-  manage_features(false);
-
   setMinimumSize(160, 160);
   resize(1024, 768);
 
   m_fichier_client.set_user_interface(this);
-}
-
-//------------------------------------------------------------------------------
-void main_window::manage_features(bool p_enable)
-{
-  m_search_widget->set_enable(p_enable);
-  m_livre_facture_widget->set_enable(p_enable);
-  m_facture_status_widget->set_enable(p_enable);
-  m_facture_reason_widget->set_enable(p_enable);
-  m_purchase_configuration_widget->set_enable(p_enable);
-  m_city_widget->set_enable(p_enable);
-  m_coherency_report_widget->set_enable(p_enable);
 }
 
 //---------------------------------------------------
@@ -126,8 +112,70 @@ const std::string main_window::get_readable_date(const std::string & p_date)cons
   return fichier_client_QtUi_utils::get_iso_date(p_date);
 }
 
+//------------------------------------------------------------------------------
+void main_window::set_application_title(const std::string & p_name)
+{
+  setWindowTitle(p_name.c_str());
+}
+
+//------------------------------------------------------------------------------
+bool main_window::ask_yes_no_qestion(const std::string & p_title, const std::string & p_question)
+{
+  int l_result = QMessageBox::question(this,
+				       p_title.c_str(),
+				       p_question.c_str(),
+				       QMessageBox::Yes | QMessageBox::Default,
+				       QMessageBox::No);
+  return l_result == QMessageBox::Yes;
+}
+
+
+// Interactions with main actions
+//------------------------------------------------------------------------------
+void main_window::set_import_file_action_enabled(bool p_enabled)
+{
+  m_import_file_action->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_open_file_action_enabled(bool p_enabled)
+{
+  m_open_file_action->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_save_file_action_enabled(bool p_enabled)
+{
+  m_save_action->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_save_as_file_action_enabled(bool p_enabled)
+{
+  m_save_as_action->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_close_file_action_enabled(bool p_enabled)
+{
+  m_close_action->setEnabled(p_enabled);
+}
+
+//------------------------------------------------------------------------------
+void main_window::set_exit_file_action_enabled(bool p_enabled)
+{
+  m_exit_action->setEnabled(p_enabled);
+}
+
 
 // Interactions with customer search information
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+void main_window::set_customer_search_enabled(bool p_enabled)
+{
+  m_search_widget->set_enable(p_enabled);
+}
+
 //------------------------------------------------------------------------------
 void main_window::set_focus_on_customer_search(void)
 {
@@ -583,6 +631,12 @@ void main_window::set_customer_purchase_deletion_enabled(bool p_enabled)
 
 // Interactions with livre facture information
 //------------------------------------------------------------------------------
+void main_window::set_livre_facture_information_enabled(bool p_enabled)
+{
+  m_livre_facture_widget->set_enable(p_enabled);
+}
+
+//------------------------------------------------------------------------------
 void main_window::clear_livre_facture_information(void)
 {
   m_livre_facture_widget->clear_livre_facture_information();
@@ -823,6 +877,11 @@ void main_window::set_facture_modification_for_selected_livre_enabled( bool p_en
 
 // Interactions with facture status information
 //---------------------------------------------
+void  main_window::set_facture_status_information_enabled(bool p_enabled)
+{
+  m_facture_status_widget->set_enable(p_enabled);
+}
+
 void main_window::clear_facture_status_information(void)
 {
   m_facture_status_widget->clear_facture_status_information();
@@ -893,6 +952,12 @@ void main_window::set_modify_facture_status_action_name(const std::string & p_na
 }
 
 // Interactions with facture reason information
+//---------------------------------------------
+void main_window::set_facture_reason_information_enabled(bool p_enabled)
+{
+  m_facture_reason_widget->set_enable(p_enabled);
+}
+
 //---------------------------------------------
 void main_window::clear_facture_reason_information(void)
 {
@@ -965,6 +1030,11 @@ void main_window::set_modify_facture_reason_action_name(const std::string & p_na
 
 // Interactions with brand information
 //------------------------------------------------------------------------------
+void main_window::set_purchase_configuration_enabled(bool p_enabled)
+{
+  m_purchase_configuration_widget->set_enable(p_enabled);
+}
+
 void main_window::clear_purchase_configuration_brand_information(void)
 {
   m_purchase_configuration_widget->clear_brand_information();
@@ -1105,7 +1175,13 @@ void main_window::set_purchase_configuration_modify_type_action_name(const std::
   m_purchase_configuration_widget->set_modify_type_action_name(p_name);
 }
 
-  // Interactions with city information
+// Interactions with city information
+//------------------------------------------------------------------------------
+void main_window::set_city_information_enabled(bool p_enabled)
+{
+  m_city_widget->set_enable(p_enabled);
+}
+
 //------------------------------------------------------------------------------
 void main_window::clear_city_information(void)
 {
@@ -1194,6 +1270,12 @@ void main_window::set_modify_city_action_name(const std::string & p_name)
 
 // Interactions with coherency actions
 //------------------------------------------------------------------------------
+void main_window::set_coherency_information_enabled(bool p_enabled)
+{
+  m_coherency_report_widget->set_enable(p_enabled);
+}
+
+//------------------------------------------------------------------------------
 void main_window::set_coherency_report_launch_check_enabled(bool p_enable)
 {
   m_coherency_report_widget->set_launch_check_enabled(p_enable);
@@ -1233,51 +1315,27 @@ void main_window::treat_test_event(void)
 //------------------------------------------------------------------------------
 void main_window::treat_import_event(void)
 {
-  cout << "QtEvent::Import" << endl ;
+  std::cout << "QtEvent::Import" << std::endl ;
   QString l_file_name = QFileDialog::getOpenFileName(this,
 						     tr("Open Database"), ".",
 						     tr("SQL database files (*.sql)"));
-  string l_file_name_std = l_file_name.toStdString();
-  cout << "File to import is \"" << l_file_name_std << "\"" << endl ;
-  if(l_file_name != "")
-    {
-      m_import_file_action->setEnabled(false);
-      m_open_file_action->setEnabled(false);
-      m_save_as_action->setEnabled(true);
-      m_close_action->setEnabled(true);
-
-      m_fichier_client.import_external_sql(l_file_name_std);
-      QMessageBox::information (this,"Import Status","File successfully imported", QMessageBox::Ok,QMessageBox::Ok);
-
-      setWindowTitle(l_file_name);
-
-      manage_features(true);
-    }
+  std::string l_file_name_std = l_file_name.toStdString();
+  std::cout << "File to import is \"" << l_file_name_std << "\"" << std::endl ;
+  m_fichier_client.treat_import_external_sql_event(l_file_name_std);
 }
 
 
 //------------------------------------------------------------------------------
 void main_window::treat_open_db_event(void)
 {
-  cout << "QtEvent::Open" << endl ;
+  std::cout << "QtEvent::Open" << std::endl ;
   QString l_file_name = QFileDialog::getOpenFileName(this,
 						     tr("Open Database"), ".",
 						     tr("Fichier client files (*.sqlite3)"));
-  string l_file_name_std = l_file_name.toStdString();
-  cout << "File to open is \"" << l_file_name_std << "\"" << endl ;
-  if(l_file_name != "")
-    {
-      m_import_file_action->setEnabled(false);
-      m_open_file_action->setEnabled(false);
-      m_save_action->setEnabled(true);
-      m_save_as_action->setEnabled(true);
-      m_close_action->setEnabled(true);
+  std::string l_file_name_std = l_file_name.toStdString();
+  std::cout << "File to open is \"" << l_file_name_std << "\"" << std::endl ;
 
-      m_fichier_client.open_db(l_file_name_std);
-      QMessageBox::information (this,"Open Status","File successfully opened", QMessageBox::Ok,QMessageBox::Ok);
-      setWindowTitle(l_file_name);
-      manage_features(true);
-    }
+  m_fichier_client.treat_open_database_event(l_file_name_std);
 }
 
 //------------------------------------------------------------------------------
@@ -1291,54 +1349,27 @@ void main_window::exit(void)
 void main_window::treat_save_event(void)
 {
   cout << "QtEvent::Save" << endl ;
-  m_fichier_client.save();
+  m_fichier_client.treat_save_database_event();
 }
 
 //------------------------------------------------------------------------------
 void main_window::treat_save_as_event(void)
 {
-  cout << "QtEvent::Save as" << endl ;
+  std::cout << "QtEvent::Save as" << std::endl ;
   QString l_file_name = QFileDialog::getSaveFileName(this,
 						     tr("Save Database"), ".",
 						     tr("Fichier client files (*.sqlite3)"));
-  string l_file_name_std = l_file_name.toStdString();
-  cout << "File to save is \"" << l_file_name_std << "\"" << endl ;
-  if(l_file_name != "")
-    {
-      m_fichier_client.save_as(l_file_name_std);
-      QMessageBox::information (this,"Save Status","File successfully saved", QMessageBox::Ok,QMessageBox::Ok);
-      m_save_action->setEnabled(true);
-      setWindowTitle(l_file_name);
-    }
+  std::string l_file_name_std = l_file_name.toStdString();
+  std::cout << "File to save is \"" << l_file_name_std << "\"" <<std:: endl ;
+
+  m_fichier_client.treat_save_as_database_event(l_file_name_std);
 }
 
 //------------------------------------------------------------------------------
 void main_window::treat_close_db_event(void)
 {
-  cout << "QtEvent::Close" << endl ;
-  bool l_close = true;
-  if(m_fichier_client.need_save())
-    {
-      string l_question = "Database has non saved modification\nAre you sure you want to close it ?";
-      int l_result = QMessageBox::question(this, tr("Close"),
-					   tr(l_question.c_str()),
-					   QMessageBox::Yes | QMessageBox::Default,
-					   QMessageBox::No);
-      if (l_result != QMessageBox::Yes)
-	{
-	  l_close = false;
-	}
-    }
-  if(l_close)
-    {
-      m_open_file_action->setEnabled(true);
-      m_save_action->setEnabled(false);
-      m_save_as_action->setEnabled(false);
-      m_close_action->setEnabled(false);
-      manage_features(false);
-      m_fichier_client.close_db();
-      setWindowTitle(tr("Fichier client"));
-    }
+  std::cout << "QtEvent::Close" << std::endl ;
+  m_fichier_client.treat_close_database_event();
 }
 
 //------------------------------------------------------------------------------
