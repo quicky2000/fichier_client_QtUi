@@ -41,7 +41,8 @@ main_window::main_window(void):
   m_facture_reason_widget(NULL),
   m_purchase_configuration_widget(NULL),
   m_city_widget(NULL),
-  m_coherency_report_widget(NULL)
+  m_coherency_report_widget(NULL),
+  m_in_customer_data_widget(false)
 {
   setWindowTitle(tr("Fichier client"));
   create_actions();
@@ -49,6 +50,8 @@ main_window::main_window(void):
   create_status_bar();
 
   m_tab_widget = new QTabWidget();
+  connect(m_tab_widget,SIGNAL(currentChanged(int)),this, SLOT(treat_tab_changed_event(int)));
+
 
   m_livre_facture_widget = new livre_facture_widget(m_fichier_client);
 
@@ -1304,6 +1307,18 @@ void main_window::set_coherency_report_warning_number(uint32_t p_nb)
 void main_window::set_coherency_report_warning_list(std::vector<coherency_report_item> p_list)
 {
   m_coherency_report_widget->set_warning_list(p_list);
+}
+
+//------------------------------------------------------------------------------
+void main_window::treat_tab_changed_event(int index)
+{
+  std::cout << "QtEvent::tab changed" << std::endl ;
+  assert(m_tab_widget);
+  if(m_in_customer_data_widget && m_tab_widget->widget(index) == m_search_widget)
+    {
+      m_fichier_client.treat_leave_customer_data_for_search_event();
+    }
+  m_in_customer_data_widget = m_tab_widget->widget(index) == m_customer_data_widget;
 }
 
 //------------------------------------------------------------------------------

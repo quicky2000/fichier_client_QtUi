@@ -292,6 +292,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   void set_coherency_report_warning_list(std::vector<coherency_report_item> p_list);
 
   private slots:
+  void treat_tab_changed_event(int index);
   void treat_test_event();
   void treat_import_event();
   void treat_open_db_event();
@@ -324,6 +325,7 @@ class main_window : public QMainWindow, public fichier_client_UI_if
   city_widget * m_city_widget;
   coherency_report_widget * m_coherency_report_widget;
   fichier_client m_fichier_client;
+  bool m_in_customer_data_widget;
 };
 
 #endif
