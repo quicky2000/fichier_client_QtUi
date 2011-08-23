@@ -171,14 +171,6 @@ customer_data_widget::customer_data_widget(fichier_client & p_fichier_client,QWi
 
   QHBoxLayout *l_customer_purchases_field_layout = new QHBoxLayout();
 
-  QLabel * l_brand_label = new QLabel(tr("Marque")+" :");
-  l_customer_purchases_field_layout->addWidget(l_brand_label);
-
-  m_brand_field = new QComboBox();
-  m_brand_field->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-  connect(m_brand_field, SIGNAL(activated (int)),this,SLOT(treat_brand_selection_event(void)));
-  l_customer_purchases_field_layout->addWidget(m_brand_field);
-
   QLabel * l_type_label = new QLabel(tr("Type")+" :");
   l_customer_purchases_field_layout->addWidget(l_type_label);
 
@@ -186,6 +178,14 @@ customer_data_widget::customer_data_widget(fichier_client & p_fichier_client,QWi
   m_type_field->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   connect(m_type_field, SIGNAL(activated (int)),this,SLOT(treat_type_selection_event(void)));
   l_customer_purchases_field_layout->addWidget(m_type_field);
+
+  QLabel * l_brand_label = new QLabel(tr("Marque")+" :");
+  l_customer_purchases_field_layout->addWidget(l_brand_label);
+
+  m_brand_field = new QComboBox();
+  m_brand_field->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+  connect(m_brand_field, SIGNAL(activated (int)),this,SLOT(treat_brand_selection_event(void)));
+  l_customer_purchases_field_layout->addWidget(m_brand_field);
 
   QLabel * l_reference_label = new QLabel(tr("Reference")+" :");
   l_customer_purchases_field_layout->addWidget(l_reference_label);
