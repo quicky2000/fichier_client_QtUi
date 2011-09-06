@@ -13,6 +13,7 @@ class client_list_table: public QTableWidget
   client_list_table(QWidget *parent);
   void update(const std::vector<search_client_item> & p_client_list);
   uint32_t get_selected_client_id(uint32_t p_row)const;
+  void clear(void);
  private:
   void set_row_content(uint32_t p_row,const search_client_item & p_client_item);
 };

@@ -101,6 +101,12 @@ void facture_list_table::update(const std::vector<search_facture_item> & p_searc
   resizeColumnsToContents();
 }
 
+//------------------------------------------------------------------------------
+void facture_list_table::clear(void)
+{
+  std::vector<search_facture_item> l_empty_list;
+  this->update(l_empty_list);
+}
 
 //------------------------------------------------------------------------------
 uint32_t facture_list_table::get_nb_column(void)

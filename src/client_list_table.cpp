@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//------------------------------------------------------------------------------
 client_list_table::client_list_table(QWidget *parent):
   QTableWidget(0,5,parent)
 {
@@ -17,12 +18,14 @@ client_list_table::client_list_table(QWidget *parent):
   setColumnHidden(0,true);
 }
 
+//------------------------------------------------------------------------------
 uint32_t client_list_table::get_selected_client_id(uint32_t p_row)const
 {
   assert(p_row < ((uint32_t)rowCount()));
   return static_cast<simple_table_cell*>(item(p_row,0))->get_id();
 }
 
+//------------------------------------------------------------------------------
 void client_list_table::set_row_content(uint32_t p_row,const search_client_item & p_client_item)
 {
       QString l_id_q;
@@ -34,6 +37,7 @@ void client_list_table::set_row_content(uint32_t p_row,const search_client_item 
       setItem(p_row,4,new simple_table_cell(p_client_item.get_city().c_str()));
  }
 
+//------------------------------------------------------------------------------
 void client_list_table::update(const std::vector<search_client_item> & p_client_list)
 {
   clearContents();
@@ -48,6 +52,13 @@ void client_list_table::update(const std::vector<search_client_item> & p_client_
       ++l_iter;
     }
   resizeColumnsToContents();
+}
+
+//------------------------------------------------------------------------------
+void client_list_table::clear(void)
+{
+  std::vector<search_client_item> l_empty_list;
+  this->update(l_empty_list);
 }
 
 //EOF

@@ -6,6 +6,7 @@
 
 using namespace std;
 
+//------------------------------------------------------------------------------
 achat_list_table::achat_list_table(QWidget *parent):
   QTableWidget(0,9,parent)
 {
@@ -19,12 +20,14 @@ achat_list_table::achat_list_table(QWidget *parent):
   setColumnHidden(8,true);
 }
 
+//------------------------------------------------------------------------------
 uint32_t achat_list_table::get_selected_achat_id(uint32_t p_row)const
 {
   assert(p_row < ((uint32_t)rowCount()));
   return static_cast<simple_table_cell*>(item(p_row,0))->get_id();
 }
 
+//------------------------------------------------------------------------------
 void achat_list_table::set_row_content(uint32_t p_row,const search_achat_item & p_achat_item)
 {
       QString l_id_q;
@@ -42,6 +45,7 @@ void achat_list_table::set_row_content(uint32_t p_row,const search_achat_item & 
       setItem(p_row,8,new simple_table_cell(l_livre_facture_id));
  }
 
+//------------------------------------------------------------------------------
 void achat_list_table::update(const std::vector<search_achat_item> & p_achat_list)
 {
   clearContents();
@@ -56,6 +60,13 @@ void achat_list_table::update(const std::vector<search_achat_item> & p_achat_lis
       ++l_iter;
     }
   resizeColumnsToContents();
+}
+
+//------------------------------------------------------------------------------
+void achat_list_table::clear(void)
+{
+  std::vector<search_achat_item> l_empty_list;
+  this->update(l_empty_list);
 }
 
 //EOF

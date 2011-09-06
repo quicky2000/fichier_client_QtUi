@@ -15,6 +15,8 @@ class facture_list_table: public QTableWidget
 
   void update(const std::vector<search_facture_item> & p_item_list);
   uint32_t get_selected_facture_item_id(uint32_t p_row)const;
+
+  void clear(void);
  protected:
   static uint32_t get_nb_column(void);
   static QStringList get_header_list(void);

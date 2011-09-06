@@ -13,6 +13,7 @@ class achat_list_table: public QTableWidget
   achat_list_table(QWidget *parent);
   void update(const std::vector<search_achat_item> & p_achat_list);
   uint32_t get_selected_achat_id(uint32_t p_row)const;
+  void clear(void);
  private:
   void set_row_content(uint32_t p_row,const search_achat_item & p_achat_item);
 };
