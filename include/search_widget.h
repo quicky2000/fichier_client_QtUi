@@ -27,6 +27,7 @@ class search_widget : public QWidget
    const std::string get_customer_first_name(void)const;
    const std::string get_customer_address(void)const;
    const std::string get_customer_city(void)const;
+   void clear_search_criteria(void);
    
    void update_customer_list(const std::vector<search_client_item> & p_list);
    void update_customer_list_achat(const std::vector<search_achat_item> & p_list);

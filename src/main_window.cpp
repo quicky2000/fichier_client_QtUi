@@ -186,6 +186,12 @@ void main_window::set_focus_on_customer_search(void)
 }
 
 //------------------------------------------------------------------------------
+void main_window::clear_customer_search_criteria(void)
+{
+  m_search_widget->clear_search_criteria();
+}
+
+//------------------------------------------------------------------------------
 const std::string main_window::get_search_customer_name(void)const
 {
   return m_search_widget->get_customer_name();

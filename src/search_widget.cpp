@@ -104,13 +104,7 @@ void search_widget::set_enable(bool p_enable)
   m_modify_customer_button->setEnabled(false);
   m_delete_customer_button->setEnabled(false);
 
-  m_name_field->setText("");
-  m_first_name_field->setText("");
-  m_address_field->setText("");
-  m_city_field->setText("");   
-
-  m_client_list_table->clearContents();
-  m_achat_list_table->clearContents();      
+  clear_search_criteria();
 }
 
 // Interactions with customer search criteria information
@@ -136,6 +130,19 @@ const std::string search_widget::get_customer_address(void)const
 const std::string search_widget::get_customer_city(void)const
 {
   return m_city_field->text().toStdString();
+}
+
+//------------------------------------------------------------------------------
+void search_widget::clear_search_criteria(void)
+{
+  m_name_field->setText("");
+  m_first_name_field->setText("");
+  m_address_field->setText("");
+  m_city_field->setText("");   
+
+  m_client_list_table->clear();
+  m_achat_list_table->clear();   
+  m_facture_list_table->clear();
 }
 
 //------------------------------------------------------------------------------
