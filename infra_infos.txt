@@ -1,4 +1,4 @@
-depend:Qt4 fichier_client
+depend:EXT_Qt4 fichier_client
 LDFLAGS:
-CFLAGS:
+CFLAGS:-Wall -ansi -pedantic -g -std=c++11
 
